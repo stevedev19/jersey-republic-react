@@ -15,7 +15,7 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Margin, Rowing } from "@mui/icons-material";
+
 
 const products = [
   { productName: "Cutlet", imagePAth: "/img/cutlet.webp" },
