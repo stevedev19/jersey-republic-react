@@ -16,7 +16,6 @@ import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-
 const products = [
   { productName: "Cutlet", imagePAth: "/img/cutlet.webp" },
   { productName: "Kebab", imagePAth: "/img/kebab-fresh.webp" },
