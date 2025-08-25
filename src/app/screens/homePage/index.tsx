@@ -9,28 +9,35 @@ import "../../../css/home.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
 import { setPopularDishes } from "./slice";
-import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import ProductService from "../../services/ProductService";
 
 /* REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
 }); // setPopularDishes reducer orqali setPopularDishes kommandasini hosil qilmoqdamiz!
-const popularDishesRetriever = createSelector(
-  retrievePopularDishes,
-  (popularDishes) => ({ popularDishes })
-);
 
 export default function HomePage() {
   // Selector: Store => Data 
   const { setPopularDishes } = actionDispatch(useDispatch());
-  const { popularDishes } = useSelector(popularDishesRetriever);
-
   
-
-    useEffect(() => {}, []);
+    useEffect(() => {
+      // Backend server data fetch => Data
+        const product = new ProductService();
+        product
+        .getProducts({
+            page: 1,
+            limit: 4,
+            order: "productViews",
+            productCollection: ProductCollection.DISH,
+        })
+        .then(data => {
+            setPopularDishes(data);
+        })
+        .catch(err=> console.log(err));
+    }, []);
 
   return (
   <div className={"homepage"}>
