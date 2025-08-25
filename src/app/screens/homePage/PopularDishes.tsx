@@ -22,21 +22,16 @@ import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { serverApi } from "../../../lib/config";
 
-
-
 /** REDUX SLICE & SELECTOR */
 const popularDishesRetriever = createSelector(
   retrievePopularDishes,
   (popularDishes)=> ({popularDishes})
-) 
-
-
-
+); 
 
 export default function PopularDishes() {
   const {popularDishes} = useSelector(popularDishesRetriever);
 
-  //console.log("popularDishes:", popularDishes)
+   //console.log("popularDishes:", popularDishes)
     return(
     <div className="popular-dishes-frame">
         <Container>
@@ -50,7 +45,7 @@ export default function PopularDishes() {
 
 
 
-                return(
+                return (
                 <CssVarsProvider key={product._id}>
                 <Card className={"card"}>
       <CardCover>

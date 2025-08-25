@@ -5,23 +5,23 @@ import NewDishes from "./NewDishes";
 import Advertisement from "./Advertisement";
 import ActiveUsers from "./ActiveUsers";
 import Events from "./Events";
-import "../../../css/home.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setPopularDishes } from "./slice";
+import { setNewDishes, setPopularDishes } from "./slice";
 import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import ProductService from "../../services/ProductService";
+import "../../../css/home.css";
 
 /* REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
+  setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
 }); // setPopularDishes reducer orqali setPopularDishes kommandasini hosil qilmoqdamiz!
 
 export default function HomePage() {
   // Selector: Store => Data 
-  const { setPopularDishes } = actionDispatch(useDispatch());
+  const { setPopularDishes, setNewDishes } = actionDispatch(useDispatch());
   
     useEffect(() => {
       // Backend server data fetch => Data
@@ -35,6 +35,18 @@ export default function HomePage() {
         })
         .then(data => {
             setPopularDishes(data);
+        })
+        .catch(err=> console.log(err));
+
+         product
+        .getProducts({
+            page: 1,
+            limit: 4,
+            order: "createdAt",
+            productCollection: ProductCollection.DISH,
+        })
+        .then(data => {
+        setNewDishes(data);
         })
         .catch(err=> console.log(err));
     }, []);
