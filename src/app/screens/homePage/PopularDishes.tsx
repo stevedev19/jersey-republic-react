@@ -5,15 +5,8 @@ import Card from '@mui/joy/Card';
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import AspectRatio from '@mui/joy/AspectRatio';
 import CardOverflow from '@mui/joy/CardOverflow';
-import Divider from '@mui/joy/Divider';
-import IconButton from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
-import Favorite from '@mui/icons-material/Favorite';
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined"
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
 
 import { useSelector } from "react-redux";
@@ -22,21 +15,17 @@ import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { serverApi } from "../../../lib/config";
 
-
-
 /** REDUX SLICE & SELECTOR */
 const popularDishesRetriever = createSelector(
   retrievePopularDishes,
   (popularDishes) => ({ popularDishes })
-)
-
-
-
+);
 
 export default function PopularDishes() {
   const { popularDishes } = useSelector(popularDishesRetriever);
 
   //console.log("popularDishes:", popularDishes)
+  
   return (
     <div className="popular-dishes-frame">
       <Container>
@@ -47,8 +36,6 @@ export default function PopularDishes() {
               popularDishes.map((product: Product) => {
                 const imagePath = `${serverApi}${product.productImages[0]}`
                 //const imagePath = `${serverApi}/${ele.productImages[0]}
-
-
 
                 return (
                   <CssVarsProvider key={product._id}>
@@ -122,6 +109,4 @@ export default function PopularDishes() {
       </Container>
     </div>
   );
-
-
 }
