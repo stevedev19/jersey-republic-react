@@ -42,5 +42,4 @@ try{
   }
 
 }
-
 export default ProductService
