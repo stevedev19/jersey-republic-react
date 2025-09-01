@@ -1,6 +1,6 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
-import { Member } from "../../lib/types/member";
+import { Member, MemberInput } from "../../lib/types/member";
 
 
 class MemberService {
@@ -12,8 +12,8 @@ class MemberService {
     public async getTopUsers():Promise<Member[]>{
         
 try{
-    //const url = this.path + "/member/top-users";
-    const url = `${this.path.replace(/\/$/, "")}/member/top-users`;
+    const url = this.path + "/member/top-users";
+    //const url = `${this.path.replace(/\/$/, "")}/member/top-users`;
 
     const result = await axios.get(url);
     console.log("getTopUsers:", result)
@@ -35,6 +35,23 @@ try{
       return restaurant;
     } catch (err) {
       console.log("error, getRestaurant:", err);
+      throw err;
+    }
+  }
+
+ public async signup(input: MemberInput): Promise<Member> {
+    try {
+      const url = this.path + "/member/signup";
+      const result = await axios.post(url, input, { withCredentials: true });
+      console.log("signup:", result);
+      
+      const member: Member = result.data.member;
+      console.log("member:", member);
+      localStorage.setItem("memberData", JSON.stringify(member));
+
+      return member;
+    } catch (err) {
+      console.log("Error, signup:", err);
       throw err;
     }
   }
