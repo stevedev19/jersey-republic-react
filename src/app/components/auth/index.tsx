@@ -71,6 +71,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     if (e.key === "Enter" && signupOpen) {
       handleSignupRequest().then();
     } else if (e.key === "Enter" && loginOpen) {
+      // login request
     }
   };
 
@@ -100,9 +101,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const handleLoginRequest = async () => {
     try {
       const isFullFill = memberNick !== "" && memberPassword !== "";
-      if (!isFullFill) {
-        throw new Error(Messages.error3);
-      }
+      if (!isFullFill) throw new Error(Messages.error3); 
       const loginInput: LoginInput = {
         memberNick: memberNick,
         memberPassword: memberPassword,
