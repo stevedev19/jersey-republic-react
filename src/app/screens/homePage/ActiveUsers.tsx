@@ -22,9 +22,9 @@ export default function ActiveUsers() {
   return (
     <div className="active-users-frame">
       <Container>
-        <Stack className="main">
-          <Box className="category-title">Active Users</Box>
-          <Stack className="cards-frame">
+        <Stack className={"main"}>
+          <Box className={"category-title"}>Active Users</Box>
+          <Stack className={"cards-frame"}>
             <CssVarsProvider>
               {topUsers.length !== 0 ? (
                 topUsers.map((member, Member) => {

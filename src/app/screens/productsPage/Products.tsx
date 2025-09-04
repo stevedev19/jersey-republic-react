@@ -276,13 +276,7 @@ export default function Products(props: ProductsProps) {
                     >
                       <Stack
                         className="product-img"
-                       sx={{
-                          backgroundImage: `url(${imagePath})`,
-                         backgroundSize: "cover",
-                         backgroundPosition: "center",
-                        width: "250px",
-                        height: "250px",
-                         }}
+                        sx={{ backgroundImage: `url(${imagePath})` }}
                       >
                         <div className="product-sale">{sizeVolume}</div>
                          <Button
