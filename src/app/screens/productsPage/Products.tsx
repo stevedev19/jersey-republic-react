@@ -278,8 +278,8 @@ export default function Products(props: ProductsProps) {
                         className="product-img"
                         sx={{ backgroundImage: `url(${imagePath})` }}
                       >
-                        <div className="product-sale">{sizeVolume}</div>
-                         <Button
+                        <div className="product-sale"> {sizeVolume} </div>
+                        <Button
                           className="shop-btn"
                           onClick={(e) => {
                             onAdd({
