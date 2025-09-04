@@ -47,7 +47,6 @@ interface ChosenProductProps {
 }
 
 export default function ChosenProduct(props: ChosenProductProps) {
-  const { onAdd } = props;
   const { productId } = useParams<{ productId: string }>();
   const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
@@ -81,8 +80,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
             modules={[FreeMode, Navigation, Thumbs]}
             className="swiper-area"
           >
-            {chosenProduct?.productImages.map((ele: string, index: number) => {
-              const imagePath = `${serverApi}/${ele}`;
+           {chosenProduct?.productImages.map((ele: string, index: number) => {
+              const imagePath = `${serverApi}${ele}`;
               return (
                 <SwiperSlide key={index}>
                   <img className="slider-image" src={imagePath} />
@@ -116,23 +115,9 @@ export default function ChosenProduct(props: ChosenProductProps) {
             <div className={"product-price"}>
               <span>Price:</span>
               <span>${chosenProduct?.productPrice}</span>
-            </div>
+             </div>
             <div className={"button-box"}>
-              <Button
-                variant="contained"
-                onClick={(e) => {
-                  onAdd({
-                    _id: chosenProduct._id,
-                    quantity: 1,
-                    name: chosenProduct.productName,
-                    price: chosenProduct.productPrice,
-                    image: chosenProduct.productImages[0],
-                  });
-                  e.stopPropagation();
-                }}
-              >
-                Add To Basket
-              </Button>
+              <Button variant="contained">Add To Basket</Button>
             </div>
           </Box>
         </Stack>

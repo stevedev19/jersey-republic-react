@@ -1,6 +1,7 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
+import { RssFeed } from "@mui/icons-material";
 
 class ProductService {
     private readonly path: string;
@@ -8,9 +9,9 @@ class ProductService {
     constructor() {
         this.path = serverApi;
     }
+
     public async getProducts(input: ProductInquiry):Promise<Product[]>{
 try{
-
     //let url = `${this.path}product/all?order=${input.order}&page=${input.page}&limit=${input.limit}`;
     let url = `${this.path}product/all?order=${input.order}&page=${input.page}&limit=${input.limit}`;
 
@@ -40,6 +41,5 @@ try{
       throw err;
     }
   }
-
 }
 export default ProductService

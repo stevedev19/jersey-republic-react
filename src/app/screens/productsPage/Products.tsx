@@ -263,7 +263,7 @@ export default function Products(props: ProductsProps) {
             <Stack className="product-wrapper">
               {products.length !== 0 ? (
                 products.map((product: Product) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const imagePath = `${serverApi}${product.productImages[0]}`;
                   const sizeVolume =
                    product.productCollection === ProductCollection.DRINK 
                   ? product.productVolume + " litre" 
@@ -276,7 +276,13 @@ export default function Products(props: ProductsProps) {
                     >
                       <Stack
                         className="product-img"
-                        sx={{ backgroundImage: `url(${imagePath})` }}
+                       sx={{
+                          backgroundImage: `url(${imagePath})`,
+                         backgroundSize: "cover",
+                         backgroundPosition: "center",
+                        width: "250px",
+                        height: "250px",
+                         }}
                       >
                         <div className="product-sale">{sizeVolume}</div>
                          <Button
