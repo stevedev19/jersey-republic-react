@@ -17,6 +17,8 @@ import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../hooks/useGlobals";
 import { useHistory } from "react-router-dom";
+import { serverApi } from "../../../lib/config";
+import { MemberType } from "../../../lib/enums/member.enum";
 
 
 /* REDUX SLICE & SELECTOR*/
@@ -93,10 +95,17 @@ export default function OrdersPage() {
         </Stack>
 <Stack className="order-right">
           <Box className="order-right-top">
-            <img src="/icons/default-user.svg" className="order-right-top-img" />
+            <img
+              src={
+                authMember?.memberImage
+                  ? `${serverApi}${authMember.memberImage}`
+                  : "/icons/default-user.svg"
+              }
+              className="order-right-top-img"
+            />
             <div className="order-right-top-text">
-              <p className="order-right-top-name">Martin</p>
-              <p className="order-right-top-user">User</p>
+               <p className="order-right-top-name"> {authMember?.memberNick}</p>
+              <p className="order-right-top-user"> {authMember?.memberType}</p>
             </div>
             <div>
               <hr
@@ -110,8 +119,18 @@ export default function OrdersPage() {
               />
             </div>
             <div className="order-right-top-address">
-              <img src="/icons/location.svg" />
-              <p>Do not exist</p>
+              <img
+                src={
+                  authMember?.memberType === MemberType.RESTAURANT
+                    ? "/icons/restaurant.svg"
+                    : "/icons/user-badge.svg"
+                }
+              />
+              <p>
+                {authMember?.memberAddress
+                  ? authMember.memberAddress
+                  : "No address"}
+              </p>
             </div>
           </Box>
              
