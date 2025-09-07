@@ -7,9 +7,14 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveProcessOrders } from "./selector";
-import { serverApi } from "../../../lib/config";
-import { Order, OrderItem } from "../../../lib/types/order";
+import { Messages, serverApi } from "../../../lib/config";
+import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
 import { Product } from "../../../lib/types/product";
+import { useGlobals } from "../../hooks/useGlobals";
+import { T } from "../../../lib/types/common";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/OrderService";
+import { sweetErrorHandling } from "../../../lib/sweetAlert";
 
 /* REDUX SLICE & SELECTOR*/
 // setPopularDishes reducer orqali setPopularDishes kommandasini hosil qilayapmiz
@@ -18,8 +23,42 @@ const pausedProcessRetriever = createSelector(
   (processOrders) => ({ processOrders })
 );
 
-export default function ProcessOrders() {
+interface ProcessOrdersProps {
+  setValue: (input: string) => void;
+}
+
+export default function ProcessOrders(props:ProcessOrdersProps) {
+  const {setValue} = props;
+  const {authMember, setOrderBuilder} = useGlobals();
+
   const { processOrders } = useSelector(pausedProcessRetriever);
+
+  /**HANDLERS  */
+
+  const finishOrderHandler = async (e: T)=>{
+    try{
+      if(!authMember) throw new Error(Messages.error2)
+        //PAYMENT PROCESS
+
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+       orderId: orderId,
+        orderStatus: OrderStatus.FINISH,
+      }
+
+      const confirmation = window.confirm("Have you received your order?")
+      if(confirmation){
+        const order = new OrderService()
+        await order.updateOrder(input);
+         setValue("3")
+        setOrderBuilder(new Date())
+      }
+
+    }catch(err){
+     console.log(err);
+     sweetErrorHandling(err).then();
+    }
+  }
 
   return (
     <TabPanel value={"2"}>
@@ -62,24 +101,16 @@ export default function ProcessOrders() {
                   <p>Total</p>
                   <p>${order.orderTotal}</p>
                 </Box>
-                <p className={"data-compl"}>
-                    {moment().format("YY-MM-DD HH:mm")}
-                </p>
-               <Button
-  variant="contained"
-  className="verify-button"
-  sx={{
-    marginRight: "10px",
-    marginLeft: "10px",
-    backgroundColor: "#2979ff", 
-    color: "white",
-    "&:hover": {
-      backgroundColor: "#1565c0"
-    }
-  }}
->
-  VERIFY TO FULFILL
-</Button>
+                <Button
+                  value={order._id}
+                  variant="contained"
+                  color="secondary"
+                  className="verify-button"
+                  onClick={finishOrderHandler}
+                  sx={{ marginRight: "10px", marginLeft: "10px" }}
+                >
+                 VERIFY TO FULFILL
+                 </Button>
 
               </Box>
             </Box>

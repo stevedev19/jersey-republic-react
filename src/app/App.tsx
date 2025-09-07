@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import  HomePage from "./screens/homePage";
 import  ProductsPage from "./screens/productsPage";
 import  OrdersPage from "./screens/ordersPage";
@@ -9,17 +8,15 @@ import  OtherNavbar  from "./components/headers/OtherNavbar";
 import HomeNavbar  from "./components/headers/HomeNavbar";
 import Footer from "./components/footer";
 import  HelpPage  from "./screens/helpPage";
-import Test from "./screens/Test";
-import { CartItem } from "../lib/types/search";
 import useBasket from "./hooks/useBasket";
-import "../css/app.css";
-import "../css/navbar.css";
-import "../css/footer.css";
 import AuthenticationModal from "./components/auth";
 import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
+import "../css/app.css";
+import "../css/navbar.css";
+import "../css/footer.css";
 
 function App() {
   const location = useLocation();
