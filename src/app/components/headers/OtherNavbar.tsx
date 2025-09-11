@@ -43,7 +43,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
             <Stack className="menu">
              <Box>
                 <NavLink to={"/"}>
-                 <img className="brand-logo" src="/icons/burak.svg" />
+                 
                 </NavLink>
              </Box>
              <Stack className="links">
@@ -90,7 +90,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   className="login-button"
                   onClick={() => setLoginOpen(true)}
                 >
-                    Login
+                    Enter your Room
                     </Button>
                 </Box>
                 ) : (

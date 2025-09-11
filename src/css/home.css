@@ -5,48 +5,70 @@
 
 /** STATISTICS **/
 
-.homepage .static-frame {
+/* --- Styles for the overall frame and layout --- */
+.static-frame {
     width: 100%;
     height: 236px;
-    background: #343434
+    background: #343434;
+    padding: 0 10%; /* Add some horizontal padding for spacing */
+    box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    overflow: hidden; /* Important for animation to not spill out initially */
 }
 
-.homepage .static-frame .info {
-height: 100%;
-display: flex;
-flex-direction: row;
-justify-content:space-between;
-align-items: center;
+.static-frame .info {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Optional: Constrain width for larger screens */
+    margin: 0 auto; /* Center the info div */
 }
 
-.homepage .static-frame .info .static-box {
-width: 200px;
-height: 116px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content:center;
+
+.static-box {
+    width: 200px; /* Adjust as needed */
+    height: 116px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Framer Motion will handle opacity and transform, so no CSS transitions here */
 }
 
-.homepage .static-frame .info .static-box .static-num {
+/* --- Styles for the number --- */
+/* This now targets the motion.span inside .static-num,
+   and ensures it inherits the styles for the number itself. */
+.static-num {
     text-align: center;
-    font-family: Poppins;
+    font-family: Poppins, sans-serif; /* Added sans-serif fallback */
     font-size: 54px;
     font-style: normal;
     font-weight: 600;
     line-height: 80px;
     color: #d7b686;
-    }
+    /* If the motion.span adds display: inline, you might need to ensure its container (Box)
+       is a block or flex item if it causes layout issues.
+       However, motion.span defaults to inline, which usually works fine within a Box. */
+}
 
-     .homepage .static-frame .info .static-box .static-text {
-       text-align: center;
-        font-family: Poppins;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 30px;
-        color: #d7b586;
-        }
+.static-num span { /* Target the motion.span directly if needed for specific overrides */
+    /* Ensure the span itself doesn't mess with vertical alignment if the Box is flexed */
+    display: inline-block; /* Or simply rely on its default inline behavior */
+    vertical-align: middle; /* Helps align with suffix */
+}
+
+
+/* --- Styles for the text label --- */
+.static-text {
+    text-align: center;
+    font-family: Poppins, sans-serif; /* Added sans-serif fallback */
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 30px;
+    color: #d7b586;
+}
 
               /**POPULAR DISHES **/
 

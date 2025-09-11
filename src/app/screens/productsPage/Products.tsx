@@ -114,7 +114,7 @@ export default function Products(props: ProductsProps) {
             flexDirection={"row"}
             justifyContent={"flex-end"}
           >
-            <div className="avatar-title">Burak Restaurant</div>
+            <div className="avatar-title">Jersey Republic</div>
             <Stack className="single-search-big-box">
               <input
                 type="search"
@@ -199,7 +199,7 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.DISH)
                   }
                 >
-                  Dish
+                  National
                 </Button>
 
                 <Button
@@ -213,7 +213,7 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.SALAD)
                   }
                 >
-                  Salad
+                  League
                 </Button>
 
                 <Button
@@ -227,7 +227,7 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.DRINK)
                   }
                 >
-                  Drink
+                  Season
                 </Button>
 
                 <Button
@@ -242,7 +242,7 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.DESSERT)
                   }
                 >
-                  Dessert
+                  Brand
                 </Button>
 
                 <Button
@@ -256,7 +256,7 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.OTHER)
                   }
                 >
-                  Other
+                  Age
                 </Button>
               </div>
             </Stack>

@@ -93,7 +93,7 @@ export default function OrdersPage() {
             </Stack>
           </TabContext>
         </Stack>
-<Stack className="order-right">
+        <Stack className="order-right">
           <Box className="order-right-top">
             <img
               src={

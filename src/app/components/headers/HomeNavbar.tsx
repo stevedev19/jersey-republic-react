@@ -47,7 +47,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             <Stack className="menu">
              <Box>
                 <NavLink to={"/"}>
-                 <img className="brand-logo" src="/icons/burak.svg" />
+                <Box className={"head-main-name"}>
+                        JERSEY REPUBLIC
+                    </Box>
                 </NavLink>
              </Box>
              <Stack className="links">
@@ -96,7 +98,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                   className="login-button"
                   onClick={() => setLoginOpen(true)}
                 >
-                    Login
+                    Enter your Room
                     </Button>
                 </Box>
                 ) : (
@@ -150,7 +152,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                 <ListItemIcon>
                   <Logout fontSize="small" style={{ color: "blue" }} />
                 </ListItemIcon>
-                Logout
+                See You Later
               </MenuItem>
             </Menu> 
 
@@ -159,9 +161,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             <Stack className={"header-frame"}>
                 <Stack className={"detail"}>
                     <Box className={"head-main-txt"}>
-                        World's Most Delicious Cousine
+                        World's Most Popular Jersey Web Store
                     </Box>
-                    <Box className={"wel-txt"}>The Choice, not just a choice</Box>
+                    <Box className={"wel-txt"}>Own the Game. Wear the Republic</Box>
                     <Box className={"service-txt"}>24 hours service</Box>
                     <Box className={"signup"}>
                         {!authMember ? (
@@ -169,7 +171,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                         variant={"contained"}
                         className={"signup-button"}
                         onClick={() => setSignupOpen(true)} 
-                      >SIGN UP
+                      >Join the Republic
                       </Button>
                       ) : null}
                     </Box>

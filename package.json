@@ -1,5 +1,5 @@
 {
-  "name": "burak-react",
+  "name": "jersey-republic-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,6 +17,7 @@
     "@types/cookie": "^0.3.3",
     "axios": "^0.27.2",
     "cookie": "^0.4.0",
+    "framer-motion": "^12.23.12",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.0.0",
