@@ -1,11 +1,12 @@
 import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
-import { useState, useEffect } from "react";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
+import FloatingElements from "../FloatingElements";
+import DarkModeToggle from "../DarkModeToggle";
 
 interface HomeNavbarProps {
   cartItems: CartItem[];
@@ -43,6 +44,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
    
     return (
     <div className="home-navbar">
+        <FloatingElements />
         <Container className="navbar-container">
             <Stack className="menu">
              <Box>
@@ -91,6 +93,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               onDeleteAll={onDeleteAll}
             />
 
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+
              {!authMember ? (
                 <Box>
                  <Button
@@ -102,14 +107,15 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                     </Button>
                 </Box>
                 ) : (
-                <img className="user-avatar"
-                src={
-                  authMember?.memberImage
-                    ? `${serverApi}${authMember?.memberImage}`
-                    : "/icons/default-user.svg"
-                }
-                aria-haspopup={"true"}
-                onClick={handleLogoutClick}
+                <img 
+                  className="user-avatar"
+                  src={
+                    authMember?.memberImage
+                      ? `${serverApi}${authMember?.memberImage}`
+                      : "/icons/default-user.svg"
+                  }
+                  alt={authMember?.memberNick || "User Avatar"}
+                  onClick={handleLogoutClick}
                 />
             )}
 

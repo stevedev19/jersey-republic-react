@@ -14,6 +14,7 @@ import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
+import ParticleBackground from "./components/ParticleBackground";
 import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
@@ -55,6 +56,7 @@ function App() {
   
   return (
       <>
+        <ParticleBackground />
        {location.pathname === "/" ? (
         <HomeNavbar
           cartItems={cartItems}

@@ -8,6 +8,7 @@ import Typography from '@mui/joy/Typography';
 import CardOverflow from '@mui/joy/CardOverflow';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
+import { motion } from 'framer-motion';
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -33,13 +34,34 @@ export default function PopularDishes() {
           <Box className="category-title">Popular Jerseys</Box>
           <Stack className="cards-frame">
             {popularDishes.length !== 0 ? (
-              popularDishes.map((product: Product) => {
+              popularDishes.map((product: Product, index: number) => {
                 const imagePath = `${serverApi}${product.productImages[0]}`
                 //const imagePath = `${serverApi}/${ele.productImages[0]}
 
                 return (
                   <CssVarsProvider key={product._id}>
-                    <Card className={"card"}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      whileHover={{ 
+                        scale: 1.05,
+                        rotateY: 5,
+                        rotateX: 5,
+                        transition: { duration: 0.3 }
+                      }}
+                      style={{ perspective: '1000px' }}
+                    >
+                      <Card 
+                        className={"card"}
+                        sx={{
+                          transformStyle: 'preserve-3d',
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                          }
+                        }}
+                      >
                       <CardCover>
                         <img src={imagePath} alt=""
 
@@ -96,7 +118,8 @@ export default function PopularDishes() {
 
                         </Typography>
                       </CardOverflow>
-                    </Card>
+                      </Card>
+                    </motion.div>
                   </CssVarsProvider>
                 );
               })
