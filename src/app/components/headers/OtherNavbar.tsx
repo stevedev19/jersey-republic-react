@@ -5,6 +5,8 @@ import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
+import FloatingElements from "../FloatingElements";
+import DarkModeToggle from "../DarkModeToggle";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
@@ -39,11 +41,14 @@ export default function OtherNavbar(props: OtherNavbarProps) {
     
     return (
     <div className="other-navbar">
+        <FloatingElements />
         <Container className="navbar-container">
             <Stack className="menu">
              <Box>
                 <NavLink to={"/"}>
-                 
+                <Box className={"head-main-name"}>
+                        JERSEY REPUBLIC
+                    </Box>
                 </NavLink>
              </Box>
              <Stack className="links">
@@ -83,6 +88,9 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               onDeleteAll={onDeleteAll}
             />
 
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+
              {!authMember ? (
                 <Box>
                      <Button
@@ -95,14 +103,14 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 </Box>
                 ) : (
                 <img 
-                className="user-avatar"
-                src={
-                  authMember?.memberImage
-                    ? `${serverApi}${authMember?.memberImage}`
-                    : "/icons/default-user.svg"
-                }
-                aria-haspopup={"true"}
-                onClick={handleLogoutClick}
+                  className="user-avatar"
+                  src={
+                    authMember?.memberImage
+                      ? `${serverApi}${authMember?.memberImage}`
+                      : "/icons/default-user.svg"
+                  }
+                  alt={authMember?.memberNick || "User Avatar"}
+                  onClick={handleLogoutClick}
                 />
             )}
 
@@ -145,7 +153,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 <ListItemIcon>
                   <Logout fontSize="small" style={{ color: "blue" }} />
                 </ListItemIcon>
-                Logout
+                See You Later
               </MenuItem>
             </Menu>
             </Stack>
