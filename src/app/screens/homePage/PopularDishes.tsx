@@ -35,7 +35,9 @@ export default function PopularDishes() {
           <Stack className="cards-frame">
             {popularDishes.length !== 0 ? (
               popularDishes.map((product: Product, index: number) => {
-                const imagePath = `${serverApi}${product.productImages[0]}`
+                const imagePath = product.productImages[0].startsWith('http') 
+                  ? product.productImages[0] 
+                  : `${serverApi}${product.productImages[0]}`
                 //const imagePath = `${serverApi}/${ele.productImages[0]}
 
                 return (

@@ -31,13 +31,6 @@ export interface Order {
   productData: Product[];
 }
 
-export interface OrderItemInput {
-  itemQuantity: number;
-  itemPrice: number;
-  productId: string;
-  orderId?: string;
-}
-
 export interface OrderInquiry {
   page: number;
   limit: number;

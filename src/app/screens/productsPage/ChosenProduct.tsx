@@ -81,7 +81,9 @@ export default function ChosenProduct(props: ChosenProductProps) {
             className="swiper-area"
           >
            {chosenProduct?.productImages.map((ele: string, index: number) => {
-              const imagePath = `${serverApi}${ele}`;
+              const imagePath = ele.startsWith('http') 
+                ? ele 
+                : `${serverApi}${ele}`;
               return (
                 <SwiperSlide key={index}>
                   <img className="slider-image" src={imagePath} />

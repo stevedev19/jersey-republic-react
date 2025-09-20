@@ -94,11 +94,19 @@ export default function PausedOrders(props: PausedOrderProps) {
                   const product: Product = order.productData.filter(
                     (ele: Product) => item.productId === ele._id
                   )[0];
-                  const imagePath = `${serverApi}${product.productImages[0]}`;
+                  
+                  // Skip rendering if product is not found
+                  if (!product || !product.productImages || product.productImages.length === 0) {
+                    return null;
+                  }
+                  
+                  const imagePath = product.productImages[0].startsWith('http') 
+                    ? product.productImages[0] 
+                    : `${serverApi}${product.productImages[0]}`;
                   return (
                      <Box key={item._id} className="orders-name-price">
                       <img src={imagePath} className={"order-dish-img"} />
-                      <p className="title-dish">{product.productName}</p>
+                      <p className="title-dish">{product.productName || 'Unknown Product'}</p>
                       <Box className="price-box">
                         <p>${item.itemPrice}</p>
                         <img src="/icons/close.svg" alt="" />

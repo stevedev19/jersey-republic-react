@@ -54,7 +54,7 @@ export default function Products(props: ProductsProps) {
     page: 1,
     limit: 8,
     order: "createdAt",
-    productCollection: ProductCollection.DISH,
+    productCollection: undefined, // Show all products by default
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
@@ -78,7 +78,7 @@ export default function Products(props: ProductsProps) {
 
   /** HANDLERS */
 
-  const searchCollectionHandler = (collection: ProductCollection) => {
+  const searchCollectionHandler = (collection: ProductCollection | undefined) => {
     productSearch.page = 1;
     productSearch.productCollection = collection;
     setProductSearch({ ...productSearch });
@@ -191,58 +191,71 @@ export default function Products(props: ProductsProps) {
                 <Button
                   variant="contained"
                   color={
-                    productSearch.productCollection === ProductCollection.DISH
+                    productSearch.productCollection === undefined
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCollection.DISH)
+                    searchCollectionHandler(undefined)
                   }
                 >
-                  National
+                  All Products
                 </Button>
 
                 <Button
                   variant="contained"
                   color={
-                    productSearch.productCollection === ProductCollection.SALAD
+                    productSearch.productCollection === ProductCollection.NATIONAL_TEAMS
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCollection.SALAD)
+                    searchCollectionHandler(ProductCollection.NATIONAL_TEAMS)
                   }
                 >
-                  League
+                  National Teams
                 </Button>
 
                 <Button
                   variant="contained"
                   color={
-                    productSearch.productCollection === ProductCollection.DRINK
+                    productSearch.productCollection === ProductCollection.LA_LIGA
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCollection.DRINK)
+                    searchCollectionHandler(ProductCollection.LA_LIGA)
                   }
                 >
-                  Season
+                  La Liga
                 </Button>
 
                 <Button
                   variant="contained"
                   color={
-                    productSearch.productCollection ===
-                    ProductCollection.DESSERT
+                    productSearch.productCollection === ProductCollection.PREMIER_LEAGUE
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCollection.DESSERT)
+                    searchCollectionHandler(ProductCollection.PREMIER_LEAGUE)
                   }
                 >
-                  Brand
+                  Premier League
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.SERIE_A
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.SERIE_A)
+                  }
+                >
+                  Serie A
                 </Button>
 
                 <Button
@@ -256,14 +269,16 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCollection.OTHER)
                   }
                 >
-                  Age
+                  Other
                 </Button>
               </div>
             </Stack>
             <Stack className="product-wrapper">
               {products.length !== 0 ? (
                 products.map((product: Product) => {
-                  const imagePath = `${serverApi}${product.productImages[0]}`;
+                  const imagePath = product.productImages[0].startsWith('http') 
+                    ? product.productImages[0] 
+                    : `${serverApi}${product.productImages[0]}`;
                   const sizeVolume =
                    product.productCollection === ProductCollection.DRINK 
                   ? product.productVolume + " litre" 
