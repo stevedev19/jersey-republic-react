@@ -9,6 +9,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
+import { sweetTopSuccessAlert } from "../../../lib/sweetAlert";
 
 import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
@@ -119,7 +120,24 @@ export default function ChosenProduct(props: ChosenProductProps) {
               <span>${chosenProduct?.productPrice}</span>
              </div>
             <div className={"button-box"}>
-              <Button variant="contained">Add To Basket</Button>
+              <Button 
+                variant="contained"
+                onClick={() => {
+                  if (chosenProduct) {
+                    const cartItem: CartItem = {
+                      _id: chosenProduct._id,
+                      quantity: 1,
+                      name: chosenProduct.productName,
+                      price: chosenProduct.productPrice,
+                      image: chosenProduct.productImages && chosenProduct.productImages.length > 0 ? chosenProduct.productImages[0] : '/img/noimage-list.svg'
+                    };
+                    props.onAdd(cartItem);
+                    sweetTopSuccessAlert(`${chosenProduct.productName} added to basket!`, 2000);
+                  }
+                }}
+              >
+                Add To Basket
+              </Button>
             </div>
           </Box>
         </Stack>

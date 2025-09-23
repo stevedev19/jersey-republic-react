@@ -1,0 +1,945 @@
+.homepage {
+    width: 100%;
+    height: auto;
+    background: #F5F6FA;
+}
+
+/** STATISTICS **/
+
+/* --- Styles for the overall frame and layout --- */
+.static-frame {
+    width: 100%;
+    height: 236px;
+    background: #0A1D37;
+    padding: 0 10%; /* Add some horizontal padding for spacing */
+    box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    overflow: hidden; /* Important for animation to not spill out initially */
+}
+
+.static-frame .info {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Optional: Constrain width for larger screens */
+    margin: 0 auto; /* Center the info div */
+}
+
+
+.static-box {
+    width: 200px; /* Adjust as needed */
+    height: 116px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Framer Motion will handle opacity and transform, so no CSS transitions here */
+}
+
+/* --- Styles for the number --- */
+/* This now targets the motion.span inside .static-num,
+   and ensures it inherits the styles for the number itself. */
+.static-num {
+    text-align: center;
+    font-family: Poppins, sans-serif; /* Added sans-serif fallback */
+    font-size: 54px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 80px;
+    color: #FFFFFF;
+    /* If the motion.span adds display: inline, you might need to ensure its container (Box)
+       is a block or flex item if it causes layout issues.
+       However, motion.span defaults to inline, which usually works fine within a Box. */
+}
+
+.static-num span { /* Target the motion.span directly if needed for specific overrides */
+    /* Ensure the span itself doesn't mess with vertical alignment if the Box is flexed */
+    display: inline-block; /* Or simply rely on its default inline behavior */
+    vertical-align: middle; /* Helps align with suffix */
+}
+
+
+/* --- Styles for the text label --- */
+.static-text {
+    text-align: center;
+    font-family: Poppins, sans-serif; /* Added sans-serif fallback */
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+              /**POPULAR DISHES **/
+
+    .homepage .popular-dishes-frame {
+      width: 100%;
+      height:580px;
+      display: flex;
+      background: #f8f8ff
+    }
+
+     .homepage .popular-dishes-frame .popular-section {
+        margin-top: 45px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+         .homepage .popular-dishes-frame .popular-section .category-title {
+        text-align: center;
+        font-family: "Roboto Serif";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 1.44px;
+        color: #000;
+      }
+
+      .homepage .popular-dishes-frame .popular-section .cards-frame {
+       width: 100%;
+       margin-top: 43px;
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+      }
+
+      .homepage .popular-dishes-frame .popular-section .cards-frame .card {
+       min-height: 430px;
+       min-width: 300px;
+       cursor: pointer;
+       border-radius: 20px;
+       overflow: hidden;
+       background: rgba(255, 255, 255, 0.1);
+       backdrop-filter: blur(10px);
+       border: 1px solid rgba(255, 255, 255, 0.2);
+       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+       transition: all 0.3s ease;
+       transform-style: preserve-3d;
+       }
+
+       .homepage .popular-dishes-frame .popular-section .cards-frame .card .card-cover {
+       background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0) 200px
+       ),
+        linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0) 200px
+        ),
+        linear-gradient(to top, rgba(0, 0, 0, 0.8),
+        rgba(0, 0, 0, 0)300px);
+       }
+
+        .homepage .popular-dishes-frame .no-data {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: capitalize;
+        font-family: "Poppins";
+        font-style: normal;
+        font-weight: 400;
+        font-size:30px;
+        line-height: 34px;
+        color: #e3c08d;
+       }
+
+       /**New Products**/
+
+.homepage .new-products-frame {
+    width: 100%;
+    height: 605px;
+    background: #f8f8f8;
+    display: flex;
+  }
+  
+  .homepage .main {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .homepage .new-products-frame .category-title {
+    font-family: "Dancing Script";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+  }
+  
+  .homepage .new-products-frame .main .cards-frame {
+    width: 100%;
+    margin: 47px 2px 2px 2px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .homepage .new-products-frame .main .card {
+    height: 335px;
+    width: 290px;
+    cursor: pointer;
+  }
+  
+  .homepage .new-products-frame .product-sale {
+    position: absolute;
+    margin-top: 10px;
+    z-index: 100;
+    width: 90px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff9200;
+    box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 21px;
+    color: #f8f8ff;
+  }
+
+   .homepage .new-products-frame .product-detail {
+    width: auto;
+    height: 49%;
+    display: flex;
+    justify-content: center;
+    margin-top: -12px;
+    border-top: 1px solid;
+    border-color: #f8f8ff;
+    background-color: #fafbfb;
+  }
+  
+  .homepage .new-products-frame .product-detail .info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .homepage .new-products-frame .product-detail .title {
+    width: 65px;
+    font-weight: 500;
+  }
+  
+  .homepage .new-products-frame .product-detail .price {
+    margin-left: 10px;
+    width: 2px;
+    font-weight: 500;
+  }
+  
+  .homepage .new-products-frame .product-detail .divider {
+    margin: 0 10px 0 10px;
+    width: 2px;
+    background-color: #d9d9d9;
+  }
+  
+  .homepage .new-products-frame .product-detail .views {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+  }
+
+  .homepage .new-products-frame .no-data {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 34px;
+    color: #e3c08d;
+  }
+
+  /** ADVERTISEMENT **/
+
+  .homepage .ads-restaurant-frame {
+    width: 100%;
+    height: 693px;
+    display: flex;
+    overflow: hidden;
+    transform: perspective(0px);
+    box-shadow: -3px 0px 20px 14px #34343480;
+  }
+
+  .homepage .ads-restaurant-frame {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0px -8px 90px rgb(215 215 255);
+    margin: 40px 0;
+  }
+
+  .jersey-promotion-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promotion-slide {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .promotion-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .promotion-text {
+    flex: 1;
+    max-width: 50%;
+    color: white;
+  }
+
+  .promotion-title {
+    font-family: "Roboto Serif";
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .promotion-subtitle {
+    font-family: "Roboto Serif";
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .promotion-description {
+    font-family: "Poppins";
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .promotion-button {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    font-family: "Poppins";
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promotion-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+  }
+
+  .promotion-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+  }
+
+  .promotion-button:hover::before {
+    left: 100%;
+  }
+
+  .promotion-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ronaldo-showcase {
+    position: relative;
+    width: 450px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0A1D37 0%, #E63946 100%);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .ronaldo-celebration {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ronaldo-photo-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .ronaldo-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .ronaldo-text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.05) 50%,
+      rgba(0, 0, 0, 0.25) 100%
+    );
+    z-index: 2;
+  }
+
+  .ronaldo-main-text {
+    font-family: "Roboto Serif";
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  .ronaldo-sub-text {
+    font-family: "Roboto Serif";
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+    text-align: center;
+    letter-spacing: 1px;
+    opacity: 0.9;
+  }
+
+  .jersey-number-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+  }
+
+  .jersey-number {
+    font-family: "Roboto Serif";
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .ronaldo-silhouette {
+    position: relative;
+    z-index: 4;
+  }
+
+  .ronaldo-svg {
+    filter: drop-shadow(0 20px 40px rgba(255, 255, 255, 0.3));
+    transition: all 0.3s ease;
+  }
+
+  .ronaldo-svg:hover {
+    filter: drop-shadow(0 25px 50px rgba(255, 255, 255, 0.5));
+    transform: scale(1.02);
+  }
+
+  .celebration-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .effect-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .effect-1 {
+    width: 100px;
+    height: 100px;
+    top: 20%;
+    left: 10%;
+    animation: pulse 2s infinite;
+  }
+
+  .effect-2 {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 10%;
+    animation: pulse 2.5s infinite;
+  }
+
+  .effect-3 {
+    width: 80px;
+    height: 80px;
+    bottom: 20%;
+    left: 20%;
+    animation: pulse 3s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.3;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.6;
+    }
+  }
+
+  .jersey-showcase {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .floating-jersey {
+    position: relative;
+    z-index: 3;
+  }
+
+  .jersey-design {
+    position: relative;
+    z-index: 3;
+  }
+
+  .jersey-svg {
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
+    transition: all 0.3s ease;
+  }
+
+  .jersey-svg:hover {
+    filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.5));
+    transform: scale(1.02);
+  }
+
+  .jersey-image {
+    width: 250px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    border-radius: 15px;
+  }
+
+  .slide-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 4;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .indicator.active {
+    background: white;
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .indicator:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .promotion-content {
+      flex-direction: column;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .promotion-text {
+      max-width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .promotion-title {
+      font-size: 2.5rem;
+    }
+
+    .promotion-subtitle {
+      font-size: 1.4rem;
+    }
+
+    .ronaldo-showcase {
+      width: 320px;
+      height: 300px;
+    }
+
+    .ronaldo-svg {
+      width: 200px;
+      height: 266px;
+    }
+
+    .jersey-showcase {
+      width: 200px;
+      height: 200px;
+    }
+
+    .jersey-image {
+      width: 180px;
+    }
+
+    .jersey-svg {
+      width: 180px;
+      height: 216px;
+    }
+
+    .ronaldo-main-text {
+      font-size: 2rem;
+    }
+
+    .ronaldo-sub-text {
+      font-size: 1.4rem;
+    }
+
+    .jersey-number {
+      font-size: 2.5rem;
+    }
+  }
+
+    /**ACTIVE USERS**/
+.homepage .active-users-frame {
+    width: 100%;
+    height: 550px;
+    background: #f8f8f8;
+    display: flex;
+  }
+  
+  .homepage .active-users-frame .main {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .homepage .active-users-frame .category-title {
+    font-family: "Roboto Serif";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 42px;
+    display: flex;
+    align-items: center;
+    color: #343434;
+  }
+  
+  .homepage .cards-frame {
+    width: 100%;
+    margin: 47px 2px 2px 2px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .homepage .cards-frame .card {
+    height: 305px;
+    width: 273px;
+    cursor: pointer;
+    border-radius: 12px 12px 0px 0px;
+  }
+  
+  .homepage .cards-frame .member-nickname {
+    font-family: "Roboto Serif";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  
+    color: #000000;
+  }
+  .homepage .cards-frame .no-data {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 34px;
+    color: #e3c08d;
+  }
+
+  /** EVENTS **/
+
+.homepage .events-frame {
+    width: 100%;
+    height: 745px;
+    background: #f8f8ff;
+    display: flex;
+  }
+  
+  .homepage .events-frame .category-title {
+    font-family: "Dancing Script";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+    padding-top: 20px;
+  }
+  
+  .homepage .events-frame .events-main {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .homepage .events-frame .events-main .events-text {
+    width: auto;
+    height: 70px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  .homepage .events-frame .events-main .events-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .homepage .events-frame .events-main .prev-next-frame {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    margin: 40px 0 40px 0;
+    height: 25px;
+  }
+  
+  .homepage .events-frame .dot-frame-pagination {
+    position: relative;
+    width: auto;
+    display: flex;
+  }
+  
+  .homepage .events-frame .events-info .events-info-frame {
+    position: relative;
+    width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .homepage .events-frame .events-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 10px;
+    background-size: cover;
+  }
+  
+  .homepage .events-frame .events-desc {
+    position: absolute;
+    margin-bottom: 7px;
+    padding: 10px;
+    display: flex;
+    width: 90%;
+    height: auto;
+    bottom: 5px;
+    background: #f8f8ff;
+    box-shadow: 0px 40px 30px rgba(25, 25, 46, 0.04);
+    border-radius: 8px;
+  }
+  
+  .homepage .events-frame .events-desc .events-bott {
+    width: 97%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .homepage .events-frame .events-desc .events-bott .bott-left {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .homepage .events-frame .bott-left .event-title-speaker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .homepage .events-frame .event-title-speaker .event-organizator {
+    display: flex;
+    align-items: center;
+  }
+  
+  .homepage .events-frame .event-title-speaker .event-organizator img {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  .homepage .events-frame .event-organizator .spec-text-author {
+    font-family: "GT Walsheim Pro";
+    font-style: normal;
+    line-height: 34px;
+    color: #140342;
+  }
+  
+  .homepage .events-frame .bott-left .text-desc {
+    margin-top: 10px;
+    font-family: "GT Walsheim Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 26px;
+    color: #4f547b;
+  }
+  
+  .homepage .events-frame .bott-left .bott-info {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    width: 100%;
+    height: 16px;
+  }
+  
+  .homepage .events-frame .bott-info .bott-info-main {
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: auto;
+    height: 100%;
+    font-family: "GT Walsheim Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #4f547b;
+  }
+  
+  .homepage .events-frame .bott-info .bott-info-main img {
+    margin-right: 10px;
+  }
+  
+  .homepage .events-frame .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .homepage .events-frame .swiper-pagination-bullet {
+    margin-right: 5px;
+    width: 8px;
+    height: 8px;
+    text-align: center;
+    opacity: 1;
+    background: #f8f8ff;
+    border-radius: 50%;
+  }
+  
+  .homepage .events-frame .swiper-pagination-bullet-active {
+    background: #0A1D37;
+    border-radius: 50%;
+  }
+  

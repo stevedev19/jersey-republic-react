@@ -25,7 +25,7 @@ const popularDishesRetriever = createSelector(
 export default function PopularDishes() {
   const { popularDishes } = useSelector(popularDishesRetriever);
 
-  //console.log("popularDishes:", popularDishes)
+  console.log("popularDishes:", popularDishes)
   
   return (
     <div className="popular-dishes-frame">
@@ -35,10 +35,11 @@ export default function PopularDishes() {
           <Stack className="cards-frame">
             {popularDishes.length !== 0 ? (
               popularDishes.map((product: Product, index: number) => {
-                const imagePath = product.productImages[0].startsWith('http') 
-                  ? product.productImages[0] 
-                  : `${serverApi}${product.productImages[0]}`
-                //const imagePath = `${serverApi}/${ele.productImages[0]}
+                const imagePath = product.productImages && product.productImages.length > 0 
+                  ? (product.productImages[0].startsWith('http') 
+                      ? product.productImages[0] 
+                      : `${serverApi}${product.productImages[0]}`)
+                  : '/img/noimage-list.svg'
 
                 return (
                   <CssVarsProvider key={product._id}>
@@ -65,10 +66,22 @@ export default function PopularDishes() {
                         }}
                       >
                       <CardCover>
-                        <img src={imagePath} alt=""
-
-
-                        />
+                        <div className="product-images-container">
+                          {product.productImages && product.productImages.length > 0 ? (
+                            product.productImages.slice(0, 4).map((img, imgIndex) => {
+                              const imgPath = img.startsWith('http') ? img : `${serverApi}${img}`;
+                              return (
+                                <div key={imgIndex} className="product-image-item">
+                                  <img src={imgPath} alt={`${product.productName} - Image ${imgIndex + 1}`} />
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className="product-image-item">
+                              <img src="/img/noimage-list.svg" alt="No image" />
+                            </div>
+                          )}
+                        </div>
                       </CardCover>
                       <CardCover className={"card-cover"} />
                       <CardContent sx={{ justifyContent: 'flex-end' }}>

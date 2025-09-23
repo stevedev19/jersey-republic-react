@@ -36,9 +36,11 @@ export default function FinishedOrders() {
                     return null;
                   }
                   
-                  const imagePath = product.productImages[0].startsWith('http') 
-                    ? product.productImages[0] 
-                    : `${serverApi}${product.productImages[0]}`;
+                  const imagePath = product.productImages && product.productImages.length > 0 
+                    ? (product.productImages[0].startsWith('http') 
+                        ? product.productImages[0] 
+                        : `${serverApi}${product.productImages[0]}`)
+                    : '/img/noimage-list.svg';
                   return (
                     <Box key={item._id} className="orders-name-price">
                       <img src={imagePath} className="order-dish-img" />

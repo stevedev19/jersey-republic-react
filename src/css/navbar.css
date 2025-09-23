@@ -376,7 +376,7 @@
      }
     
      .other-navbar  .navbar-container .menu .links .login-button{
-        background: linear-gradient(45deg, #FFD60A, #E63946);
+        background: linear-gradient(45deg, #3776CC, #4A90E2);
         color: #f8f8ff;
         border-radius: 25px;
         padding: 8px 24px;
@@ -390,7 +390,7 @@
       .other-navbar  .navbar-container .menu .links .login-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(55, 118, 204, 0.4);
-        background: linear-gradient(45deg, #E63946, #FFD60A);
+        background: linear-gradient(45deg, #4A90E2, #3776CC);
       }
 
       .other-navbar  .navbar-container .menu .links .login-button::before {
@@ -602,5 +602,41 @@
     display: flex;
     flex-direction: column;
   }
+
+/* Dark Mode Styles for Other Navbar */
+.dark-mode .other-navbar {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.dark-mode .other-navbar::before {
+  opacity: 0.1;
+}
+
+.dark-mode .other-navbar .navbar-container .menu {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .other-navbar .navbar-container .menu .links a {
+  color: #f8f8ff;
+}
+
+.dark-mode .other-navbar .navbar-container .menu .links a:hover {
+  color: #667eea;
+}
+
+.dark-mode .other-navbar .navbar-container .head-main-name {
+  color: #f8f8ff;
+}
+
+.dark-mode .other-navbar .navbar-container .menu .links .login-button {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: #f8f8ff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .other-navbar .navbar-container .menu .links .login-button:hover {
+  background: linear-gradient(45deg, #764ba2, #667eea);
+}
 
   

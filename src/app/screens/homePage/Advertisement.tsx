@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Stack } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
+import { useHistory } from "react-router-dom";
 
 export default function Advertisement() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const history = useHistory();
   
   const jerseyPromotions = [
     {
@@ -101,6 +103,10 @@ export default function Advertisement() {
                     variant="contained" 
                     className="promotion-button"
                     size="large"
+                    onClick={() => {
+                      history.push('/products');
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     Shop Now
                   </Button>

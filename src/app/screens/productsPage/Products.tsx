@@ -140,6 +140,106 @@ export default function Products(props: ProductsProps) {
           <Stack className="dishes-filter-section" sx={{ display: "flex" }}>
             <Stack className="dishes-filter-box">
               <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === undefined
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(undefined)
+                  }
+                >
+                  All Products
+                </Button>
+
+              <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.NATIONAL_TEAMS
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.NATIONAL_TEAMS)
+                  }
+                >
+                  National Teams
+                </Button>
+
+            <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.LA_LIGA
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.LA_LIGA)
+                  }
+                >
+                  La Liga
+                </Button>
+
+               <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.PREMIER_LEAGUE
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.PREMIER_LEAGUE)
+                  }
+                >
+                  Premier League
+                </Button>
+
+              <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.SERIE_A
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.SERIE_A)
+                  }
+                >
+                  Serie A
+                </Button>
+
+              <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.OTHER
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.OTHER)
+                  }
+                >
+                  Bundes
+                   Liga
+                </Button>
+                
+            </Stack>
+          </Stack>
+          <Stack
+            className="list-category-section"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "41px",
+              justifyContent: "flex-end",
+              width: "100%",
+              height: "auto",
+            }}
+          >
+            <Stack className="product-category" sx={{ marginRight: "10px" }}>
+              <div className="category-main">
+                 <Button
                 variant={"contained"}
                color={
                   productSearch.order === "createdAt" ? "primary" : "secondary"
@@ -173,112 +273,16 @@ export default function Products(props: ProductsProps) {
               >
                 Views
               </Button>
-            </Stack>
-          </Stack>
-          <Stack
-            className="list-category-section"
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "41px",
-              justifyContent: "flex-end",
-              width: "100%",
-              height: "auto",
-            }}
-          >
-            <Stack className="product-category" sx={{ marginRight: "10px" }}>
-              <div className="category-main">
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === undefined
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(undefined)
-                  }
-                >
-                  All Products
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === ProductCollection.NATIONAL_TEAMS
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(ProductCollection.NATIONAL_TEAMS)
-                  }
-                >
-                  National Teams
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === ProductCollection.LA_LIGA
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(ProductCollection.LA_LIGA)
-                  }
-                >
-                  La Liga
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === ProductCollection.PREMIER_LEAGUE
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(ProductCollection.PREMIER_LEAGUE)
-                  }
-                >
-                  Premier League
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === ProductCollection.SERIE_A
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(ProductCollection.SERIE_A)
-                  }
-                >
-                  Serie A
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color={
-                    productSearch.productCollection === ProductCollection.OTHER
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler(ProductCollection.OTHER)
-                  }
-                >
-                  Other
-                </Button>
               </div>
             </Stack>
             <Stack className="product-wrapper">
               {products.length !== 0 ? (
                 products.map((product: Product) => {
-                  const imagePath = product.productImages[0].startsWith('http') 
-                    ? product.productImages[0] 
-                    : `${serverApi}${product.productImages[0]}`;
+                  const imagePath = product.productImages && product.productImages.length > 0 
+                    ? (product.productImages[0].startsWith('http') 
+                        ? product.productImages[0] 
+                        : `${serverApi}${product.productImages[0]}`)
+                    : '/img/noimage-list.svg';
                   const sizeVolume =
                    product.productCollection === ProductCollection.DRINK 
                   ? product.productVolume + " litre" 
@@ -302,7 +306,7 @@ export default function Products(props: ProductsProps) {
                               quantity: 1,
                               name: product.productName,
                               price: product.productPrice,
-                              image: product.productImages[0],
+                              image: product.productImages && product.productImages.length > 0 ? product.productImages[0] : '/img/noimage-list.svg',
                             });
                             e.stopPropagation();
                           }}

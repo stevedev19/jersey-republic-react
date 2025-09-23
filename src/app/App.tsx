@@ -8,6 +8,7 @@ import  OtherNavbar  from "./components/headers/OtherNavbar";
 import HomeNavbar  from "./components/headers/HomeNavbar";
 import Footer from "./components/footer";
 import  HelpPage  from "./screens/helpPage";
+import AdminPage from "./screens/adminPage";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
 import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
@@ -18,6 +19,7 @@ import ParticleBackground from "./components/ParticleBackground";
 import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
+import "../css/admin.css";
 
 function App() {
   const location = useLocation();
@@ -71,7 +73,7 @@ function App() {
           handleCloseLogout={handleCloseLogout}
           handleLogoutRequest={handleLogoutRequest}
         />
-      ) : (
+      ) : location.pathname === "/admin" ? null : (
         <OtherNavbar
           cartItems={cartItems}
           onAdd={onAdd}
@@ -99,11 +101,14 @@ function App() {
           <Route path="/help">
             <HelpPage />
           </Route>
+          <Route path="/admin">
+            <AdminPage />
+          </Route>
           <Route path="/">
             <HomePage />
           </Route>
         </Switch>
-        <Footer />
+        {location.pathname !== "/admin" && <Footer />}
 
         <AuthenticationModal
         signupOpen={signupOpen}

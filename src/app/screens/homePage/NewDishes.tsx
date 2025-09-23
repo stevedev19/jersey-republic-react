@@ -36,10 +36,12 @@ export default function NewDishes() {
                     <CssVarsProvider>
                         {newDishes.length !== 0 ? (
                         newDishes.map((product: Product)=>{
-                            const imagePath = product.productImages[0].startsWith('http') 
-                              ? product.productImages[0] 
-                              : `${serverApi}${product.productImages[0]}`
-                            const sizeVolume = product.productCollection === ProductCollection.DRINK ? product.productVolume + "l" : product.productSize + "size";
+                            const imagePath = product.productImages && product.productImages.length > 0 
+                              ? (product.productImages[0].startsWith('http') 
+                                  ? product.productImages[0] 
+                                  : `${serverApi}${product.productImages[0]}`)
+                              : '/img/noimage-list.svg'
+                            const sizeVolume = product.productCollection === ProductCollection.DRINK ? product.productVolume + "l" : product.productSize + " size";
                  return(
                      <Card key={product._id} variant="outlined" className={"card"}>
                         <CardOverflow>
