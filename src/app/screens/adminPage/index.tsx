@@ -8,7 +8,9 @@ import {
   Stack,
   IconButton,
   Backdrop,
-  Fade
+  Fade,
+  Alert,
+  Snackbar
 } from "@mui/material";
 import { motion } from "framer-motion";
 import styled from "styled-components";
@@ -16,6 +18,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import PeopleIcon from "@mui/icons-material/People";
 import LoginIcon from "@mui/icons-material/Login";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import "../../../css/admin.css";
 
 // Styled Components for Glassmorphism
@@ -150,6 +154,32 @@ const Sphere = styled(motion.div)`
   }
 `;
 
+const ErrorAlert = styled(motion.div)`
+  background: rgba(244, 67, 54, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  box-shadow: 0 8px 32px rgba(244, 67, 54, 0.2);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const SuccessAlert = styled(motion.div)`
+  background: rgba(76, 175, 80, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.2);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
 export default function AdminPage() {
   const [signupOpen, setSignupOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -162,6 +192,26 @@ export default function AdminPage() {
     username: "",
     password: ""
   });
+  const [loginError, setLoginError] = useState("");
+  const [signupError, setSignupError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Clear errors when modals are closed
+  const handleCloseLogin = () => {
+    setLoginOpen(false);
+    setLoginError("");
+    setLoginSuccess(false);
+    setLoginData({ username: "", password: "" });
+  };
+
+  const handleCloseSignup = () => {
+    setSignupOpen(false);
+    setSignupError("");
+    setSignupSuccess(false);
+    setSignupData({ username: "", phone: "", password: "" });
+  };
 
   // Mock dashboard data
   const dashboardStats = {
@@ -170,18 +220,75 @@ export default function AdminPage() {
     lastActivity: "2 min ago"
   };
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signup data:", signupData);
-    setSignupOpen(false);
-    setSignupData({ username: "", phone: "", password: "" });
+    setIsLoading(true);
+    setSignupError("");
+    setSignupSuccess(false);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      
+      // Mock validation
+      if (!signupData.username || !signupData.phone || !signupData.password) {
+        setSignupError("Please fill in all fields");
+        setIsLoading(false);
+        return;
+      }
+
+      if (signupData.password.length < 6) {
+        setSignupError("Password must be at least 6 characters long");
+        setIsLoading(false);
+        return;
+      }
+
+      // Mock successful signup
+      setSignupSuccess(true);
+      setTimeout(() => {
+        setSignupOpen(false);
+        setSignupData({ username: "", phone: "", password: "" });
+        setSignupSuccess(false);
+      }, 2000);
+    } catch (error) {
+      setSignupError("Signup failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login data:", loginData);
-    setLoginOpen(false);
-    setLoginData({ username: "", password: "" });
+    setIsLoading(true);
+    setLoginError("");
+    setLoginSuccess(false);
+
+    // Simulate API call with validation
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      
+      // Mock validation - replace with actual API call
+      if (!loginData.username || !loginData.password) {
+        setLoginError("Please fill in all fields");
+        setIsLoading(false);
+        return;
+      }
+
+      // Mock authentication - replace with actual API call
+      if (loginData.username === "admin" && loginData.password === "admin123") {
+        setLoginSuccess(true);
+        setTimeout(() => {
+          setLoginOpen(false);
+          setLoginData({ username: "", password: "" });
+          setLoginSuccess(false);
+        }, 2000);
+      } else {
+        setLoginError("Invalid username or password. Please try again.");
+      }
+    } catch (error) {
+      setLoginError("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -303,7 +410,7 @@ export default function AdminPage() {
         {/* Signup Modal */}
         <Modal
           open={signupOpen}
-          onClose={() => setSignupOpen(false)}
+          onClose={handleCloseSignup}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
@@ -331,13 +438,43 @@ export default function AdminPage() {
                   <Typography variant="h5" sx={{ fontWeight: 700, color: "white" }}>
                     Create Account
                   </Typography>
-                  <IconButton onClick={() => setSignupOpen(false)} sx={{ color: "white" }}>
+                  <IconButton onClick={handleCloseSignup} sx={{ color: "white" }}>
                     <CloseIcon />
                   </IconButton>
                 </Box>
 
                 <form onSubmit={handleSignupSubmit}>
                   <Stack spacing={3}>
+                    {/* Error Alert */}
+                    {signupError && (
+                      <ErrorAlert
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ErrorOutlineIcon sx={{ color: "#f44336", fontSize: 20 }} />
+                        <Typography sx={{ color: "#f44336", fontWeight: 500 }}>
+                          {signupError}
+                        </Typography>
+                      </ErrorAlert>
+                    )}
+
+                    {/* Success Alert */}
+                    {signupSuccess && (
+                      <SuccessAlert
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <CheckCircleOutlineIcon sx={{ color: "#4caf50", fontSize: 20 }} />
+                        <Typography sx={{ color: "#4caf50", fontWeight: 500 }}>
+                          Account created successfully!
+                        </Typography>
+                      </SuccessAlert>
+                    )}
+
                     <TextField
                       fullWidth
                       label="Username"
@@ -434,10 +571,15 @@ export default function AdminPage() {
                       fullWidth
                       $mt={2}
                       $py={1.5}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                      whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                      disabled={isLoading}
+                      style={{ 
+                        opacity: isLoading ? 0.7 : 1,
+                        cursor: isLoading ? 'not-allowed' : 'pointer'
+                      }}
                     >
-                      Create Account
+                      {isLoading ? "Creating Account..." : "Create Account"}
                     </GlowingButton>
                   </Stack>
                 </form>
@@ -449,7 +591,7 @@ export default function AdminPage() {
         {/* Login Modal */}
         <Modal
           open={loginOpen}
-          onClose={() => setLoginOpen(false)}
+          onClose={handleCloseLogin}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
@@ -477,13 +619,43 @@ export default function AdminPage() {
                   <Typography variant="h5" sx={{ fontWeight: 700, color: "white" }}>
                     Login
                   </Typography>
-                  <IconButton onClick={() => setLoginOpen(false)} sx={{ color: "white" }}>
+                  <IconButton onClick={handleCloseLogin} sx={{ color: "white" }}>
                     <CloseIcon />
                   </IconButton>
                 </Box>
 
                 <form onSubmit={handleLoginSubmit}>
                   <Stack spacing={3}>
+                    {/* Error Alert */}
+                    {loginError && (
+                      <ErrorAlert
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ErrorOutlineIcon sx={{ color: "#f44336", fontSize: 20 }} />
+                        <Typography sx={{ color: "#f44336", fontWeight: 500 }}>
+                          {loginError}
+                        </Typography>
+                      </ErrorAlert>
+                    )}
+
+                    {/* Success Alert */}
+                    {loginSuccess && (
+                      <SuccessAlert
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <CheckCircleOutlineIcon sx={{ color: "#4caf50", fontSize: 20 }} />
+                        <Typography sx={{ color: "#4caf50", fontWeight: 500 }}>
+                          Login successful! Redirecting...
+                        </Typography>
+                      </SuccessAlert>
+                    )}
+
                     <TextField
                       fullWidth
                       label="Username"
@@ -550,10 +722,15 @@ export default function AdminPage() {
                       fullWidth
                       $mt={2}
                       $py={1.5}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                      whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                      disabled={isLoading}
+                      style={{ 
+                        opacity: isLoading ? 0.7 : 1,
+                        cursor: isLoading ? 'not-allowed' : 'pointer'
+                      }}
                     >
-                      Login
+                      {isLoading ? "Logging in..." : "Login"}
                     </GlowingButton>
                   </Stack>
                 </form>

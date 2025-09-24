@@ -21,7 +21,7 @@ export const plans = [
 		author: 'Jersey Republic',
 		date: '5 days ago',
 		location: 'Around The World',
-		img: '/img/coming.webp',
+		img: '/img/kids.webp',
 	},
 	{
 		title: 'Keep eyes on us',
