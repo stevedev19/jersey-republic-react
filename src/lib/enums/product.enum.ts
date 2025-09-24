@@ -36,7 +36,9 @@ export enum ProductCollection {
     LIGUE_1 = "LIGUE_1",
     CHAMPIONS_LEAGUE = "CHAMPIONS_LEAGUE",
     NATIONAL_TEAMS = "NATIONAL_TEAMS",
+    UZBEKISTAN_LEAGUE = "UZBEKISTAN_LEAGUE",
     RETRO = "RETRO",
     OTHER = "OTHER",
+    DISH = "DISH",
     DRINK = "DRINK"
 }

@@ -337,7 +337,7 @@
   
   .products-page .chosen-product .chosen-product-slider {
     width: 48%;
-    height: 480px;
+    height: 600px;
     background: #ffffff;
     box-shadow: 9px 13px 14px 5px rgba(0, 0, 0, 0.25),
       inset -1px 2px 10px 3px rgba(0, 0, 0, 0.25);
@@ -349,7 +349,7 @@
     --swiper-navigation-color: #fff;
     --swiper-pagination-color: #fff;
     width: 100%;
-    height: 1020px;
+    height: 100%;
   }
   
   .products-page
@@ -359,12 +359,14 @@
     .slider-image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
   
   .products-page .chosen-product .chosen-product-info {
     padding: 30px 40px;
     width: 49%;
-    height: 480px;
+    height: 600px;
     display: flex;
     background: #ffffff;
     box-shadow: 9px 13px 14px 5px rgba(0, 0, 0, 0.25),

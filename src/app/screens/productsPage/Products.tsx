@@ -212,16 +212,43 @@ export default function Products(props: ProductsProps) {
               <Button
                   variant="contained"
                   color={
-                    productSearch.productCollection === ProductCollection.OTHER
+                    productSearch.productCollection === ProductCollection.BUNDESLIGA
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCollection.OTHER)
+                    searchCollectionHandler(ProductCollection.BUNDESLIGA)
                   }
                 >
-                  Bundes
-                   Liga
+                  Bundesliga
+                </Button>
+
+              <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.LIGUE_1
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.LIGUE_1)
+                  }
+                >
+                  Ligue 1
+                </Button>
+
+              <Button
+                  variant="contained"
+                  color={
+                    productSearch.productCollection === ProductCollection.UZBEKISTAN_LEAGUE
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCollection.UZBEKISTAN_LEAGUE)
+                  }
+                >
+                  Uzbekistan
                 </Button>
                 
             </Stack>
