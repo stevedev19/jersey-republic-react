@@ -18,7 +18,8 @@ class ProductService {
       if (input.search) url += `&search=${input.search}`;
       
       const result = await axios.get(url);
-      return result.data;
+      const data = Array.isArray(result.data) ? result.data : [];
+      return data;
     } catch (err) {
       console.log("Error getProducts", err);
       throw err;
@@ -29,7 +30,9 @@ class ProductService {
     try {
       const url = this.path + `product/${productId}`;
       const result = await axios.get(url, { withCredentials: true });
-      return result.data;
+      const data =
+        result.data && typeof result.data === "object" ? result.data : ({} as Product);
+      return data;
     } catch (err) {
       console.log("Error getProduct", err);
       throw err;

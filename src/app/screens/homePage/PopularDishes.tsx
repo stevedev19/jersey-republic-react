@@ -24,6 +24,7 @@ const popularDishesRetriever = createSelector(
 
 export default function PopularDishes() {
   const { popularDishes } = useSelector(popularDishesRetriever);
+  const safePopularDishes = Array.isArray(popularDishes) ? popularDishes : [];
 
   console.log("popularDishes:", popularDishes)
   
@@ -33,13 +34,17 @@ export default function PopularDishes() {
         <Stack className="popular-section">
           <Box className="category-title">Popular Jerseys</Box>
           <Stack className="cards-frame">
-            {popularDishes.length !== 0 ? (
-              popularDishes.map((product: Product, index: number) => {
-                const imagePath = product.productImages && product.productImages.length > 0 
-                  ? (product.productImages[0].startsWith('http') 
-                      ? product.productImages[0] 
-                      : `${serverApi}${product.productImages[0]}`)
+            {safePopularDishes.length !== 0 ? (
+              safePopularDishes.map((product: Product, index: number) => {
+                const productImages = Array.isArray(product.productImages) ? product.productImages : [];
+                const hasImages = productImages.length > 0;
+                const firstImage = hasImages ? productImages[0] : "";
+                const imagePath = hasImages 
+                  ? (firstImage.startsWith('http') 
+                      ? firstImage 
+                      : `${serverApi}${firstImage}`)
                   : '/img/noimage-list.svg'
+                const previewImages = hasImages ? productImages.slice(0, 4) : [];
 
                 return (
                   <CssVarsProvider key={product._id}>
@@ -67,8 +72,8 @@ export default function PopularDishes() {
                       >
                       <CardCover>
                         <div className="product-images-container">
-                          {product.productImages && product.productImages.length > 0 ? (
-                            product.productImages.slice(0, 4).map((img, imgIndex) => {
+                          {previewImages.length > 0 ? (
+                            previewImages.map((img, imgIndex) => {
                               const imgPath = img.startsWith('http') ? img : `${serverApi}${img}`;
                               return (
                                 <div key={imgIndex} className="product-image-item">

@@ -31,6 +31,7 @@ export default function PausedOrders(props: PausedOrderProps) {
   const {setValue} = props
   const {authMember, setOrderBuilder} = useGlobals();
   const { pausedOrders } = useSelector(pausedOrdersRetriever);
+  const safePausedOrders = Array.isArray(pausedOrders) ? pausedOrders : [];
    
 
    /**HANDLERS */
@@ -86,14 +87,16 @@ export default function PausedOrders(props: PausedOrderProps) {
   return (
     <TabPanel value={"1"}>
       <Stack>
-        {pausedOrders?.map((order: Order) => {
+        {safePausedOrders.map((order: Order) => {
+          const orderItems = Array.isArray(order?.orderItems) ? order.orderItems : [];
+          const productList = Array.isArray(order?.productData) ? order.productData : [];
           return (
             <Box key={order._id} className="order-main-box">
               <Box className="order-box-scroll">
-                {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
+                {orderItems.map((item: OrderItem) => {
+                  const product = productList.find(
                     (ele: Product) => item.productId === ele._id
-                  )[0];
+                  );
                   
                   // Skip rendering if product is not found
                   if (!product || !product.productImages || product.productImages.length === 0) {
@@ -159,8 +162,7 @@ export default function PausedOrders(props: PausedOrderProps) {
           );
         })}
 
-       {!pausedOrders ||
-          (pausedOrders.length === 0 && (
+       {safePausedOrders.length === 0 && (
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -171,7 +173,7 @@ export default function PausedOrders(props: PausedOrderProps) {
                 style={{ width: 300, height: 300 }}
               />
             </Box>
-          ))}
+          )}
       </Stack>
     </TabPanel>
   );

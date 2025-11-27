@@ -18,18 +18,22 @@ const pausedFinishedRetriever = createSelector(
 
 export default function FinishedOrders() {
  const { finishedOrders } = useSelector(pausedFinishedRetriever);
+ const safeFinishedOrders = Array.isArray(finishedOrders) ? finishedOrders : [];
 
   return (
     <TabPanel value="3">
       <Stack>
-        {finishedOrders?.map((order: Order) => {
+        {safeFinishedOrders.map((order: Order) => {
+          const orderItems = Array.isArray(order?.orderItems) ? order.orderItems : [];
+          const productList = Array.isArray(order?.productData) ? order.productData : [];
+
           return (
             <Box key={order._id} className="order-main-box">
               <Box className="order-box-scroll">
-                {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
+                {orderItems.map((item: OrderItem) => {
+                  const product = productList.find(
                     (ele: Product) => item.productId === ele._id
-                  )[0];
+                  );
                   
                   // Skip rendering if product is not found
                   if (!product || !product.productImages || product.productImages.length === 0) {
@@ -75,8 +79,7 @@ export default function FinishedOrders() {
           );
         })}
 
-        {!finishedOrders ||
-          (finishedOrders.length === 0 && (
+        {safeFinishedOrders.length === 0 && (
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -87,7 +90,7 @@ export default function FinishedOrders() {
                 style={{ width: 300, height: 300 }}
               />
             </Box>
-          ))}
+          )}
       </Stack>
     </TabPanel>
   );

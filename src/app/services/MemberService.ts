@@ -18,7 +18,7 @@ class MemberService {
     try {
       const url = this.path + "member/top-users";
       const result = await axios.get(url);
-      return result.data;
+      return Array.isArray(result.data) ? result.data : [];
     } catch (err) {
       console.log("Error getTopUsers", err);
       throw err;
@@ -29,7 +29,9 @@ class MemberService {
     try {
       const url = this.path + "member/restaurant";
       const result = await axios.get(url);
-      return result.data;
+      return (result.data && typeof result.data === "object"
+        ? result.data
+        : ({} as Member));
     } catch (err) {
       console.log("Error getRestaurant", err);
       throw err;

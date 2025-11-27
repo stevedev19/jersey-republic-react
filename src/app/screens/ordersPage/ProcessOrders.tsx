@@ -32,6 +32,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
   const {authMember, setOrderBuilder} = useGlobals();
 
   const { processOrders } = useSelector(pausedProcessRetriever);
+  const safeProcessOrders = Array.isArray(processOrders) ? processOrders : [];
 
   /**HANDLERS  */
 
@@ -63,14 +64,16 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
   return (
     <TabPanel value={"2"}>
       <Stack>
-         {processOrders?.map((order: Order) => {
+        {safeProcessOrders.map((order: Order) => {
+          const orderItems = Array.isArray(order?.orderItems) ? order.orderItems : [];
+          const productList = Array.isArray(order?.productData) ? order.productData : [];
           return (
             <Box key={order._id} className="order-main-box">
               <Box className="order-box-scroll">
-                 {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
+                 {orderItems.map((item: OrderItem) => {
+                  const product = productList.find(
                     (ele: Product) => item.productId === ele._id
-                  )[0];
+                  );
                   
                   // Skip rendering if product is not found
                   if (!product || !product.productImages || product.productImages.length === 0) {
@@ -127,8 +130,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
           );
         })}
 
-        {!processOrders ||
-          (processOrders.length === 0 && (
+        {safeProcessOrders.length === 0 && (
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -139,7 +141,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
                 style={{ width: 300, height: 300 }}
               />
             </Box>
-          ))}
+          )}
       </Stack>
     </TabPanel>
   );

@@ -33,7 +33,7 @@ services:
       PORT: 3003
       SESSION_SECRET: your-production-session-secret
       JWT_SECRET: your-production-jwt-secret
-      CORS_ORIGIN: http://localhost:3000
+      CORS_ORIGIN: http://<MY_SERVER_IP>:3000
     depends_on:
       - mongodb
     volumes:
@@ -51,7 +51,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      REACT_APP_API_URL: http://localhost:3003/
+      REACT_APP_API_URL: http://<MY_SERVER_IP>:3000
       REACT_APP_ENV: production
     depends_on:
       - backend

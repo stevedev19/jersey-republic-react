@@ -18,6 +18,7 @@ const topUsersRetriever = createSelector(
 
 export default function ActiveUsers() {
  const { topUsers } = useSelector(topUsersRetriever);
+ const safeTopUsers = Array.isArray(topUsers) ? topUsers : [];
 
   return (
     <div className="active-users-frame">
@@ -26,9 +27,13 @@ export default function ActiveUsers() {
           <Box className={"category-title"}>Active Users</Box>
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
-              {topUsers.length !== 0 ? (
-                topUsers.map((member, Member) => {
-                  const imagePath = `${serverApi}${member.memberImage}`;
+              {safeTopUsers.length !== 0 ? (
+                safeTopUsers.map((member, Member) => {
+                  const imagePath = member.memberImage
+                    ? member.memberImage.startsWith("http")
+                      ? member.memberImage
+                      : `${serverApi}${member.memberImage}`
+                    : "/icons/default-user.svg";
                   return (
                   <Card key={member._id} variant="outlined" className="card">
                     <CardOverflow>

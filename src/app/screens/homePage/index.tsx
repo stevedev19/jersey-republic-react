@@ -36,10 +36,11 @@ export default function HomePage() {
         order: "productViews",
       })
       .then((data) => {
-        console.log("API returned ALL products:", data);
+        const safeData = Array.isArray(data) ? data : [];
+        console.log("API returned ALL products:", safeData);
         
         // Filter for Premier League products and sort by views
-        const premierLeagueProducts = data.filter((product: Product) => 
+        const premierLeagueProducts = safeData.filter((product: Product) => 
           product.productCollection === ProductCollection.PREMIER_LEAGUE
         );
         
@@ -56,7 +57,7 @@ export default function HomePage() {
             ProductCollection.NATIONAL_TEAMS
           ];
           
-          productsToShow = data.filter((product: Product) => 
+          productsToShow = safeData.filter((product: Product) => 
             footballCollections.includes(product.productCollection)
           );
         }
@@ -76,12 +77,12 @@ export default function HomePage() {
         limit: 4,
         order: "createdAt",
       })
-      .then((data) => setNewDishes(data))
+      .then((data) => setNewDishes(Array.isArray(data) ? data : []))
       .catch((err) => console.log("Error getProducts", err));
 
     memberService
       .getTopUsers()
-      .then((data) => setTopUsers(data))
+      .then((data) => setTopUsers(Array.isArray(data) ? data : []))
       .catch((err) => console.log("Error getTopUsers", err));
   }, [setPopularDishes, setNewDishes, setTopUsers]);
 

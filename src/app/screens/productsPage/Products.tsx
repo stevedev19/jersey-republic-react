@@ -50,6 +50,7 @@ export default function Products(props: ProductsProps) {
   const { onAdd } = props;
   const { setProducts } = actionDispatch(useDispatch()); // bu yerda
   const { products } = useSelector(productsRetriever); // 41qatordagi products bilan bir hil
+  const safeProducts = Array.isArray(products) ? products : [];
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
     page: 1,
     limit: 8,
@@ -65,7 +66,7 @@ export default function Products(props: ProductsProps) {
     const product = new ProductService();
     product
     .getProducts(productSearch)
-    .then((data) => setProducts(data))
+    .then((data) => setProducts(Array.isArray(data) ? data : []))
     .catch((err) => console.log(err));
     }, [productSearch]);
 
@@ -303,12 +304,15 @@ export default function Products(props: ProductsProps) {
               </div>
             </Stack>
             <Stack className="product-wrapper">
-              {products.length !== 0 ? (
-                products.map((product: Product) => {
-                  const imagePath = product.productImages && product.productImages.length > 0 
-                    ? (product.productImages[0].startsWith('http') 
-                        ? product.productImages[0] 
-                        : `${serverApi}${product.productImages[0]}`)
+              {safeProducts.length !== 0 ? (
+                safeProducts.map((product: Product) => {
+                  const productImages = Array.isArray(product.productImages) ? product.productImages : [];
+                  const hasImages = productImages.length > 0;
+                  const firstImage = hasImages ? productImages[0] : "";
+                  const imagePath = hasImages
+                    ? (firstImage.startsWith('http') 
+                        ? firstImage 
+                        : `${serverApi}${firstImage}`)
                     : '/img/noimage-list.svg';
                   const sizeVolume =
                    product.productCollection === ProductCollection.DRINK 
@@ -333,7 +337,7 @@ export default function Products(props: ProductsProps) {
                               quantity: 1,
                               name: product.productName,
                               price: product.productPrice,
-                              image: product.productImages && product.productImages.length > 0 ? product.productImages[0] : '/img/noimage-list.svg',
+                              image: hasImages ? firstImage : '/img/noimage-list.svg',
                             });
                             e.stopPropagation();
                           }}
@@ -371,7 +375,7 @@ export default function Products(props: ProductsProps) {
           <Stack className="pagination-section">
             <Pagination
               count={
-                products.length !== 0
+                safeProducts.length !== 0
                   ? productSearch.page + 1
                   : productSearch.page
               }

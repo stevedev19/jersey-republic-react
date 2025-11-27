@@ -43,7 +43,7 @@ class OrderService {
       const result = await axios.get(url + query, { withCredentials: true });
       console.log("getMyOrders:", result);
 
-      return result.data;
+      return Array.isArray(result.data) ? result.data : [];
     } catch (err) {
       console.log("Error, getMyOrders:", err);
       throw err;

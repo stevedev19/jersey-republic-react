@@ -46,17 +46,17 @@ export default function OrdersPage() {
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
-      .then((data) => setPausedOrders(data))
+      .then((data) => setPausedOrders(Array.isArray(data) ? data : []))
       .catch((err) => console.log(err));
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
-      .then((data) => setProcessOrders(data))
+      .then((data) => setProcessOrders(Array.isArray(data) ? data : []))
       .catch((err) => console.log(err));
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
-      .then((data) => setFinishedOrders(data))
+      .then((data) => setFinishedOrders(Array.isArray(data) ? data : []))
       .catch((err) => console.log(err));
   }, [orderInquiry, orderBuilder]);
 

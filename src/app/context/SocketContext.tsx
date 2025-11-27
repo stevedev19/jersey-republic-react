@@ -1,7 +1,12 @@
 import React, { createContext } from "react";
 import { io, Socket } from "socket.io-client";
+import { serverApiBase } from "../../lib/config";
 
-const socket = io(process.env.REACT_APP_API_URL as string, {
+const socketUrl =
+  serverApiBase ||
+  (typeof window !== "undefined" ? window.location.origin : "");
+
+const socket = io(socketUrl, {
   withCredentials: true,
 });
 export const SocketContext = createContext<Socket>(socket);

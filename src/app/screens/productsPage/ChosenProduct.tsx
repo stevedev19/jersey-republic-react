@@ -102,6 +102,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
   }, [productId, setChosenProduct, setRestaurant]);
 
   if (!chosenProduct) return null;
+  const productImages = Array.isArray(chosenProduct.productImages) ? chosenProduct.productImages : [];
 
   return (
     <div className={"chosen-product"}>
@@ -119,7 +120,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
             modules={[FreeMode, Navigation, Thumbs]}
             className="swiper-area"
           >
-           {chosenProduct?.productImages.map((ele: string, index: number) => {
+           {productImages.map((ele: string, index: number) => {
               const imagePath = ele.startsWith('http') 
                 ? ele 
                 : `${serverApi}${ele}`;
@@ -314,7 +315,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                       quantity: quantity,
                       name: `${chosenProduct.productName} (${selectedSize})`,
                       price: chosenProduct.productPrice,
-                      image: chosenProduct.productImages && chosenProduct.productImages.length > 0 ? chosenProduct.productImages[0] : '/img/noimage-list.svg'
+                      image: productImages.length > 0 ? productImages[0] : '/img/noimage-list.svg'
                     };
                     props.onAdd(cartItem);
                     sweetTopSuccessAlert(`${chosenProduct.productName} (${selectedSize}) added to cart!`, 2000);

@@ -1,4 +1,16 @@
-export const serverApi: string = `${process.env.REACT_APP_API_URL}`;
+const resolveBaseUrl = (): string => {
+  const envUrl = process.env.REACT_APP_API_URL;
+  const browserOrigin =
+    typeof window !== "undefined" ? window.location.origin : "";
+  const rawBase = envUrl || browserOrigin || "";
+
+  return rawBase.replace(/\/+$/, "");
+};
+
+const normalizedBase = resolveBaseUrl();
+
+export const serverApiBase: string = normalizedBase;
+export const serverApi: string = normalizedBase ? `${normalizedBase}/` : "/";
 
 export const Messages = {
     error1: "Something went wrong!",

@@ -25,6 +25,7 @@ const newDishesRetriever = createSelector(retrieveNewDishes,(newDishes)=> ({
 
 export default function NewDishes() {
     const {newDishes} = useSelector(newDishesRetriever);
+    const safeNewDishes = Array.isArray(newDishes) ? newDishes : [];
 
     console.log("newDishes:", newDishes)
     return (
@@ -34,12 +35,15 @@ export default function NewDishes() {
                 <Box className={"category-title"}>New Jerseys</Box>
                 <Stack className={"cards-frame"}>
                     <CssVarsProvider>
-                        {newDishes.length !== 0 ? (
-                        newDishes.map((product: Product)=>{
-                            const imagePath = product.productImages && product.productImages.length > 0 
-                              ? (product.productImages[0].startsWith('http') 
-                                  ? product.productImages[0] 
-                                  : `${serverApi}${product.productImages[0]}`)
+                        {safeNewDishes.length !== 0 ? (
+                        safeNewDishes.map((product: Product)=>{
+                            const productImages = Array.isArray(product.productImages) ? product.productImages : [];
+                            const hasImages = productImages.length > 0;
+                            const firstImage = hasImages ? productImages[0] : "";
+                            const imagePath = hasImages
+                              ? (firstImage.startsWith('http') 
+                                  ? firstImage 
+                                  : `${serverApi}${firstImage}`)
                               : '/img/noimage-list.svg'
                             const sizeVolume = product.productCollection === ProductCollection.DRINK ? product.productVolume + "l" : product.productSize + " size";
                  return(

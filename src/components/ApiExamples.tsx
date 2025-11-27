@@ -21,7 +21,8 @@ export const ApiProductList: React.FC = () => {
     const response = await productApi.getAllProducts();
     
     if (response.success && response.data) {
-      setProducts(response.data);
+      const safeProducts = Array.isArray(response.data) ? response.data : [];
+      setProducts(safeProducts);
     } else {
       setError(response.error || 'Failed to fetch products');
     }
@@ -62,7 +63,7 @@ export const ApiProductList: React.FC = () => {
         Refresh Products
       </Button>
       
-      {products.map((product) => (
+      {(Array.isArray(products) ? products : []).map((product) => (
         <Card key={product._id} sx={{ mb: 2 }}>
           <CardContent>
             <Typography variant="h6">{product.productName}</Typography>
@@ -227,6 +228,7 @@ export const useApiData = <T,>(apiCall: () => Promise<{ success: boolean; data?:
 // Example usage of the custom hook
 export const ProductsWithHook: React.FC = () => {
   const { data: products, loading, error, refetch } = useApiData<Product[]>(productApi.getAllProducts);
+  const safeProducts = Array.isArray(products) ? products : [];
 
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
@@ -235,7 +237,7 @@ export const ProductsWithHook: React.FC = () => {
     <Box p={2}>
       <Typography variant="h6">Products (using custom hook)</Typography>
       <Button onClick={refetch} sx={{ mb: 2 }}>Refresh</Button>
-      {products?.map((product) => (
+      {safeProducts.map((product) => (
         <Typography key={product._id}>{product.productName}</Typography>
       ))}
     </Box>

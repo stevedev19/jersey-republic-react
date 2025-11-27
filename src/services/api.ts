@@ -1,11 +1,13 @@
+import { serverApiBase } from "../lib/config";
+
 /**
- * Centralized API service for communicating with the backend
- * Backend runs on http://localhost:3003
- * Frontend runs on http://localhost:3000
+ * Centralized API service for communicating with the backend.
+ * Backend base URL now comes from REACT_APP_API_URL (without trailing slash).
  */
 
-// Backend base URL
-const API_BASE_URL = 'http://localhost:3003';
+const API_BASE_URL =
+  (serverApiBase || (typeof window !== "undefined" ? window.location.origin : "")) ||
+  "";
 
 // API response types
 export interface ApiResponse<T = any> {
@@ -111,7 +113,11 @@ async function apiRequest<T>(
 export const productApi = {
   // Get all products
   getAllProducts: async (): Promise<ApiResponse<Product[]>> => {
-    return apiRequest<Product[]>('/api/products');
+    const response = await apiRequest<Product[]>('/api/products');
+    return {
+      ...response,
+      data: Array.isArray(response.data) ? response.data : [],
+    };
   },
 
   // Get product by ID
@@ -121,12 +127,20 @@ export const productApi = {
 
   // Search products
   searchProducts: async (query: string): Promise<ApiResponse<Product[]>> => {
-    return apiRequest<Product[]>(`/api/products/search?q=${encodeURIComponent(query)}`);
+    const response = await apiRequest<Product[]>(`/api/products/search?q=${encodeURIComponent(query)}`);
+    return {
+      ...response,
+      data: Array.isArray(response.data) ? response.data : [],
+    };
   },
 
   // Get products by category
   getProductsByCategory: async (category: string): Promise<ApiResponse<Product[]>> => {
-    return apiRequest<Product[]>(`/api/products/category/${encodeURIComponent(category)}`);
+    const response = await apiRequest<Product[]>(`/api/products/category/${encodeURIComponent(category)}`);
+    return {
+      ...response,
+      data: Array.isArray(response.data) ? response.data : [],
+    };
   },
 };
 
@@ -173,7 +187,11 @@ export const memberApi = {
 export const orderApi = {
   // Get user orders
   getUserOrders: async (): Promise<ApiResponse<Order[]>> => {
-    return apiRequest<Order[]>('/api/orders');
+    const response = await apiRequest<Order[]>('/api/orders');
+    return {
+      ...response,
+      data: Array.isArray(response.data) ? response.data : [],
+    };
   },
 
   // Create order
