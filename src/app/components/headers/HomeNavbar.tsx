@@ -6,7 +6,6 @@ import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
 import FloatingElements from "../FloatingElements";
-import DarkModeToggle from "../DarkModeToggle";
 
 interface HomeNavbarProps {
   cartItems: CartItem[];
@@ -93,8 +92,6 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               onDeleteAll={onDeleteAll}
             />
 
-            {/* Dark Mode Toggle */}
-            <DarkModeToggle />
 
              {!authMember ? (
                 <Box>

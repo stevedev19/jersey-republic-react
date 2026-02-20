@@ -23,6 +23,7 @@ import "../css/admin.css";
 
 function App() {
   const location = useLocation();
+  const isProductsRoute = location.pathname.startsWith("/products");
   const { setAuthMember } = useGlobals();
   console.log("location", location);
   
@@ -58,7 +59,7 @@ function App() {
   
   return (
       <>
-        <ParticleBackground />
+        {!isProductsRoute && <ParticleBackground />}
        {location.pathname === "/" ? (
         <HomeNavbar
           cartItems={cartItems}
@@ -121,7 +122,6 @@ function App() {
 }
 
 export default App;
-
 
 
 

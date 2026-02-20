@@ -6,7 +6,6 @@ import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
 import { Logout } from "@mui/icons-material";
 import FloatingElements from "../FloatingElements";
-import DarkModeToggle from "../DarkModeToggle";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
@@ -88,8 +87,6 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               onDeleteAll={onDeleteAll}
             />
 
-            {/* Dark Mode Toggle */}
-            <DarkModeToggle />
 
              {!authMember ? (
                 <Box>

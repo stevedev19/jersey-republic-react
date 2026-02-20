@@ -101,59 +101,6 @@ code {
   }
 }
 
-/* Dark Mode Styles */
-.dark-mode {
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --text-primary: #f8f8ff;
-  --text-secondary: #d7b686;
-  --accent-primary: #667eea;
-  --accent-secondary: #764ba2;
-}
-
-.dark-mode body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
-
-.dark-mode .home-navbar {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-}
-
-.dark-mode .home-navbar::before {
-  opacity: 0.1;
-}
-
-.dark-mode .home-navbar .navbar-container .menu {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-mode .homepage .popular-dishes-frame {
-  background: #1a1a1a;
-}
-
-.dark-mode .homepage .popular-dishes-frame .popular-section .cards-frame .card {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-mode .homepage .new-products-frame {
-  background: #2d2d2d;
-}
-
-.dark-mode .homepage .active-users-frame {
-  background: #1a1a1a;
-}
-
-.dark-mode .homepage .events-frame {
-  background: #2d2d2d;
-}
-
-.dark-mode .static-frame {
-  background: #0A1D37;
-}
-
 /* Smooth transitions for theme changes */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
