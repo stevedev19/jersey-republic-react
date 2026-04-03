@@ -68,6 +68,44 @@ function segmentToCartItem(s: WheelSegment): CartItem {
   };
 }
 
+/** Isolated from spin/loading state so 8 wedges don’t re-render every toggle. */
+const RouletteWheelFace = React.memo(function RouletteWheelFace({ segments: segs }: { segments: WheelSegment[] }) {
+  return (
+    <>
+      {segs.slice(0, ROULETTE_SEGMENT_COUNT).map((seg, i) => (
+        <div
+          key={`${seg.id}-${i}`}
+          className="absolute inset-0"
+          style={{ clipPath: pieWedgeClip(i, ROULETTE_SEGMENT_COUNT) }}
+        >
+          <div className={`relative h-full w-full ${i % 2 === 0 ? "bg-[#161b27]" : "bg-[#1a2342]"}`}>
+            <div
+              className="absolute left-1/2 top-1/2 flex w-[50%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-start pt-[12%] md:pt-[14%]"
+              style={{
+                transform: `translate(-50%, -50%) rotate(${i * (360 / ROULETTE_SEGMENT_COUNT) + 360 / ROULETTE_SEGMENT_COUNT / 2}deg)`,
+              }}
+            >
+              <div className="h-11 w-11 overflow-hidden rounded-full border border-[rgba(102,126,234,0.35)] bg-black/20 md:h-14 md:w-14">
+                <img
+                  src={seg.image}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  draggable={false}
+                />
+              </div>
+              <span className="mt-1 max-w-[3.5rem] truncate text-center font-grotesk text-[7px] font-bold uppercase leading-tight tracking-wide text-white/75 md:max-w-[4.5rem] md:text-[8px]">
+                {seg.club || "Kit"}
+              </span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+});
+
 const PLACEHOLDER_SEGMENTS: WheelSegment[] = [
   { id: "jr-ph-0", name: "Midnight Stripe '96", club: "Archive", image: "/img/noimage-list.svg", price: 124 },
   { id: "jr-ph-1", name: "Neon Goalkeeper", club: "Editorial", image: "/img/noimage-list.svg", price: 139 },
@@ -190,16 +228,21 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
       stopTicks();
       spinningRef.current = false;
       setSpinning(false);
+      const el = wheelRef.current;
+      if (el) el.style.willChange = "auto";
+
       const idx = getWinningIndexFromRotation(nextCumulative, ROULETTE_SEGMENT_COUNT);
       const pool = segmentsRef.current;
       const winner = pool[idx] ?? pool[0];
       setResult(winner);
 
       confetti({
-        particleCount: 120,
-        spread: 80,
+        particleCount: 64,
+        spread: 70,
+        ticks: 180,
         origin: { y: 0.6 },
         colors: ["#667EEA", "#f7ba85", "#ffffff"],
+        disableForReducedMotion: true,
       });
 
       const entry: HistoryEntry = {
@@ -230,6 +273,7 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
     const prev = cumulativeRotationRef.current;
     const nextCumulative = prev + totalRotation;
 
+    el.style.willChange = "transform";
     el.style.transition = "none";
     el.style.transform = `rotate(${prev}deg)`;
     void el.offsetHeight;
@@ -242,8 +286,8 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
     tickTimerRef.current = window.setInterval(() => {
       playTick();
       tickCount += 1;
-      if (tickCount > 40) stopTicks();
-    }, 110);
+      if (tickCount > 20) stopTicks();
+    }, 220);
 
     let completed = false;
     let backupId = 0;
@@ -284,11 +328,12 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
   };
 
   return (
-    <div className="jersey-roulette-page min-h-screen bg-[#0e1322] text-white">
+    <div className="jersey-roulette-page relative min-h-screen bg-[#0e1322] text-white">
+      <div className="jersey-roulette-page__ambient" aria-hidden />
       <ArchiveTopNav {...props} />
-      <main className="relative flex min-h-screen flex-col items-center overflow-x-hidden pt-24 pb-16 md:pb-24">
+      <main className="relative z-[2] flex min-h-screen flex-col items-center overflow-x-hidden pt-24 pb-16 md:pb-24">
         <div
-          className="jersey-roulette__glow pointer-events-none absolute left-1/2 top-[42%] h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-80"
+          className="jersey-roulette__glow pointer-events-none absolute left-1/2 top-[42%] z-[1] h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-80"
           style={{
             background: "radial-gradient(circle, rgba(102,126,234,0.08) 0%, transparent 70%)",
           }}
@@ -341,32 +386,7 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
               style={{ background: "#161b27" }}
             >
               <div ref={wheelRef} className="absolute inset-0" style={{ transform: "rotate(0deg)" }}>
-                {segments.slice(0, ROULETTE_SEGMENT_COUNT).map((seg, i) => (
-                  <div
-                    key={`${seg.id}-${i}`}
-                    className="absolute inset-0"
-                    style={{ clipPath: pieWedgeClip(i, ROULETTE_SEGMENT_COUNT) }}
-                  >
-                    <div
-                      className={`relative h-full w-full ${i % 2 === 0 ? "bg-[#161b27]" : "bg-[#1a2342]"}`}
-                      style={{ boxShadow: "inset 0 0 0 1px rgba(102,126,234,0.3)" }}
-                    >
-                      <div
-                        className="absolute left-1/2 top-1/2 flex w-[50%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-start pt-[12%] md:pt-[14%]"
-                        style={{
-                          transform: `translate(-50%, -50%) rotate(${i * (360 / ROULETTE_SEGMENT_COUNT) + 360 / ROULETTE_SEGMENT_COUNT / 2}deg)`,
-                        }}
-                      >
-                        <div className="h-11 w-11 overflow-hidden rounded-full border border-[rgba(102,126,234,0.35)] bg-black/20 md:h-14 md:w-14">
-                          <img src={seg.image} alt="" className="h-full w-full object-cover" />
-                        </div>
-                        <span className="mt-1 max-w-[3.5rem] truncate text-center font-grotesk text-[7px] font-bold uppercase leading-tight tracking-wide text-white/75 md:max-w-[4.5rem] md:text-[8px]">
-                          {seg.club || "Kit"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <RouletteWheelFace segments={segments} />
               </div>
 
               <button
@@ -416,6 +436,10 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
             )}
           </div>
         </section>
+
+        <div className="roulette-watermark" aria-hidden>
+          ROULETTE
+        </div>
       </main>
 
       {result ? (
@@ -430,7 +454,7 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
             className="jersey-roulette__result-sheet relative z-10 flex max-h-[100dvh] min-h-[100dvh] flex-col overflow-y-auto border-t border-[rgba(102,126,234,0.3)] md:max-h-[95vh] md:min-h-0 md:flex-row md:items-center md:gap-10 md:rounded-t-[24px] md:px-12 md:py-10"
             style={{
               background: "linear-gradient(to top, #161b27, rgba(22,27,39,0.98))",
-              backdropFilter: "blur(20px)",
+              backdropFilter: "blur(10px)",
               borderRadius: "24px 24px 0 0",
               padding: "40px 24px",
             }}

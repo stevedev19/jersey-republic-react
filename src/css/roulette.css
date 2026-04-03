@@ -1,5 +1,50 @@
 /* Jersey Roulette — page-specific (design tokens per spec) */
 
+@keyframes jr-ambient-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.jersey-roulette-page__ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.06) 0%, transparent 70%);
+  animation: jr-ambient-breathe 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jersey-roulette-page__ambient {
+    animation: none;
+    opacity: 0.9;
+  }
+}
+
+/* Bottom-page watermark — kept behind wheel/headline (main stacking context) */
+.roulette-watermark {
+  position: fixed;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Monument Extended", "Monument", sans-serif;
+  font-size: clamp(4rem, 22vw, 180px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.03);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
 .jersey-roulette-page {
   --jr-bg: #0e1322;
   --jr-card: #161b27;
@@ -18,20 +63,20 @@
   }
 }
 
+/* Rotate only (no scale) — avoids extra compositing work each frame */
 @keyframes jr-slow-rotate {
   from {
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.1);
+    transform: translateZ(0) rotate(0deg);
   }
   to {
-    transform: rotate(360deg) scale(1);
+    transform: translateZ(0) rotate(360deg);
   }
 }
 
 .jersey-roulette__glow {
-  animation: jr-slow-rotate 8s linear infinite;
+  animation: jr-slow-rotate 12s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .jersey-roulette__result-sheet {
@@ -39,7 +84,7 @@
 }
 
 .jersey-roulette__pointer {
-  filter: drop-shadow(0 0 8px rgba(247, 186, 133, 0.6));
+  filter: drop-shadow(0 2px 4px rgba(247, 186, 133, 0.35));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -24,9 +24,10 @@ import "../css/admin.css";
 
 function App() {
   const location = useLocation();
+  const pathTrim = (location.pathname || "/").replace(/\/+$/, "") || "/";
   const isProductsRoute = location.pathname.startsWith("/products");
-  const isArchiveHome = location.pathname === "/";
-  const isRouletteRoute = location.pathname === "/roulette";
+  const isArchiveHome = pathTrim === "/";
+  const isRouletteRoute = pathTrim === "/roulette";
   const isExperienceRoute = location.pathname === "/sticky-cards";
   const { setAuthMember } = useGlobals();
 
@@ -113,6 +114,8 @@ function App() {
         loginOpen={loginOpen}
         handleLoginClose={handleLoginClose}
         handleSignupClose={handleSignupClose}
+        setSignupOpen={setSignupOpen}
+        rouletteLogin={isRouletteRoute && loginOpen}
       />
     </>
   );

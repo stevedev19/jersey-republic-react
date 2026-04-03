@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import Pagination from "@mui/material/Pagination";
+import Pagination, {
+  PaginationRenderItemParams,
+} from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -54,7 +56,7 @@ export default function Products(props: ProductsProps) {
   const safeProducts = Array.isArray(products) ? products : [];
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
     page: 1,
-    limit: 12,
+    limit: 6,
     order: "createdAt",
     productCollection: undefined,
     search: "",
@@ -280,7 +282,7 @@ export default function Products(props: ProductsProps) {
                     : productSearch.page
                 }
                 page={productSearch.page}
-                renderItem={(item) => (
+                renderItem={(item: PaginationRenderItemParams) => (
                   <PaginationItem
                     components={{
                       previous: ArrowBackIcon,

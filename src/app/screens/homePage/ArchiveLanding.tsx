@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import EastIcon from "@mui/icons-material/East";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import ArchiveTopNav, { ArchiveTopNavProps } from "./ArchiveTopNav";
@@ -461,21 +462,25 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-7 order-2 md:order-1">
                 <p className="font-headline text-primary text-xs tracking-[0.3em] font-bold uppercase mb-6">
-                  EDITORIAL STORY
+                  CAN&apos;T DECIDE?
                 </p>
                 <h2 className="font-monument text-4xl md:text-7xl text-white mb-8 leading-[0.9]">
-                  STITCHED <br /> IN <span className="text-tertiary">HISTORY.</span>
+                  STITCHED <br /> IN <span className="text-tertiary">FATE.</span>
                 </h2>
                 <p className="text-outline text-lg leading-relaxed mb-10 max-w-xl">
-                  How the simple football jersey transcended the pitch to become the ultimate luxury statement. We dive
-                  deep into the 90s aesthetic resurgence and the artisans who authenticate our collection.
+                  Can&apos;t pick a jersey? Let the wheel decide. Perfect for gift hunting or when you just can&apos;t
+                  choose — spin the archive and let fate land on your next kit.
                 </p>
                 <NavLink
-                  to="/help"
+                  to="/roulette"
                   className="inline-flex items-center gap-4 text-white font-headline font-bold text-sm tracking-widest group"
                 >
-                  READ THE FULL FEATURE
-                  <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">east</span>
+                  SPIN THE WHEEL
+                  <EastIcon
+                    className="shrink-0 group-hover:translate-x-2 transition-transform"
+                    sx={{ fontSize: "1.25rem" }}
+                    aria-hidden
+                  />
                 </NavLink>
               </div>
               <div className="md:col-span-5 order-1 md:order-2">
