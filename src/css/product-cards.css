@@ -1,0 +1,106 @@
+/* Shared product card imagery — homepage + shop listing */
+
+.card-image-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+  background: #0a0f1e;
+  position: relative;
+}
+
+.card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: scale(1.05);
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.card-image-wrapper:hover img {
+  transform: scale(1.12);
+}
+
+/* Bento / hero tiles: fill grid cell, same crop + zoom behavior */
+.card-image-wrapper--bleed {
+  aspect-ratio: unset;
+  height: 100%;
+  width: 100%;
+  min-height: 240px;
+  border-radius: 16px;
+}
+
+@media (min-width: 768px) {
+  .card-image-wrapper--bleed {
+    min-height: 0;
+  }
+}
+
+/* Tailwind/archive cards: image block already inside rounded container */
+.card-image-wrapper--rounded-t-lg {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Trending Now — 3D flip: front = product shot + info, back = second / campaign image */
+.trending-flip .card-wrapper {
+  perspective: 1100px;
+  perspective-origin: center center;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.trending-flip .card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trending-flip .card-wrapper:hover .card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.trending-flip .card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.trending-flip .card-front,
+.trending-flip .card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.trending-flip .card-back {
+  transform: rotateY(180deg);
+  background: #0a0f1e;
+}
+
+.trending-flip .trending-flip-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: none;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trending-flip .card-inner {
+    transition: transform 0.35s ease;
+  }
+}

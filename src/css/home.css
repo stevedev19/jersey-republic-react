@@ -1,10 +1,14 @@
-/* Modern & Minimalist React Homepage */
+/* Legacy “homepage” shell — only Active Users today; match archive dark shell (no light bands) */
 .homepage {
     width: 100%;
     height: auto;
-    background: #E0E1DD; /* Light Cream background */
+    background: var(--bg-base);
     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #0D1B2A; /* Deep Navy text */
+    color: var(--text-secondary);
+}
+
+.homepage .MuiContainer-root {
+    background: transparent;
 }
 
 /** STATISTICS **/
@@ -74,96 +78,6 @@
     line-height: 36px;
     color: #E0E1DD; /* Light Cream */
     text-shadow: 0 0 10px rgba(224, 225, 221, 0.3);
-}
-
-/**POPULAR DISHES **/
-
-.homepage .popular-dishes-frame {
-    width: 100%;
-    height: 780px;
-    display: flex;
-    background: #E0E1DD;
-    border-radius: 24px;
-    margin: 2rem 0;
-    box-shadow: 0 8px 32px rgba(13, 27, 42, 0.1);
-    border: 1px solid rgba(13, 27, 42, 0.1);
-    padding: 2rem;
-}
-.homepage .popular-dishes-frame .popular-section {
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.homepage .popular-dishes-frame .popular-section .category-title {
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    color: #0D1B2A; /* Deep Navy */
-    margin-bottom: 2rem;
-}
-
-.homepage .popular-dishes-frame .popular-section .cards-frame {
-    width: 100%;
-    margin-top: 60px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.homepage .popular-dishes-frame .popular-section .cards-frame .card {
-    min-height: 500px;
-    min-width: 350px;
-    cursor: pointer;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #FFFFFF;
-    border: 1px solid rgba(13, 27, 42, 0.1);
-    box-shadow: 0 4px 20px rgba(13, 27, 42, 0.08);
-    transition: all 0.3s ease;
-    transform-style: preserve-3d;
-    padding-bottom: 24px;
-}
-.homepage .popular-dishes-frame .popular-section .cards-frame .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(13, 27, 42, 0.15);
-    border-color: rgba(13, 27, 42, 0.2);
-}
-
-.homepage .popular-dishes-frame .popular-section .cards-frame .card .card-cover {
-    background: linear-gradient(
-        to top,
-        rgba(13, 27, 42, 0.4),
-        rgba(13, 27, 42, 0) 200px
-    ),
-    linear-gradient(
-        to top,
-        rgba(13, 27, 42, 0.4),
-        rgba(13, 27, 42, 0) 200px
-    ),
-    linear-gradient(to top, rgba(13, 27, 42, 0.8),
-    rgba(13, 27, 42, 0)300px);
-}
-
-.homepage .popular-dishes-frame .no-data {
-    width: 100%;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: capitalize;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 36px;
-    line-height: 42px;
-    color: #415A77; /* Steel Blue */
 }
 
 /**New Products**/
@@ -740,11 +654,11 @@
 .homepage .active-users-frame {
     width: 100%;
     height: 650px;
-    background: #FFFFFF;
+    background: var(--bg-base);
     border-radius: 24px;
     margin: 2rem 0;
-    box-shadow: 0 8px 32px rgba(13, 27, 42, 0.1);
-    border: 1px solid rgba(13, 27, 42, 0.1);
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
 }
 
@@ -763,12 +677,12 @@
     line-height: 56px;
     display: flex;
     align-items: center;
-    color: #0D1B2A; /* Deep Navy */
+    color: var(--text-primary);
     margin-bottom: 2rem;
     letter-spacing: -0.5px;
 }
 
-.homepage .cards-frame {
+.homepage .active-users-frame .main .cards-frame {
     width: 100%;
     margin: 60px 2px 2px 2px;
     flex-direction: row;
@@ -776,23 +690,24 @@
     gap: 2rem;
 }
 
-.homepage .cards-frame .card {
+.homepage .active-users-frame .main .card {
     height: 360px;
     width: 320px;
     cursor: pointer;
     border-radius: 16px;
-    background: #FFFFFF;
-    border: 1px solid rgba(13, 27, 42, 0.1);
-    box-shadow: 0 4px 20px rgba(13, 27, 42, 0.08);
+    background: var(--bg-card) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
     transition: all 0.3s ease;
 }
 
-.homepage .cards-frame .card:hover {
+.homepage .active-users-frame .main .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(13, 27, 42, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    border-color: rgba(185, 195, 255, 0.2);
 }
 
-.homepage .cards-frame .member-nickname {
+.homepage .active-users-frame .main .member-nickname {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -801,11 +716,20 @@
     display: flex;
     align-items: center;
     text-align: center;
-    color: #0D1B2A; /* Deep Navy */
+    color: var(--text-primary);
     padding: 1rem;
 }
 
-.homepage .cards-frame .no-data {
+.homepage .active-users-frame .product-detail {
+    background-color: var(--bg-elevated) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.homepage .active-users-frame .product-detail .title {
+    color: var(--text-secondary) !important;
+}
+
+.homepage .active-users-frame .main .cards-frame .no-data {
     width: 100%;
     height: 400px;
     display: flex;
@@ -817,7 +741,7 @@
     font-weight: 500;
     font-size: 36px;
     line-height: 42px;
-    color: #415A77; /* Steel Blue */
+    color: var(--text-muted);
 }
 
 /** EVENTS **/

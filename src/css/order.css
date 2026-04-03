@@ -1,62 +1,143 @@
+/* ------------------------------------------------------------------ */
+/* Orders page — Jersey Republic dark system                         */
+/* ------------------------------------------------------------------ */
+
 .order-page {
   width: 100%;
-  height: auto;
-  background: #f8f8ff;
-  display: flex;
-}
-
-.order-page .order-container {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  display: flex;
-  flex-direction: row;
-}
-
-.order-page .order-left {
-  width: 860px;
-  height: auto;
-}
-
-.order-page .order-right {
-  width: 360px;
-  height: auto;
-  margin-top: 86px;
-  margin-left: 30px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #0e1322;
   display: flex;
   flex-direction: column;
 }
 
+.order-page .order-container {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.order-page .order-left {
+  flex: 1 1 65%;
+  max-width: 65%;
+  min-width: 0;
+  height: auto;
+  margin-top: 0;
+}
+
+.order-page .order-right {
+  flex: 1 1 35%;
+  max-width: 35%;
+  min-width: 0;
+  height: auto;
+  margin-top: 0;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-nav-frame {
+  margin-bottom: 8px;
+}
+
+.order-tabs-shell {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.order-tabs-pill-bar {
+  background: #161b27;
+  border-radius: 999px;
+  padding: 6px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.order-tab {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 999px;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.order-tab:hover {
+  color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.order-tab--active {
+  background: #667eea;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.order-tab--active:hover {
+  color: #ffffff;
+}
+
+.order-main-content {
+  margin-top: 16px;
+}
+
+.order-page .MuiTabPanel-root {
+  padding: 0;
+}
+
+/* Order item cards */
 .order-main-box {
   width: 100%;
-  max-height: 285px;
-  margin-bottom: 25px;
+  max-height: none;
+  margin-bottom: 20px;
   border-radius: 16px;
-  background: #f8f8fe;
-  box-shadow: -12px 12px 4px 0px #bababf, 0px 4px 10px 9px #d3d3e7 inset,
-    0px 4px 16px 0px rgba(242, 189, 87, 0.04) inset;
+  background: #161b27;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 .order-box-scroll {
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: 105px;
-  max-height: 205px;
-  margin-top: 15px;
+  min-height: 80px;
+  max-height: 220px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
 .orders-name-price {
   position: relative;
-  height: 47px;
-  margin-top: 5px;
-  margin-left: 50px;
+  min-height: 47px;
+  margin-top: 8px;
+  margin-left: 24px;
+  margin-right: 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .order-dish-img {
@@ -64,243 +145,381 @@
   height: 47px;
   flex-shrink: 0;
   border-radius: 29px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .title-dish {
   position: relative;
-  width: 220px;
-  height: 36px;
-  margin-left: 20px;
-  font-family: "Comissioner";
-  font-style: normal;
+  flex: 1 1 160px;
+  min-width: 120px;
+  margin: 0;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-style: 22px;
-  line-height: 36px;
-  color: #000000;
+  font-size: 15px;
+  line-height: 1.3;
+  color: #ffffff;
 }
 
 .price-box {
   position: relative;
-  max-width: 200px;
-  height: 100%;
-  margin-left: 75px;
-  margin-right: 75px;
+  flex: 1 1 auto;
+  min-height: 100%;
+  margin-left: 0;
+  margin-right: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #8a94a6;
+}
+
+.price-box p {
+  margin: 0;
+  color: #cbd5e0;
 }
 
 .box-total {
   position: relative;
-  max-width: 535px;
+  max-width: none;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
 }
 
 .box-total p {
-  margin-left: 10px;
-  font-family: "Comissioner";
-  font-style: normal;
-  font-size: 14px;
-  line-height: 36px;
-  color: #000000;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #8a94a6;
 }
 
 .total-price-box {
   position: relative;
   width: 100%;
-  height: 41px;
-  margin: 7px 0;
+  min-height: 56px;
+  margin: 0;
+  padding: 12px 20px 16px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
   box-sizing: border-box;
-  border-radius: 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 0 16px 16px;
   overflow: hidden;
 }
-.cancel-button {
-  width: 57px;
-  height: 21px;
-  color: #343434;
-  font-family: "Commissioner";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+
+.total-price-box .MuiButton-root {
+  text-transform: none;
+  border-radius: 999px;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 
-.total-price-box button {
-  width: 90px;
-  height: 36px;
-  flex-shrink: 0;
+.cancel-button {
+  min-width: 88px;
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
 }
 
 .pay-button {
-  width: 76px;
-  height: 21px;
-  color: #fff;
-  font-family: "Commissioner";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  min-width: 100px;
+  color: #fff !important;
+  background: #667eea !important;
+  box-shadow: none !important;
 }
 
-.total-price-box .verify-button {
-  width: 170px;
-  height: 36px;
-  border-radius: 10px;
-  background: #3a87cb;
+.pay-button:hover {
+  background: #7b8ef0 !important;
 }
 
 .verify-button {
-  color: #fff;
-  font-family: "Commissioner";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #fff !important;
+  background: #667eea !important;
+  box-shadow: none !important;
+  border-radius: 999px !important;
 }
 
+.verify-button:hover {
+  background: #7b8ef0 !important;
+}
 
-
-.order-right .order-right-top {
-  width: 360px;
-  height: 308px;
-  padding: 20px;
+/* Profile card */
+.order-profile-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 16px;
-  background: #f8f8fe;
-  box-shadow: 14px 14px 5px 0px #bbbbbf, 0px 1px 11px 12px #d3d3e7 inset,
-    0px 4px 16px 0px rgba(242, 189, 87, 0.04) inset;
+  text-align: center;
+  border-radius: 20px;
+  background: #161b27;
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
 }
 
-.css-heg063-MuiTabs-flexContainer {
-  margin-bottom: 10px;
+.order-profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #667eea;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
 }
 
-.order-right-top-img {
-  width: 117px;
-  height: 112px;
-  border-radius: 50px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+.order-profile-name {
+  margin: 20px 0 0;
+  font-family: "Monument Extended", "Monument", sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #ffffff;
+  word-break: break-word;
+  max-width: 100%;
 }
 
-.order-right-top-text {
+.order-profile-badge {
+  display: inline-block;
+  margin-top: 12px;
+  background: rgba(102, 126, 234, 0.15);
+  color: #b9c3ff;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.order-profile-location {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 10px;
+}
+
+.order-profile-location-icon {
+  flex-shrink: 0;
+  font-size: 22px !important;
+  color: #667eea !important;
+  margin-top: 1px;
+}
+
+.order-profile-location p {
+  margin: 0;
+  flex: 1;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #8a94a6;
+}
+
+/* Payment card */
+.order-payment-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 28px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1a2342, #16213e);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.order-payment-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.order-payment-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.order-payment-input:focus {
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.order-payment-input + .order-payment-input,
+.order-payment-row + .order-payment-input {
+  margin-top: 14px;
+}
+
+.order-payment-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.order-payment-row .order-payment-input {
+  flex: 1;
+  margin-top: 0;
+}
+
+.order-payment-brands {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-.order-right-top-name {
-  width: 76px;
-  height: 37px;
-  margin: 0;
-  color: #08090d;
-  font-family: "Commissioner";
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 36px;
-}
-
-.order-right-top-user {
-  width: 53px;
-  height: 37px;
-  margin-top: 0;
-  color: #a1a1a1;
-  font-family: Commissioner;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 36px;
-}
-
-.order-right-top-address {
-  display: flex;
-  flex-direction: row;
-}
-
-.order-right-top-address img {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-}
-
-.order-right-top-address p {
-  width: 255px;
-  height: 22px;
-  margin: 0;
-  margin-left: 20px;
-  color: #000;
-  font-family: "DM Sans";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px; /* 150% */
-}
-
-.order-right-bottom {
-  width: 360px;
-  height: 308px;
+  gap: 20px;
   margin-top: 20px;
+}
+
+.order-payment-brands img {
+  height: 28px;
+  width: auto;
+  opacity: 0.6;
+  filter: grayscale(0.3);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.order-payment-brands img:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.order-payment-save {
+  margin-top: 20px;
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 999px;
+  background: #667eea;
+  color: #ffffff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.order-payment-save:hover {
+  background: #7b8ef0;
+}
+
+/* Empty state */
+.orders-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 16px;
-  background: #f8f8fe;
-  box-shadow: 14px 14px 5px 0px #bbbbbf, 0px 1px 11px 12px #d3d3e7 inset,
-    0px 4px 16px 0px rgba(242, 189, 87, 0.04) inset;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px 64px;
+  min-height: 320px;
 }
 
-.order-right-bottom input {
-  width: 332px;
-  height: 40px;
-  border-radius: 5px;
-  margin-top: 30px;
-  border: 1px solid #b4aaaa;
-  background: #f5f5f5;
+.orders-empty-state__icon {
+  width: min(220px, 70vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 24px;
+  opacity: 0.35;
+  filter: invert(48%) sepia(58%) saturate(900%) hue-rotate(218deg)
+    brightness(0.95) contrast(1.05);
 }
 
-.order-right-bottom .card-number {
-  color: #777;
-  font-family: "Commissioner";
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 36px; /* 240% */
+.orders-empty-state__title {
+  margin: 0 0 16px;
+  font-family: "Monument Extended", "Monument", sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 5vw, 32px);
+  line-height: 1.15;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
-.order-right-bottom div {
-  display: flex;
-  flex-direction: row;
+.orders-empty-state__sub {
+  margin: 0 0 28px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #8a94a6;
+  max-width: 320px;
 }
 
-.order-right-bottom div input {
-  width: 162px;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #b4aaaa;
-  background: #f5f5f5;
+.orders-empty-state__cta {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  background: #667eea;
+  color: #ffffff;
+  border-radius: 999px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  transition: background 0.2s ease;
 }
 
-.payment-types {
-  display: flex;
-  flex-direction: row;
+.orders-empty-state__cta:hover {
+  background: #7b8ef0;
 }
 
-.payment-types img {
-  margin: 40px 15px 5px 15px;
+@media (max-width: 960px) {
+  .order-page .order-container {
+    flex-direction: column;
+    padding: 24px 16px 40px;
+  }
+
+  .order-page .order-left,
+  .order-page .order-right {
+    flex: 1 1 auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .order-tabs-pill-bar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .order-tab {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
 }

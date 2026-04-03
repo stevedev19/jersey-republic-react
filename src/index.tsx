@@ -11,6 +11,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./app/context/ContextProvider";
 import { SocketProvider } from "./app/context/SocketContext";
 import "./css/index.css";
+import "./css/tailwind.css";
+import "./css/product-cards.css";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -20,14 +22,14 @@ root.render(
     <Provider store={store}>
       <ContextProvider>
         <SocketProvider>
-       <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <App />
-      </Router>
-      </ThemeProvider>
-      </SocketProvider>
-    </ContextProvider>  
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Router>
+              <App />
+            </Router>
+          </ThemeProvider>
+        </SocketProvider>
+      </ContextProvider>  
     </Provider>
   </React.StrictMode>,
 );

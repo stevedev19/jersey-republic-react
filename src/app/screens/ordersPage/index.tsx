@@ -1,90 +1,91 @@
-import { Container, Stack, Box } from "@mui/material";
-import { SyntheticEvent, useEffect, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import  TabContext  from "@mui/lab/TabContext";
-import LocationOnIcon from "@mui/icons-material/LocationOn"
+import { Stack, Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import TabContext from "@mui/lab/TabContext";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PausedOrders from "./PausedOrders";
 import ProcessOrders from "./ProcessOrders";
 import FinishedOrders from "./FinishedOrders";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
 
 import "../../../css/order.css";
-import { Order, OrderInquiry } from "../../../lib/types/order";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../hooks/useGlobals";
 import { useHistory } from "react-router-dom";
-import { serverApi } from "../../../lib/config";
-import { MemberType } from "../../../lib/enums/member.enum";
+import { getImageUrl } from "../../../lib/config";
 
+const ORDER_LIST_PARAMS = { page: 1, limit: 5 } as const;
 
-/* REDUX SLICE & SELECTOR*/
-const actionDispatch = (dispatch: Dispatch) => ({
-  setPausedOrders: (data: Order[]) => dispatch(setPausedOrders(data)),
-  setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
-  setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
-});
+const TAB_LABELS = [
+  { value: "1", label: "PAUSED ORDERS" },
+  { value: "2", label: "PROCESS ORDERS" },
+  { value: "3", label: "FINISHED ORDERS" },
+] as const;
 
 export default function OrdersPage() {
-  const { setPausedOrders, setProcessOrders, setFinishedOrders } =
-    actionDispatch(useDispatch());
+  const dispatch = useDispatch();
   const { orderBuilder, authMember } = useGlobals();
   const history = useHistory();
   const [value, setValue] = useState("1");
-
-  const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
-    page: 1,
-    limit: 5,
-    orderStatus: OrderStatus.PAUSE,
-  });
 
   useEffect(() => {
     const order = new OrderService();
 
     order
-      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
-      .then((data) => setPausedOrders(Array.isArray(data) ? data : []))
+      .getMyOrders({ ...ORDER_LIST_PARAMS, orderStatus: OrderStatus.PAUSE })
+      .then((data) =>
+        dispatch(setPausedOrders(Array.isArray(data) ? data : []))
+      )
       .catch((err) => console.log(err));
 
     order
-      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
-      .then((data) => setProcessOrders(Array.isArray(data) ? data : []))
+      .getMyOrders({ ...ORDER_LIST_PARAMS, orderStatus: OrderStatus.PROCESS })
+      .then((data) =>
+        dispatch(setProcessOrders(Array.isArray(data) ? data : []))
+      )
       .catch((err) => console.log(err));
 
     order
-      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
-      .then((data) => setFinishedOrders(Array.isArray(data) ? data : []))
+      .getMyOrders({ ...ORDER_LIST_PARAMS, orderStatus: OrderStatus.FINISH })
+      .then((data) =>
+        dispatch(setFinishedOrders(Array.isArray(data) ? data : []))
+      )
       .catch((err) => console.log(err));
-  }, [orderInquiry, orderBuilder]);
-
-  /** HANDLERS */
-  const handleChange = (e: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
+  }, [orderBuilder, dispatch]);
 
   if (!authMember) history.push("/");
 
   return (
-    <div className={"order-page"}>
-      <Container className="order-container">
+    <div className={"order-page stitch-navbar-offset"}>
+      <div className="order-container">
         <Stack className={"order-left"}>
           <TabContext value={value}>
             <Box className={"order-nav-frame"}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-                className={"table_list"}
+              <div className="order-tabs-shell">
+                <div
+                  className="order-tabs-pill-bar"
+                  role="tablist"
+                  aria-label="Order categories"
                 >
-                 <Tab label="PAUSED ORDERS" value={"1"} />
-                 <Tab label="PROCESS ORDERS" value={"2"} />
-                 <Tab label="FINISHED ORDERS" value={"3"} />
-                </Tabs>
-              </Box>
+                  {TAB_LABELS.map((tab) => (
+                    <button
+                      key={tab.value}
+                      type="button"
+                      role="tab"
+                      aria-selected={value === tab.value}
+                      className={
+                        value === tab.value
+                          ? "order-tab order-tab--active"
+                          : "order-tab"
+                      }
+                      onClick={() => setValue(tab.value)}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </Box>
             <Stack className="order-main-content">
               <PausedOrders setValue={setValue} />
@@ -94,38 +95,22 @@ export default function OrdersPage() {
           </TabContext>
         </Stack>
         <Stack className="order-right">
-          <Box className="order-right-top">
+          <Box className="order-profile-card">
             <img
               src={
                 authMember?.memberImage
-                  ? `${serverApi}${authMember.memberImage}`
+                  ? getImageUrl(authMember.memberImage)
                   : "/icons/default-user.svg"
               }
-              className="order-right-top-img"
+              alt=""
+              className="order-profile-avatar"
             />
-            <div className="order-right-top-text">
-               <p className="order-right-top-name"> {authMember?.memberNick}</p>
-              <p className="order-right-top-user"> {authMember?.memberType}</p>
-            </div>
-            <div>
-              <hr
-                style={{
-                  width: "332px",
-                  height: "2px",
-                  textAlign: "left",
-                  marginLeft: "0px",
-                  marginTop: "20px",
-                }}
-              />
-            </div>
-            <div className="order-right-top-address">
-              <img
-                src={
-                  authMember?.memberType === MemberType.RESTAURANT
-                    ? "/icons/restaurant.svg"
-                    : "/icons/user-badge.svg"
-                }
-              />
+            <p className="order-profile-name">{authMember?.memberNick}</p>
+            <span className="order-profile-badge">
+              {authMember?.memberType ?? "USER"}
+            </span>
+            <div className="order-profile-location">
+              <LocationOnIcon className="order-profile-location-icon" />
               <p>
                 {authMember?.memberAddress
                   ? authMember.memberAddress
@@ -133,34 +118,45 @@ export default function OrdersPage() {
               </p>
             </div>
           </Box>
-             
-        
-           <Box className="order-right-bottom">
+
+          <Box className="order-payment-card">
             <input
-              className="card-number"
+              className="order-payment-input"
               type="text"
-              placeholder="Card number : **** 4090 2002 7495"
+              placeholder="Card number"
+              autoComplete="cc-number"
             />
-            <div className="date-and-cvv">
+            <div className="order-payment-row">
               <input
+                className="order-payment-input"
                 type="text"
-                name=""
-                id=""
-                placeholder="07/24"
-                style={{ marginRight: "10px" }}
+                placeholder="MM / YY"
+                autoComplete="cc-exp"
               />
-              <input type="text" name="" id="" placeholder="CVV:010" />
+              <input
+                className="order-payment-input"
+                type="text"
+                placeholder="CVV"
+                autoComplete="cc-csc"
+              />
             </div>
-            <input type="text" name="" id="" placeholder="Martin Robertson" />
-            <div className="payment-types">
-              <img src="/icons/western-card.svg" alt="" />
-              <img src="/icons/master-card.svg" alt="" />
-              <img src="/icons/paypal-card.svg" alt="" />
-              <img src="/icons/visa-card.svg" alt="" />
+            <input
+              className="order-payment-input"
+              type="text"
+              placeholder="Cardholder name"
+              autoComplete="cc-name"
+            />
+            <div className="order-payment-brands">
+              <img src="/icons/master-card.svg" alt="Mastercard" />
+              <img src="/icons/visa-card.svg" alt="Visa" />
+              <img src="/icons/paypal-card.svg" alt="PayPal" />
             </div>
+            <button type="button" className="order-payment-save">
+              SAVE CARD
+            </button>
           </Box>
         </Stack>
-      </Container>
+      </div>
     </div>
   );
 }

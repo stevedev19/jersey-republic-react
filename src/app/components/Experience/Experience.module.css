@@ -1,0 +1,272 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
+
+/* ── Intro / Outro ─────────────────────────────────────────── */
+
+.intro,
+.outro {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #0c0c0c;
+}
+
+.introEyebrow {
+  text-transform: uppercase;
+  font-family: "DM Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: #666;
+}
+
+.introTitle,
+.outroTitle {
+  text-transform: uppercase;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+/* ── Sticky cards section ───────────────────────────────────── */
+
+.stickyCards {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background-color: #0c0c0c;
+  perspective: 1200px;
+}
+
+/* ── Individual card ────────────────────────────────────────── */
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72%;
+  height: 62%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transform-origin: center bottom;
+  will-change: transform;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Left column — team info ────────────────────────────────── */
+
+.colInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.25rem 2rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  position: relative;
+}
+
+.cardEyebrow {
+  text-transform: uppercase;
+  font-family: "DM Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.6rem;
+  opacity: 0.9;
+}
+
+.cardTitle {
+  text-transform: uppercase;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardTag {
+  display: inline-block;
+  font-family: "DM Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  border: 1px solid;
+  width: fit-content;
+}
+
+.cardNumber {
+  position: absolute;
+  bottom: 2rem;
+  right: 1.5rem;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 5rem;
+  font-weight: 800;
+  opacity: 0.08;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Right column — jersey grid ─────────────────────────────── */
+
+.colJerseys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Individual jersey sticky card ─────────────────────────── */
+
+.jerseyCard {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.jerseyCard:last-child {
+  border-right: none;
+}
+
+.jerseyCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.2s ease;
+}
+
+.jerseyCard:hover::after {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.jerseyVisual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  min-height: 0;
+}
+
+.jerseyInfo {
+  padding: 1rem 1.25rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.jerseyType {
+  font-family: "DM Mono", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.jerseyName {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.jerseySeason {
+  font-family: "DM Mono", monospace;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.06em;
+  margin-top: 0.1rem;
+}
+
+.jerseyPrice {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 0.4rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+
+@media (max-width: 1000px) {
+  .card {
+    width: calc(100% - 3rem);
+    height: 80%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .colInfo {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 1.5rem;
+  }
+
+  .cardTitle {
+    font-size: 2.25rem;
+  }
+
+  .cardNumber {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    font-size: 3.5rem;
+  }
+
+  .colJerseys {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .colJerseys {
+    grid-template-columns: repeat(1, 1fr);
+    overflow-y: auto;
+  }
+
+  .jerseyCard {
+    flex-direction: row;
+    align-items: center;
+    border-right: none;
+  }
+
+  .jerseyVisual {
+    flex: 0 0 80px;
+    padding: 1rem;
+  }
+
+  .jerseyInfo {
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.75rem 1rem;
+  }
+}

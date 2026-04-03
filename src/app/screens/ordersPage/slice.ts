@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HomePageState, OrdersPageState } from "../../../lib/types/screen";
-import { Home } from "@mui/icons-material";
+import { OrdersPageState } from "../../../lib/types/screen";
 
 const initialState: OrdersPageState = {
   pausedOrders: [],

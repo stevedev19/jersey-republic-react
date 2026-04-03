@@ -15,7 +15,7 @@ export default function ProductsPage(props: ProductsPageProps) {
   console.log("products:", products);
   
   return (
-  <div className={"products-page"}>
+  <div className={"products-page stitch-navbar-offset"}>
     <Switch>
       <Route path={`${products.path}/:productId`}>
     <ChosenProduct onAdd={onAdd} />

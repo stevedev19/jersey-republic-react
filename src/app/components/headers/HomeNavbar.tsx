@@ -1,10 +1,11 @@
-import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
+import BrandsMegaMenu from "../BrandsMegaMenu";
+import NavAccountMenu from "./NavAccountMenu";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import { serverApi } from "../../../lib/config";
-import { Logout } from "@mui/icons-material";
 import FloatingElements from "../FloatingElements";
 
 interface HomeNavbarProps {
@@ -15,14 +16,14 @@ interface HomeNavbarProps {
   onDeleteAll: () => void;
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
-  handleLogoutClick: (e: React.MouseEvent<HTMLElement>) => void;
-  anchorEl: HTMLElement | null;
-  handleCloseLogout: () => void;
-  handleLogoutRequest: () => void;
+  handleLogoutClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  anchorEl?: HTMLElement | null;
+  handleCloseLogout?: () => void;
+  handleLogoutRequest: () => void | Promise<void>;
 }
 
 export default function HomeNavbar(props: HomeNavbarProps) {
-   const {
+  const {
     cartItems,
     onAdd,
     onDelete,
@@ -30,161 +31,158 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     onRemove,
     setSignupOpen,
     setLoginOpen,
-    handleLogoutClick,
-    anchorEl,
-    handleCloseLogout,
     handleLogoutRequest,
   } = props;
-    const { authMember } = useGlobals();
-    
+  const { authMember } = useGlobals();
+  const [brandsMegaOpen, setBrandsMegaOpen] = useState(false);
+  const brandsCloseTimerRef = useRef<number | null>(null);
 
-    /** HANDLERS **/
+  const clearBrandsCloseTimer = useCallback(() => {
+    if (brandsCloseTimerRef.current != null) {
+      window.clearTimeout(brandsCloseTimerRef.current);
+      brandsCloseTimerRef.current = null;
+    }
+  }, []);
 
-   
-    return (
+  const openBrandsMega = useCallback(() => {
+    clearBrandsCloseTimer();
+    setBrandsMegaOpen(true);
+  }, [clearBrandsCloseTimer]);
+
+  const scheduleCloseBrandsMega = useCallback(() => {
+    clearBrandsCloseTimer();
+    brandsCloseTimerRef.current = window.setTimeout(() => {
+      setBrandsMegaOpen(false);
+      brandsCloseTimerRef.current = null;
+    }, 200);
+  }, [clearBrandsCloseTimer]);
+
+  const closeBrandsMega = useCallback(() => {
+    clearBrandsCloseTimer();
+    setBrandsMegaOpen(false);
+  }, [clearBrandsCloseTimer]);
+
+  useEffect(() => {
+    if (!brandsMegaOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeBrandsMega();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [brandsMegaOpen, closeBrandsMega]);
+
+  return (
     <div className="home-navbar">
-        <FloatingElements />
-        <Container className="navbar-container">
-            <Stack className="menu">
-             <Box>
-                <NavLink to={"/"}>
-                <Box className={"head-main-name"}>
-                        JERSEY REPUBLIC
-                    </Box>
-                </NavLink>
-             </Box>
-             <Stack className="links">
-             <Box className={"hover-line"}>
-                <NavLink to="/" activeClassName={"underline"}>
-                Home
-                </NavLink>
-             </Box>
-             <Box className={"hover-line"}>
-                <NavLink to="/products" activeClassName={"underline"}>
-                Products
-                </NavLink>
-             </Box>
-             {authMember ? (
-                <Box className={"hover-line"}>
-                <NavLink to="/orders" activeClassName={"underline"}>
-                Orders
-                </NavLink>
-             </Box>
-            ) : null}
-             {authMember ? (
-                <Box className={"hover-line"}>
-                <NavLink to="/member-page" activeClassName={"underline"}>
-                My Page
-                </NavLink>
-             </Box>
-            ) : null}
-             <Box className={"hover-line"}>
-                <NavLink to="/help" activeClassName={"underline"}>
-                Help
-                </NavLink>
-             </Box>
-             {/* BASKET */}
-             <Basket
-              cartItems={cartItems}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              onDelete={onDelete}
-              onDeleteAll={onDeleteAll}
-            />
-
-
-             {!authMember ? (
-                <Box>
-                 <Button
-                  variant="contained"
-                  className="login-button"
-                  onClick={() => setLoginOpen(true)}
+      <FloatingElements />
+      <Container className="navbar-container">
+        <Box className="home-navbar__menu-bar">
+          <Stack className="menu">
+            <Box className="hover-line navbar-logo-hover">
+              <NavLink to="/" className="home-navbar-logo-link">
+                <Box className={"head-main-name"}>JERSEY REPUBLIC</Box>
+              </NavLink>
+            </Box>
+            <Stack className="links">
+              <Box className={"hover-line"}>
+                <NavLink
+                  to={{ pathname: "/", hash: "drops" }}
+                  activeClassName={"underline"}
+                  isActive={(_m, loc) => loc.pathname === "/" && loc.hash === "#drops"}
                 >
+                  Drops
+                </NavLink>
+              </Box>
+              <Box className={"hover-line"}>
+                <NavLink to="/products" activeClassName={"underline"}>
+                  Shop All
+                </NavLink>
+              </Box>
+              <Box className={"hover-line"}>
+                <NavLink to="/roulette" activeClassName={"underline"}>
+                  ROULETTE
+                </NavLink>
+              </Box>
+              <Box className={"hover-line"}>
+                <div
+                  className="brands-mega__trigger-wrap hidden md:inline-flex"
+                  onMouseEnter={openBrandsMega}
+                  onMouseLeave={scheduleCloseBrandsMega}
+                >
+                  <button
+                    type="button"
+                    className={`brands-mega__trigger brands-mega__trigger-home ${brandsMegaOpen ? "brands-mega__trigger--open" : ""}`}
+                    aria-expanded={brandsMegaOpen}
+                    aria-controls="teams-mega-menu"
+                    aria-haspopup="true"
+                  >
+                    Teams
+                  </button>
+                </div>
+              </Box>
+              <Box className={"hover-line md:hidden"}>
+                <button
+                  type="button"
+                  className={`brands-mega__trigger brands-mega__trigger-home w-full text-left ${brandsMegaOpen ? "brands-mega__trigger--open" : ""}`}
+                  aria-expanded={brandsMegaOpen}
+                  aria-controls="teams-mega-menu"
+                  onClick={() => setBrandsMegaOpen((o) => !o)}
+                >
+                  Teams
+                </button>
+              </Box>
+              <Box className={"hover-line home-navbar-about-wrap"}>
+                <NavLink to="/help" className="home-navbar__link-about" activeClassName="underline">
+                  About
+                </NavLink>
+              </Box>
+              <Basket
+                cartItems={cartItems}
+                onAdd={onAdd}
+                onRemove={onRemove}
+                onDelete={onDelete}
+                onDeleteAll={onDeleteAll}
+              />
+
+              {!authMember ? (
+                <Box>
+                  <Button variant="contained" className="login-button" onClick={() => setLoginOpen(true)}>
                     Enter your Room
-                    </Button>
+                  </Button>
                 </Box>
-                ) : (
-                <img 
-                  className="user-avatar"
-                  src={
-                    authMember?.memberImage
-                      ? `${serverApi}${authMember?.memberImage}`
-                      : "/icons/default-user.svg"
-                  }
-                  alt={authMember?.memberNick || "User Avatar"}
-                  onClick={handleLogoutClick}
+              ) : (
+                <NavAccountMenu
+                  authMember={authMember}
+                  onLoginClick={() => setLoginOpen(true)}
+                  onSignOut={handleLogoutRequest}
                 />
-            )}
-
-            <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={Boolean(anchorEl)}
-              onClose={handleCloseLogout}
-              onClick={handleCloseLogout}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem onClick={handleLogoutRequest}>
-                <ListItemIcon>
-                  <Logout fontSize="small" style={{ color: "blue" }} />
-                </ListItemIcon>
-                See You Later
-              </MenuItem>
-            </Menu> 
-
+              )}
             </Stack>
-            </Stack>
-            <Stack className={"header-frame"}>
-                <Stack className={"detail"}>
-                    <Box className={"head-main-txt"}>
-                        World's Most Popular Jersey Web Store
-                    </Box>
-                    <Box className={"wel-txt"}>Own the Game. Wear the Republic</Box>
-                    <Box className={"service-txt"}>24 hours service</Box>
-                    <Box className={"signup"}>
-                        {!authMember ? (
-                      <Button 
-                        variant={"contained"}
-                        className={"signup-button"}
-                        onClick={() => setSignupOpen(true)} 
-                      >Join the Republic
-                      </Button>
-                      ) : null}
-                    </Box>
-                </Stack>
-                <Box className={"logo-frame"}>
-                    <div className={"logo-img"}></div>
-                </Box>
-            </Stack>
-          </Container>
+          </Stack>
+          <BrandsMegaMenu
+            open={brandsMegaOpen}
+            onMouseEnter={openBrandsMega}
+            onMouseLeave={scheduleCloseBrandsMega}
+            onNavigate={closeBrandsMega}
+          />
+        </Box>
+        <Stack className={"header-frame"}>
+          <Stack className={"detail"}>
+            <Box className={"head-main-txt"}>World's Most Popular Jersey Web Store</Box>
+            <Box className={"wel-txt"}>Own the Game. Wear the Republic</Box>
+            <Box className={"service-txt"}>24 hours service</Box>
+            <Box className={"signup"}>
+              {!authMember ? (
+                <Button variant={"contained"} className={"signup-button"} onClick={() => setSignupOpen(true)}>
+                  Join the Republic
+                </Button>
+              ) : null}
+            </Box>
+          </Stack>
+          <Box className={"logo-frame"}>
+            <div className={"logo-img"}></div>
+          </Box>
+        </Stack>
+      </Container>
     </div>
-    );
-  
+  );
 }

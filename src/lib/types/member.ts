@@ -38,5 +38,5 @@ export interface Member {
             memberPassword?: string;
             memberAddress?: string;
             memberDesc?: string;
-            memberImage?: string;
+            memberImage?: string | File;
             }

@@ -22,7 +22,7 @@ export default function HelpPage() {
   };
 
   return (
-    <div className={"help-page"}>
+    <div className={"help-page stitch-navbar-offset"}>
       <Container className={"help-container"}>
         <TabContext value={value}>
           <Box className={"help-menu"}>

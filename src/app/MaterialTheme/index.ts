@@ -10,8 +10,8 @@ const light = {
 	palette: {
 		type: 'light',
 		background: {
-			default: '#f8f8ff',
-			paper: common.white,
+			default: '#0d1117',
+			paper: '#161b27',
 		},
 		primary: {
 			contrastText: '#d7b586',
@@ -22,8 +22,8 @@ const light = {
 			main: '#d7b586',
 		},
 		text: {
-			primary: '#343434',
-			secondary: '#d7b586',
+			primary: '#ffffff',
+			secondary: '#cbd5e0',
 			dark: common.black,
 		},
 	},
@@ -38,7 +38,11 @@ const light = {
 		MuiCssBaseline: {
 			styleOverrides: {
 				html: { height: '100%' },
-				body: { background: '#f4f6f8', height: '100%', minHeight: '100%' },
+				body: {
+					background: 'var(--bg-base, #0d1117)',
+					height: '100%',
+					minHeight: '100%',
+				},
 			},
 		},
 	},

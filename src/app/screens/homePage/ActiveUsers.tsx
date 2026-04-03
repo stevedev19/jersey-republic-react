@@ -7,8 +7,7 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveTopUsers } from "./selector";
-import { serverApi } from "../../../lib/config";
-import { Member } from "../../../lib/types/member";
+import { getImageUrl } from "../../../lib/config";
 
 /* REDUX SLICE & SELECTOR*/
 const topUsersRetriever = createSelector(
@@ -32,7 +31,7 @@ export default function ActiveUsers() {
                   const imagePath = member.memberImage
                     ? member.memberImage.startsWith("http")
                       ? member.memberImage
-                      : `${serverApi}${member.memberImage}`
+                      : getImageUrl(member.memberImage)
                     : "/icons/default-user.svg";
                   return (
                   <Card key={member._id} variant="outlined" className="card">

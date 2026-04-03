@@ -1,4 +1,3 @@
-import { Cookie } from "@mui/icons-material";
 import React, { ReactNode, useState } from "react";
 import Cookies from "universal-cookie";
 import { Member } from "../../lib/types/member";

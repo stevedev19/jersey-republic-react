@@ -1,55 +1,48 @@
-import { Box } from "@mui/material";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import Button from "@mui/material/Button";
 import { useGlobals } from "../../hooks/useGlobals";
-import { useState } from "react";
 import { MemberUpdateInput } from "../../../lib/types/member";
 import { T } from "../../../lib/types/common";
 import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, getImageUrl } from "../../../lib/config";
 import MemberService from "../../services/MemberService";
 
-export function Settings() {
+interface SettingsProps {
+  memberUpdateInput: MemberUpdateInput;
+  setMemberUpdateInput: React.Dispatch<
+    React.SetStateAction<MemberUpdateInput>
+  >;
+  memberImage: string;
+  setMemberImage: (url: string) => void;
+}
+
+export function Settings({
+  memberUpdateInput,
+  setMemberUpdateInput,
+  memberImage,
+  setMemberImage,
+}: SettingsProps) {
   const { authMember, setAuthMember } = useGlobals();
-  const [memberImage, setMemberImage] = useState<string>(
-    authMember?.memberImage
-      ? `${serverApi}${authMember.memberImage}`
-      : "/icons/default-user.svg"
-  );
-
-  const [memberUpdateInput, setMemberUpdateInput] = useState<MemberUpdateInput>(
-    {
-      memberNick: authMember?.memberNick,
-      memberPhone: authMember?.memberPhone,
-      memberAddress: authMember?.memberAddress,
-      memberDesc: authMember?.memberDesc,
-      memberImage: authMember?.memberImage,
-    }
-  );
-
-  /**HANDLERS */
 
   const memberNickHandler = (e: T) => {
-    memberUpdateInput.memberNick = e.target.value;
-    setMemberUpdateInput({ ...memberUpdateInput });
+    const v = e.target.value;
+    setMemberUpdateInput((prev) => ({ ...prev, memberNick: v }));
   };
 
   const memberPhoneHandler = (e: T) => {
-    memberUpdateInput.memberPhone = e.target.value;
-    setMemberUpdateInput({ ...memberUpdateInput });
+    const v = e.target.value;
+    setMemberUpdateInput((prev) => ({ ...prev, memberPhone: v }));
   };
 
   const memberAddressHandler = (e: T) => {
-    memberUpdateInput.memberAddress = e.target.value;
-    setMemberUpdateInput({ ...memberUpdateInput });
+    const v = e.target.value;
+    setMemberUpdateInput((prev) => ({ ...prev, memberAddress: v }));
   };
 
   const memberDescHandler = (e: T) => {
-    memberUpdateInput.memberDesc = e.target.value;
-    setMemberUpdateInput({ ...memberUpdateInput });
+    const v = e.target.value;
+    setMemberUpdateInput((prev) => ({ ...prev, memberDesc: v }));
   };
 
   const handleSubmitButton = async () => {
@@ -69,6 +62,14 @@ export function Settings() {
       const result = await member.updateMember(memberUpdateInput);
       setAuthMember(result);
 
+      if (result.memberImage) {
+        setMemberImage(getImageUrl(result.memberImage));
+        setMemberUpdateInput((prev) => ({
+          ...prev,
+          memberImage: result.memberImage,
+        }));
+      }
+
       await sweetTopSmallSuccessAlert("Modified successfully!", 700);
     } catch (err) {
       console.log(err);
@@ -77,98 +78,123 @@ export function Settings() {
   };
 
   const handleImageViewer = (e: T) => {
-    const file = e.target.files[0];
-    const fileType = file.type,
-      validateImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+    const file = e.target.files?.[0];
+    const fileType = file?.type;
+    const validateImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+
+    if (!file || !fileType) return;
 
     if (!validateImageTypes.includes(fileType)) {
       sweetErrorHandling(Messages.error5).then();
-    } else {
-      if (file) {
-        memberUpdateInput.memberImage = file;
-        setMemberUpdateInput({ ...memberUpdateInput });
-        setMemberImage(URL.createObjectURL(file));
-      }
+      return;
     }
+
+    setMemberUpdateInput((prev) => ({ ...prev, memberImage: file }));
+    setMemberImage(URL.createObjectURL(file));
   };
 
   return (
-    <Box className={"settings"}>
-      <Box className={"member-media-frame"}>
-        <img src={memberImage} className={"mb-image"} />
-        <div className={"media-change-box"}>
-          <span>Upload image</span>
-          <p>JPG, JPEG, PNG formats only!</p>
-          <div className={"up-del-box"}>
-            <Button component="label" onChange={handleImageViewer}>
-              <CloudDownloadIcon />
-              <input type="file" hidden />
-            </Button>
-          </div>
+    <div className="member-page-form">
+      <div className="member-page-form__avatar-block">
+        <div className="member-page-form__avatar-wrap">
+          <img src={memberImage} alt="" />
         </div>
-      </Box>
-      <Box className={"input-frame"}>
-        <div className={"long-input"}>
-          <label className={"spec-label"}>Username</label>
+        <label className="member-page-form__upload">
+          CHANGE PHOTO
           <input
-            className={"spec-input mb-nick"}
-            type="text"
-             placeholder={authMember?.memberNick}
-            value={memberUpdateInput.memberNick}
-            name="memberNick"
-            onChange={memberNickHandler}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png"
+            onChange={handleImageViewer}
           />
-        </div>
-      </Box>
-      <Box className={"input-frame"}>
-        <div className={"short-input"}>
-          <label className={"spec-label"}>Phone</label>
+        </label>
+        <p className="member-page-form__hint">
+          JPG, JPEG, PNG formats only!
+        </p>
+      </div>
+
+      <div className="member-page-form__field">
+        <label className="member-page-form__label" htmlFor="member-display-name">
+          Display Name
+        </label>
+        <input
+          id="member-display-name"
+          className="member-page-form__input"
+          type="text"
+          placeholder={authMember?.memberNick}
+          value={memberUpdateInput.memberNick ?? ""}
+          name="memberNick"
+          onChange={memberNickHandler}
+          autoComplete="username"
+        />
+      </div>
+
+      <div className="member-page-form__row">
+        <div className="member-page-form__field member-page-form__field--half">
+          <label className="member-page-form__label" htmlFor="member-phone">
+            Phone
+          </label>
           <input
-            className={"spec-input mb-phone"}
+            id="member-phone"
+            className="member-page-form__input"
             type="text"
             placeholder={
               authMember?.memberPhone ? authMember.memberPhone : "No phone"
             }
-            value={memberUpdateInput.memberPhone}
+            value={memberUpdateInput.memberPhone ?? ""}
             name="memberPhone"
             onChange={memberPhoneHandler}
+            autoComplete="tel"
           />
         </div>
-        <div className={"short-input"}>
-          <label className={"spec-label"}>Address</label>
+        <div className="member-page-form__field member-page-form__field--half">
+          <label
+            className="member-page-form__label"
+            htmlFor="member-location"
+          >
+            Location
+          </label>
           <input
-            className={"spec-input  mb-address"}
+            id="member-location"
+            className="member-page-form__input"
             type="text"
             placeholder={
               authMember?.memberAddress
                 ? authMember.memberAddress
                 : "No address"
             }
-            value={memberUpdateInput.memberAddress}
+            value={memberUpdateInput.memberAddress ?? ""}
             name="memberAddress"
             onChange={memberAddressHandler}
+            autoComplete="street-address"
           />
         </div>
-      </Box>
-      <Box className={"input-frame"}>
-        <div className={"long-input"}>
-          <label className={"spec-label"}>Description</label>
-          <textarea
-            className={"spec-textarea mb-description"}
-            placeholder={
-              authMember?.memberDesc ? authMember.memberDesc : "No description"
-            }
-            value={memberUpdateInput.memberDesc}
-            name="memberDesc"
-            onChange={memberDescHandler}
-          />
-        </div>
-      </Box>
-      <Box className={"save-box"}>
-        <Button variant={"contained"} onClick={handleSubmitButton}>
-          Save
-        </Button>
-      </Box>
-    </Box>
+      </div>
+
+      <div className="member-page-form__field">
+        <label className="member-page-form__label" htmlFor="member-bio">
+          Bio
+        </label>
+        <textarea
+          id="member-bio"
+          className="member-page-form__textarea"
+          placeholder={
+            authMember?.memberDesc ? authMember.memberDesc : "No description"
+          }
+          value={memberUpdateInput.memberDesc ?? ""}
+          name="memberDesc"
+          onChange={memberDescHandler}
+        />
+      </div>
+
+      <div className="member-page-form__actions">
+        <button
+          type="button"
+          className="member-page-form__save"
+          onClick={handleSubmitButton}
+        >
+          SAVE CHANGES
+        </button>
+      </div>
+    </div>
   );
 }

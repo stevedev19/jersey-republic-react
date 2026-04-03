@@ -1,17 +1,22 @@
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Menu from "@mui/material/Menu";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CancelIcon from "@mui/icons-material/Cancel";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Box, IconButton, Badge, Menu } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { CartItem } from "../../../lib/types/search";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, getImageUrl } from "../../../lib/config";
 import { useGlobals } from "../../hooks/useGlobals";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import OrderService from "../../services/OrderService";
+import "../../../css/basket-dropdown.css";
+
+function parseCartItemName(fullName: string): { displayName: string; size: string } {
+  const m = fullName.match(/^(.*)\s*\(([^)]+)\)\s*$/);
+  if (m) return { displayName: m[1].trim(), size: m[2].trim() };
+  return { displayName: fullName.trim(), size: "—" };
+}
+
+function formatMoney(n: number): string {
+  return n.toFixed(2);
+}
 
 interface BasketProps {
   cartItems: CartItem[];
@@ -25,21 +30,19 @@ export default function Basket(props: BasketProps) {
   const { cartItems, onAdd, onDelete, onDeleteAll, onRemove } = props;
   const { authMember, setOrderBuilder } = useGlobals();
   const history = useHistory();
-  const itemsPrice = cartItems.reduce(
-    (a: number, c: CartItem) => a + c.quantity * c.price,
-    0
-  );
-  const shippingCost: number = itemsPrice < 100 ? 5 : 0;
-  const totalPrice = (itemsPrice + shippingCost).toFixed(1);
+
+  const itemsPrice = cartItems.reduce((a, c) => a + c.quantity * c.price, 0);
+  const shippingCost = itemsPrice < 100 ? 5 : 0;
+  const totalQty = cartItems.reduce((a, c) => a + c.quantity, 0);
+  const totalMoney = itemsPrice + shippingCost;
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  /** HANDLERS **/
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -53,10 +56,7 @@ export default function Basket(props: BasketProps) {
       await order.createOrder(cartItems);
 
       onDeleteAll();
-
-      
-
-     setOrderBuilder(new Date());
+      setOrderBuilder(new Date());
       history.push("/orders");
     } catch (err) {
       console.log(err);
@@ -65,124 +65,174 @@ export default function Basket(props: BasketProps) {
   };
 
   return (
-    <Box className={"hover-line"}>
+    <Box className="hover-line" sx={{ position: "relative" }}>
       <IconButton
-        aria-label="cart"
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
+        aria-label="Cart"
+        id="jr-cart-button"
+        aria-controls={open ? "jr-cart-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
+        aria-expanded={open ? true : undefined}
         onClick={handleClick}
+        sx={{
+          color: "#b9c3ff",
+          transition: "transform 0.2s ease",
+          "&:hover": { transform: "scale(1.05)" },
+          "&:active": { transform: "scale(0.95)" },
+        }}
       >
-        <Badge badgeContent={cartItems.length} color="secondary">
-          <img src={"/icons/shopping-cart.svg"} />
+        <Badge
+          badgeContent={totalQty > 0 ? totalQty : 0}
+          invisible={totalQty === 0}
+          sx={{
+            "& .MuiBadge-badge": {
+              backgroundColor: "#667eea",
+              color: "#fff",
+              fontSize: "10px",
+              fontWeight: 700,
+              height: "16px",
+              minWidth: totalQty > 9 ? "20px" : "16px",
+              width: totalQty > 9 ? "auto" : "16px",
+              padding: totalQty > 9 ? "0 4px" : 0,
+              borderRadius: "9999px",
+              top: -4,
+              right: -4,
+              lineHeight: "16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          }}
+        >
+          <img src="/icons/shopping-cart.svg" alt="" width={22} height={22} />
         </Badge>
       </IconButton>
       <Menu
+        id="jr-cart-menu"
         anchorEl={anchorEl}
-        id="account-menu"
         open={open}
         onClose={handleClose}
-        // onClick={handleClose}
+        disableScrollLock
+        marginThreshold={0}
         PaperProps={{
           elevation: 0,
           sx: {
+            mt: "12px",
+            zIndex: 130,
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            borderRadius: "16px",
             overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
+            maxWidth: "calc(100vw - 24px)",
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        MenuListProps={{ sx: { padding: 0 } }}
       >
-        <Stack className={"basket-frame"}>
-          <Box className={"all-check-box"}>
-            {cartItems.length === 0 ? (
-              <div>Cart is empty!</div> 
-            ) : ( 
-            <Stack flexDirection={"row"}>
-                <div>Cart Products:</div>
-                <DeleteForeverIcon
-                  sx={{ ml: "5px", cursor: "pointer" }}
-                  onClick={() => onDeleteAll()}
-                  color={"primary"}
-                />
-              </Stack>
-            )}
-          </Box>
+        <div className="jr-cart">
+          <div className="jr-cart__header">
+            <div className="jr-cart__title-row">
+              <span className="jr-cart__title">My Cart</span>
+              <span className="jr-cart__count-badge">{totalQty}</span>
+            </div>
+            <button type="button" className="jr-cart__close" onClick={handleClose} aria-label="Close cart">
+              ×
+            </button>
+          </div>
 
-          <Box className={"orders-main-wrapper"}>
-            <Box className={"orders-wrapper"}>
-              {cartItems.map((item: CartItem) => {
-                const imagePath = item.image.startsWith('http') 
-                  ? item.image 
-                  : `${serverApi}${item.image}`;
-               return (
-                  <Box className={"basket-info-box"} key={item._id}>
-                    <div className={"cancel-btn"}>
-                      <CancelIcon
-                         color={"primary"}
-                        onClick={() => onDelete(item)}
-                      />
-                    </div>
-                    <img src={imagePath} className={"product-img"} />
-                    <span className={"product-name"}>{item.name}</span>
-                    <p className={"product-price"}>
-                      ${item.price} x {item.quantity}
-                    </p>
-                    <Box sx={{ minWidth: 120 }}>
-                      <div className="col-2">
-                        <button
-                          onClick={() => onRemove(item)}
-                          className="remove"
-                        >
-                          -
-                        </button>{" "}
-                        <button onClick={() => onAdd(item)} className="add">
-                          +
-                        </button>
-                </div>
-                 </Box>
-                 </Box>
-                );
-              })}
-            </Box>
-          </Box>
-         {cartItems.length !== 0 ? (
-            <Box className={"basket-order"}>
-              <span className={"price"}>
-                Total: ${totalPrice} ({itemsPrice} + {shippingCost})
-              </span>
-             <Button
-                onClick={proceedOrderHandler}
-                startIcon={<ShoppingCartIcon />}
-                variant={"contained"}
+          {cartItems.length === 0 ? (
+            <div className="jr-cart__empty">
+              <div className="jr-cart__empty-icon" aria-hidden>
+                🛒
+              </div>
+              <h2 className="jr-cart__empty-title">Your cart is empty</h2>
+              <p className="jr-cart__empty-desc">Start building your collection</p>
+              <button
+                type="button"
+                className="jr-cart__empty-cta"
+                onClick={() => {
+                  handleClose();
+                  history.push("/products");
+                }}
               >
-                Order
-              </Button>
-            </Box>
+                Shop now →
+              </button>
+            </div>
           ) : (
-            ""
+            <>
+              <div className="jr-cart__list">
+                {cartItems.map((item: CartItem) => {
+                  const imagePath = getImageUrl(item.image) || "/img/noimage-list.svg";
+                  const { displayName, size } = parseCartItemName(item.name);
+                  const lineTotal = item.price * item.quantity;
+                  return (
+                    <div className="jr-cart__row" key={`${item._id}-${item.name}`}>
+                      <img src={imagePath} alt="" className="jr-cart__thumb" />
+                      <div className="jr-cart__meta">
+                        <p className="jr-cart__name">{displayName}</p>
+                        <span className="jr-cart__size">Size: {size}</span>
+                      </div>
+                      <div className="jr-cart__right">
+                        <span className="jr-cart__line-price">${formatMoney(lineTotal)}</span>
+                        <div className="jr-cart__stepper">
+                          <button
+                            type="button"
+                            className="jr-cart__step-btn"
+                            aria-label="Decrease quantity"
+                            onClick={() => onRemove(item)}
+                          >
+                            -
+                          </button>
+                          <span className="jr-cart__qty">{item.quantity}</span>
+                          <button
+                            type="button"
+                            className="jr-cart__step-btn"
+                            aria-label="Increase quantity"
+                            onClick={() => onAdd(item)}
+                          >
+                            +
+                          </button>
+                          <button
+                            type="button"
+                            className="jr-cart__remove"
+                            aria-label="Remove item"
+                            onClick={() => onDelete(item)}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="jr-cart__footer">
+                <div className="jr-cart__row-line">
+                  <span className="jr-cart__label-sm">Subtotal</span>
+                  <span className="jr-cart__value-sm">${formatMoney(itemsPrice)}</span>
+                </div>
+                <div className="jr-cart__row-line jr-cart__row-line--ship">
+                  <span className="jr-cart__ship-label">Shipping</span>
+                  <span className="jr-cart__ship-val">
+                    {shippingCost === 0 ? "FREE" : `+$${formatMoney(shippingCost)}`}
+                  </span>
+                </div>
+                <hr className="jr-cart__divider" />
+                <div className="jr-cart__total-row">
+                  <span className="jr-cart__total-label">Total</span>
+                  <span className="jr-cart__total-amt">${formatMoney(totalMoney)}</span>
+                </div>
+                <button type="button" className="jr-cart__checkout" onClick={proceedOrderHandler}>
+                  Checkout →
+                </button>
+                <button type="button" className="jr-cart__continue" onClick={handleClose}>
+                  Continue shopping
+                </button>
+              </div>
+            </>
           )}
-        </Stack>
+        </div>
       </Menu>
     </Box>
   );

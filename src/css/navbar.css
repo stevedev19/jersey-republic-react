@@ -3,7 +3,7 @@
     height: auto;
     min-height: clamp(560px, 78vh, 860px);
     display: flex;
-    background: #0D1B2A;
+    background: var(--bg-base);
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -91,6 +91,36 @@
    align-items: center;
  }
 
+ .home-navbar .navbar-container .menu .links .hover-line {
+   width: fit-content;
+   max-width: 100%;
+ }
+
+ .home-navbar .navbar-container .menu .navbar-logo-hover.hover-line {
+   width: fit-content;
+   max-width: 100%;
+ }
+
+.home-navbar__menu-bar {
+  position: relative;
+  z-index: 30;
+  width: 100%;
+}
+
+.home-navbar .brands-mega__trigger-home {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: #f8f8ff;
+}
+
+.home-navbar .hover-line .brands-mega__trigger-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
   .home-navbar .navbar-container .menu .links .login-button {
     background: linear-gradient(45deg, #3776CC, #4A90E2);
     color: #f8f8ff;
@@ -132,6 +162,20 @@
 
 .home-navbar a {
     text-decoration: none;
+}
+
+.home-navbar-logo-link {
+    cursor: pointer;
+}
+
+.home-navbar__link-about {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.home-navbar .hover-line.home-navbar-about-wrap:hover .home-navbar__link-about,
+.home-navbar__link-about:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .home-navbar .hover-line a {
@@ -428,43 +472,18 @@
 
 
        .other-navbar {
-        width:100%;
-        height: 400px;
+        width: 100%;
+        min-height: clamp(200px, 28vh, 360px);
+        height: auto;
         display: flex;
-        background: linear-gradient(135deg, #0A1D37 0%, #E63946 100%);
-        background-size: cover;
+        background: var(--bg-base);
         position: relative;
         overflow: hidden;
-        
-        /* Add these two lines for the parallax effect */
-        background-attachment: fixed;
-        background-position: center; /* Ensures the image starts centered */
     }
 
-    .other-navbar::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url("/public/img/banner.webp");
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        opacity: 0.3;
-        z-index: 1;
-    }
-
+    .other-navbar::before,
     .other-navbar::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-        z-index: 2;
+        display: none;
     }
 
     .other-navbar  .navbar-container{

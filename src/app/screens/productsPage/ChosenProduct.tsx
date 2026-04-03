@@ -1,18 +1,11 @@
-import { Container, Stack, Box, Chip, Select, MenuItem, FormControl, InputLabel, Typography } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { Container, Stack, Box, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SecurityIcon from "@mui/icons-material/Security";
 import StarIcon from "@mui/icons-material/Star";
-import Divider from "../../components/divider";
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-import { FreeMode, Navigation, Thumbs } from "swiper";
 import { sweetTopSuccessAlert } from "../../../lib/sweetAlert";
 
 import { Dispatch } from "@reduxjs/toolkit";
@@ -22,11 +15,12 @@ import { createSelector } from "reselect";
 import { Product } from "../../../lib/types/product";
 import { retrieveChosenProduct, retrieveRestaurant } from "./selector";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, memo } from "react";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
 import { Member } from "../../../lib/types/member";
-import { serverApi } from "../../../lib/config";
+import { getImageUrl } from "../../../lib/config";
+import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { CartItem } from "../../../lib/types/search";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 
@@ -40,49 +34,146 @@ const chosenProductRetriever = createSelector(
   retrieveChosenProduct,
   (chosenProduct) => ({
     chosenProduct,
-  }));
+  })
+);
 
 const restaurantRetriever = createSelector(
   retrieveRestaurant,
   (restaurant) => ({
     restaurant,
-  }));
+  })
+);
+
+function getCollectionDisplayName(collection: string): string {
+  const collectionNames: { [key: string]: string } = {
+    PREMIER_LEAGUE: "Premier League",
+    LA_LIGA: "La Liga",
+    SERIE_A: "Serie A",
+    BUNDESLIGA: "Bundesliga",
+    LIGUE_1: "Ligue 1",
+    CHAMPIONS_LEAGUE: "Champions League",
+    NATIONAL_TEAMS: "National Teams",
+    UZBEKISTAN_LEAGUE: "Uzbekistan",
+    RETRO: "Retro Collection",
+    OTHER: "Other",
+    DISH: "Dish",
+    DRINK: "Drink",
+  };
+  return collectionNames[collection] || collection;
+}
+
+function buildBreadcrumbCrumbs(product: Product): string[] {
+  const c = product.productCollection;
+  const crumbs = ["Home"];
+  if (c === ProductCollection.UZBEKISTAN_LEAGUE) {
+    crumbs.push("National Teams", "Uzbekistan");
+    return crumbs;
+  }
+  if (c === ProductCollection.NATIONAL_TEAMS) {
+    crumbs.push("National Teams", product.productName);
+    return crumbs;
+  }
+  crumbs.push(getCollectionDisplayName(c));
+  crumbs.push(product.productName);
+  return crumbs;
+}
 
 interface ChosenProductProps {
   onAdd: (item: CartItem) => void;
 }
+
+/** Plain CSS gallery — avoids Swiper re-inits (observer/reflow) that flicker images when Redux/layout updates */
+const ProductMediaGallery = memo(function ProductMediaGallery({
+  productId,
+  productName,
+  imageUrls,
+}: {
+  productId: string;
+  productName: string;
+  imageUrls: readonly string[];
+}) {
+  const [active, setActive] = useState(0);
+  const safeUrls = imageUrls.length > 0 ? imageUrls : ["/img/noimage-list.svg"];
+  const len = safeUrls.length;
+  const imageUrlsKey = safeUrls.join("|");
+
+  useEffect(() => {
+    setActive(0);
+  }, [productId, imageUrlsKey]);
+
+  const go = (delta: number) => {
+    if (len <= 1) return;
+    setActive((i) => (i + delta + len) % len);
+  };
+
+  return (
+    <div className="pdp-gallery">
+      <div className="pdp-gallery__stage">
+        {len > 1 ? (
+          <>
+            <button
+              type="button"
+              className="pdp-gallery__nav pdp-gallery__nav--prev"
+              aria-label="Previous image"
+              onClick={() => go(-1)}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className="pdp-gallery__nav pdp-gallery__nav--next"
+              aria-label="Next image"
+              onClick={() => go(1)}
+            >
+              ›
+            </button>
+          </>
+        ) : null}
+        <img
+          className="pdp-gallery__main"
+          src={safeUrls[active]}
+          alt={`${productName} — view ${active + 1} of ${len}`}
+          loading="eager"
+          decoding="async"
+          draggable={false}
+        />
+      </div>
+      {len > 1 ? (
+        <div className="pdp-gallery__thumbs" role="tablist" aria-label="Product images">
+          {safeUrls.map((url, i) => (
+            <button
+              key={`${productId}-thumb-${i}`}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
+              className={
+                i === active
+                  ? "pdp-gallery__thumb pdp-gallery__thumb--active"
+                  : "pdp-gallery__thumb"
+              }
+              onClick={() => setActive(i)}
+            >
+              <img src={url} alt="" draggable={false} loading="lazy" decoding="async" />
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+});
 
 export default function ChosenProduct(props: ChosenProductProps) {
   const { productId } = useParams<{ productId: string }>();
   const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
   const { restaurant } = useSelector(restaurantRetriever);
-  
-  // State for size and quantity selection
-  const [selectedSize, setSelectedSize] = useState(chosenProduct?.productSize || '');
+
+  const [selectedSize, setSelectedSize] = useState(
+    chosenProduct?.productSize || ""
+  );
   const [quantity, setQuantity] = useState(1);
-  
-  // Available sizes for football jerseys
-  const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-  
-  // Collection display names
-  const getCollectionDisplayName = (collection: string) => {
-    const collectionNames: { [key: string]: string } = {
-      'PREMIER_LEAGUE': 'Premier League',
-      'LA_LIGA': 'La Liga',
-      'SERIE_A': 'Serie A',
-      'BUNDESLIGA': 'Bundesliga',
-      'LIGUE_1': 'Ligue 1',
-      'CHAMPIONS_LEAGUE': 'Champions League',
-      'NATIONAL_TEAMS': 'National Teams',
-      'UZBEKISTAN_LEAGUE': 'Uzbekistan League',
-      'RETRO': 'Retro Collection',
-      'OTHER': 'Other',
-      'DISH': 'Dish',
-      'DRINK': 'Drink'
-    };
-    return collectionNames[collection] || collection;
-  };
+
+  const availableSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
   useEffect(() => {
     const product = new ProductService();
@@ -90,7 +181,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
       .getProduct(productId)
       .then((data) => {
         setChosenProduct(data);
-        setSelectedSize(data?.productSize || '');
+        setSelectedSize(data?.productSize || "");
       })
       .catch((err) => console.log(err));
 
@@ -101,243 +192,217 @@ export default function ChosenProduct(props: ChosenProductProps) {
       .catch((err) => console.log(err));
   }, [productId, setChosenProduct, setRestaurant]);
 
-  if (!chosenProduct) return null;
-  const productImages = Array.isArray(chosenProduct.productImages) ? chosenProduct.productImages : [];
+  const galleryUrls = useMemo(() => {
+    if (!chosenProduct || !productId || chosenProduct._id !== productId) {
+      return ["/img/noimage-list.svg"];
+    }
+    const imgs = normalizeProductImages(chosenProduct.productImages);
+    if (imgs.length === 0) return ["/img/noimage-list.svg"];
+    return imgs.map((ele) =>
+      ele.startsWith("http") ? ele : getImageUrl(ele) || "/img/noimage-list.svg"
+    );
+  }, [chosenProduct, productId]);
+
+  /** Avoid flashing the previous PDP while the new product loads */
+  if (!chosenProduct || !productId || chosenProduct._id !== productId) {
+    return null;
+  }
+
+  const productImages = normalizeProductImages(chosenProduct.productImages);
+
+  const crumbs = buildBreadcrumbCrumbs(chosenProduct);
+  const collectionBadge = String(
+    chosenProduct.productCollection || ""
+  ).replace(/_/g, " ");
+
+  const supplierLine = restaurant?.memberNick
+    ? `${restaurant.memberNick} · Official replica supplier`
+    : "JAKO · Official replica supplier";
 
   return (
-    <div className={"chosen-product"}>
-      <Box className={"title"}>
-        <SportsSoccerIcon sx={{ fontSize: 40, mr: 2, color: "#ff6b35" }} />
-        Jersey Details
-      </Box>
-      <Container className={"product-container"}>
-        {/* Image Gallery Section */}
-        <Stack className={"chosen-product-slider"}>
-          <Swiper
-            loop={true}
-            spaceBetween={10}
-            navigation={true}
-            modules={[FreeMode, Navigation, Thumbs]}
-            className="swiper-area"
-          >
-           {productImages.map((ele: string, index: number) => {
-              const imagePath = ele.startsWith('http') 
-                ? ele 
-                : `${serverApi}${ele}`;
-              return (
-                <SwiperSlide key={index}>
-                  <img className="slider-image" src={imagePath} alt={`${chosenProduct.productName} jersey view ${index + 1}`} />
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        </Stack>
+    <div className="chosen-product pdp">
+      <Container maxWidth="lg" className="pdp-container">
+        <nav className="pdp-breadcrumb" aria-label="Breadcrumb">
+          {crumbs.map((part, i) => (
+            <span key={`${part}-${i}`} className="pdp-breadcrumb__segment">
+              {i === 0 ? (
+                <Link to="/products" className="pdp-breadcrumb__link">
+                  {part}
+                </Link>
+              ) : (
+                <span className="pdp-breadcrumb__text">{part}</span>
+              )}
+              {i < crumbs.length - 1 ? (
+                <span className="pdp-breadcrumb__sep">&gt;</span>
+              ) : null}
+            </span>
+          ))}
+        </nav>
 
-        {/* Product Information Section */}
-        <Stack className={"chosen-product-info"}>
-          <Box className={"info-box"}>
-            {/* Jersey Name and Collection */}
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="h4" className={"product-name"}>
-              {chosenProduct?.productName}
+        <Stack className="pdp-layout" direction={{ xs: "column", md: "row" }}>
+          <Box className="chosen-product-slider pdp-panel pdp-panel--media">
+            <ProductMediaGallery
+              productId={chosenProduct._id}
+              productName={chosenProduct.productName}
+              imageUrls={galleryUrls}
+            />
+          </Box>
+
+          <Stack className="chosen-product-info pdp-panel pdp-panel--info">
+            <Box className="info-box pdp-info">
+              <span className="pdp-badge">{collectionBadge.toUpperCase()}</span>
+
+              <Typography
+                component="h1"
+                className="product-name pdp-heading"
+              >
+                {chosenProduct.productName}
               </Typography>
-              <Chip 
-                label={getCollectionDisplayName(chosenProduct?.productCollection || '')}
-                color="primary"
-                sx={{ 
-                  mt: 1,
-                  background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
-                  color: 'white',
-                  fontWeight: 600
-                }}
-              />
-            </Box>
 
-            {/* Jersey Details Grid */}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-              <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <SportsSoccerIcon sx={{ mr: 1, color: '#666' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    Collection: {getCollectionDisplayName(chosenProduct?.productCollection || '')}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <StarIcon sx={{ mr: 1, color: '#666' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    Volume: {chosenProduct?.productVolume || 'Standard'}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <RemoveRedEyeIcon sx={{ mr: 1, color: '#666' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    Views: {chosenProduct?.productViews}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <SecurityIcon sx={{ mr: 1, color: '#666' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    Stock: {chosenProduct?.productLeftCount} available
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
+              <Typography className="pdp-supplier">{supplierLine}</Typography>
 
-            {/* Rating Section */}
-            <Box className={"rating-box"} sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Rating name="half-rating" defaultValue={4.5} precision={0.5} readOnly />
-                <Typography variant="body2" color="text.secondary">
-                  (4.5/5) • 127 reviews
+              <Box className="pdp-rating-row">
+                <Rating
+                  name="product-rating"
+                  value={4.5}
+                  precision={0.5}
+                  readOnly
+                  sx={{
+                    color: "#F8BB86",
+                    "& .MuiRating-iconFilled": { color: "#F8BB86" },
+                    "& .MuiRating-iconEmpty": {
+                      color: "rgba(248, 187, 134, 0.35)",
+                    },
+                  }}
+                />
+                <Typography component="span" className="pdp-rating-meta">
+                  (4.5) · 127 reviews
                 </Typography>
               </Box>
-            </Box>
 
-            {/* Description */}
-            <Typography className={"product-desc"} sx={{ mb: 3 }}>
-              {chosenProduct?.productDesc || "Premium quality football jersey with authentic team colors and official design. Made from high-quality materials for comfort and durability."}
-            </Typography>
-
-            <Divider height="1" width="100%" bg="#e0e0e0" />
-
-            {/* Size Selection */}
-            <Box sx={{ my: 3 }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Select Size
+              <Typography className="product-desc pdp-desc">
+                {chosenProduct.productDesc ||
+                  "Premium quality football jersey with authentic team colors and official design."}
               </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+
+              <hr className="pdp-divider" />
+
+              <Typography className="pdp-section-label">Select size</Typography>
+              <Box className="pdp-size-grid">
                 {availableSizes.map((size) => (
-                  <Chip
+                  <button
                     key={size}
-                    label={size}
+                    type="button"
+                    className={
+                      selectedSize === size
+                        ? "pdp-size-btn pdp-size-btn--active"
+                        : "pdp-size-btn"
+                    }
                     onClick={() => setSelectedSize(size)}
-                    variant={selectedSize === size ? "filled" : "outlined"}
-                    color={selectedSize === size ? "primary" : "default"}
-                    sx={{
-                      minWidth: 50,
-                      cursor: 'pointer',
-                      '&:hover': {
-                        backgroundColor: selectedSize === size ? 'primary.main' : 'action.hover'
-                      }
-                    }}
-                  />
+                  >
+                    {size}
+                  </button>
                 ))}
               </Box>
-            </Box>
 
-            {/* Quantity Selection */}
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Quantity
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Button
-                  variant="outlined"
+              <Typography className="pdp-section-label">Quantity</Typography>
+              <Box className="pdp-qty-row">
+                <button
+                  type="button"
+                  className="pdp-qty-btn"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1}
-                  sx={{ minWidth: 40 }}
+                  aria-label="Decrease quantity"
                 >
-                  -
-                </Button>
-                <Typography variant="h6" sx={{ minWidth: 30, textAlign: 'center' }}>
-                  {quantity}
-                </Typography>
-                <Button
-                  variant="outlined"
-                  onClick={() => setQuantity(Math.min(chosenProduct?.productLeftCount || 10, quantity + 1))}
-                  disabled={quantity >= (chosenProduct?.productLeftCount || 10)}
-                  sx={{ minWidth: 40 }}
+                  −
+                </button>
+                <span className="pdp-qty-value">{quantity}</span>
+                <button
+                  type="button"
+                  className="pdp-qty-btn"
+                  onClick={() =>
+                    setQuantity(
+                      Math.min(
+                        chosenProduct.productLeftCount || 10,
+                        quantity + 1
+                      )
+                    )
+                  }
+                  disabled={
+                    quantity >= (chosenProduct.productLeftCount || 10)
+                  }
+                  aria-label="Increase quantity"
                 >
                   +
+                </button>
+              </Box>
+
+              <Box className="pdp-price-block">
+                <Typography className="pdp-price" component="span">
+                  ${chosenProduct.productPrice}
+                </Typography>
+                <Typography className="pdp-installments">
+                  or 3 installments
+                </Typography>
+              </Box>
+
+              <Box className="pdp-trust">
+                <Box className="pdp-trust__item">
+                  <LocalShippingIcon className="pdp-trust__icon" />
+                  <span>Free shipping over $50</span>
+                </Box>
+                <Box className="pdp-trust__item">
+                  <SecurityIcon className="pdp-trust__icon" />
+                  <span>Authentic quality</span>
+                </Box>
+                <Box className="pdp-trust__item">
+                  <StarIcon className="pdp-trust__icon" />
+                  <span>Official design</span>
+                </Box>
+                <Box className="pdp-trust__item">
+                  <SportsSoccerIcon className="pdp-trust__icon" />
+                  <span>Team licensed</span>
+                </Box>
+              </Box>
+
+              <Stack className="pdp-actions" spacing={1.5}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  className="pdp-btn-cart"
+                  onClick={() => {
+                    if (chosenProduct && selectedSize) {
+                      const cartItem: CartItem = {
+                        _id: chosenProduct._id,
+                        quantity: quantity,
+                        name: `${chosenProduct.productName} (${selectedSize})`,
+                        price: chosenProduct.productPrice,
+                        image:
+                          productImages.length > 0
+                            ? productImages[0]
+                            : "/img/noimage-list.svg",
+                      };
+                      props.onAdd(cartItem);
+                      sweetTopSuccessAlert(
+                        `${chosenProduct.productName} (${selectedSize}) added to cart!`,
+                        2000
+                      );
+                    } else {
+                      sweetTopSuccessAlert("Please select a size first!", 2000);
+                    }
+                  }}
+                  disabled={
+                    !selectedSize || chosenProduct.productLeftCount === 0
+                  }
+                >
+                  {chosenProduct.productLeftCount === 0
+                    ? "OUT OF STOCK"
+                    : "ADD TO CART"}
                 </Button>
-              </Box>
+              </Stack>
             </Box>
-
-            {/* Price Section */}
-            <Box className={"product-price"} sx={{ mb: 3 }}>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#ff6b35' }}>
-                ${chosenProduct?.productPrice}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Free shipping on orders over $50
-              </Typography>
-            </Box>
-
-            {/* Features */}
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Features
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <LocalShippingIcon sx={{ mr: 1, color: '#4caf50', fontSize: 20 }} />
-                    <Typography variant="body2">Free Shipping</Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <SecurityIcon sx={{ mr: 1, color: '#4caf50', fontSize: 20 }} />
-                    <Typography variant="body2">Authentic Quality</Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <StarIcon sx={{ mr: 1, color: '#4caf50', fontSize: 20 }} />
-                    <Typography variant="body2">Official Design</Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ flex: '1 1 45%', minWidth: '200px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <SportsSoccerIcon sx={{ mr: 1, color: '#4caf50', fontSize: 20 }} />
-                    <Typography variant="body2">Team Licensed</Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-
-            {/* Add to Cart Button */}
-            <Box className={"button-box"}>
-              <Button 
-                variant="contained"
-                size="large"
-                fullWidth
-                onClick={() => {
-                  if (chosenProduct && selectedSize) {
-                    const cartItem: CartItem = {
-                      _id: chosenProduct._id,
-                      quantity: quantity,
-                      name: `${chosenProduct.productName} (${selectedSize})`,
-                      price: chosenProduct.productPrice,
-                      image: productImages.length > 0 ? productImages[0] : '/img/noimage-list.svg'
-                    };
-                    props.onAdd(cartItem);
-                    sweetTopSuccessAlert(`${chosenProduct.productName} (${selectedSize}) added to cart!`, 2000);
-                  } else {
-                    sweetTopSuccessAlert("Please select a size first!", 2000);
-                  }
-                }}
-                disabled={!selectedSize || chosenProduct?.productLeftCount === 0}
-                sx={{
-                  height: 50,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
-                  '&:hover': {
-                    background: 'linear-gradient(45deg, #e55a2b, #e8841a)',
-                  }
-                }}
-              >
-                {chosenProduct?.productLeftCount === 0 ? 'Out of Stock' : 'Add to Cart'}
-              </Button>
-            </Box>
-          </Box>
+          </Stack>
         </Stack>
       </Container>
     </div>

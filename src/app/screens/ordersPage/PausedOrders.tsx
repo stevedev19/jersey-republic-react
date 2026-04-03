@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrievePausedOrders } from "./selector";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, getImageUrl } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
 import { Product } from "../../../lib/types/product";
 import { T } from "../../../lib/types/common";
@@ -14,6 +14,7 @@ import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../hooks/useGlobals";
+import OrdersEmptyState from "./OrdersEmptyState";
 
 
 /* REDUX SLICE & SELECTOR*/
@@ -106,11 +107,15 @@ export default function PausedOrders(props: PausedOrderProps) {
                   const imagePath = product.productImages && product.productImages.length > 0 
                     ? (product.productImages[0].startsWith('http') 
                         ? product.productImages[0] 
-                        : `${serverApi}${product.productImages[0]}`)
+                        : getImageUrl(product.productImages[0]))
                     : '/img/noimage-list.svg';
                   return (
                      <Box key={item._id} className="orders-name-price">
-                      <img src={imagePath} className={"order-dish-img"} />
+                      <img
+                        src={imagePath}
+                        className={"order-dish-img"}
+                        alt={product.productName || ""}
+                      />
                       <p className="title-dish">{product.productName || 'Unknown Product'}</p>
                       <Box className="price-box">
                         <p>${item.itemPrice}</p>
@@ -130,10 +135,18 @@ export default function PausedOrders(props: PausedOrderProps) {
                 <Box className="box-total">
                   <p>Product price</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img src="/icons/plus.svg" style={{ marginLeft: "20px" }} />
+                  <img
+                    src="/icons/plus.svg"
+                    style={{ marginLeft: "20px" }}
+                    alt=""
+                  />
                   <p>Delivery cost</p>
                    <p>${order.orderDelivery}</p>
-                  <img src="/icons/pause.svg" style={{ marginLeft: "20px" }} />
+                  <img
+                    src="/icons/pause.svg"
+                    style={{ marginLeft: "20px" }}
+                    alt=""
+                  />
                   <p>Total</p>
                    <p>${order.orderTotal}</p>
                 </Box>
@@ -162,18 +175,7 @@ export default function PausedOrders(props: PausedOrderProps) {
           );
         })}
 
-       {safePausedOrders.length === 0 && (
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"center"}
-            >
-              <img
-                src="/icons/noimage-list.svg"
-                style={{ width: 300, height: 300 }}
-              />
-            </Box>
-          )}
+        {safePausedOrders.length === 0 && <OrdersEmptyState />}
       </Stack>
     </TabPanel>
   );

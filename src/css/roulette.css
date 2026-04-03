@@ -1,0 +1,53 @@
+/* Jersey Roulette — page-specific (design tokens per spec) */
+
+.jersey-roulette-page {
+  --jr-bg: #0e1322;
+  --jr-card: #161b27;
+  --jr-primary: #667eea;
+  --jr-primary-hover: #4a62d8;
+  --jr-accent: #f7ba85;
+  --jr-muted: #8a94a6;
+}
+
+@keyframes jr-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes jr-slow-rotate {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.jersey-roulette__glow {
+  animation: jr-slow-rotate 8s linear infinite;
+}
+
+.jersey-roulette__result-sheet {
+  animation: jr-slide-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.jersey-roulette__pointer {
+  filter: drop-shadow(0 0 8px rgba(247, 186, 133, 0.6));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jersey-roulette__glow {
+    animation: none;
+  }
+  .jersey-roulette__result-sheet {
+    animation: none;
+    transform: translateY(0);
+  }
+}

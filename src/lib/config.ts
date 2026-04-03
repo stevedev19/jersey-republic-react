@@ -12,6 +12,12 @@ const normalizedBase = resolveBaseUrl();
 export const serverApiBase: string = normalizedBase;
 export const serverApi: string = normalizedBase ? `${normalizedBase}/` : "/";
 
+export const getImageUrl = (imagePath: string | undefined | null): string => {
+  if (!imagePath) return '';
+  if (imagePath.startsWith('http')) return imagePath;
+  return `${serverApiBase}${imagePath.startsWith('/') ? imagePath : '/' + imagePath}`;
+};
+
 export const Messages = {
     error1: "Something went wrong!",
     error2: "Please login first!",

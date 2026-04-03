@@ -11,7 +11,8 @@ productsPage: ProductsPageState;
 
 /** HOMEPAGE **/
 export interface HomePageState{
-    popularDishes: Product[];
+    /** Homepage carousel: newest + top views so multi-image hover works for new arrivals */
+    trendingDishes: Product[];
     newDishes: Product[];
     topUsers: Member[];
 }

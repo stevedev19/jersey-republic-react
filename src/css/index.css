@@ -1,11 +1,110 @@
+/* ------------------------------------------------------------------ */
+/* Jersey Republic — global design tokens (all pages)                  */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* Backgrounds (page + navbar use --bg-base for a seamless shell) */
+  --bg-base: #0d1117; /* main page + navbar — very dark blue-black */
+  --bg-card: #161b27; /* cards / floating panels (e.g. curator note) */
+  --bg-section: #111827; /* subtle section depth */
+  --bg-elevated: #161b27; /* inputs / raised chips — same tier as card */
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e0;
+  --text-muted: #8a94a6;
+  --text-accent: #f8bb86;
+
+  /* Brand colors */
+  --color-blue: #667eea;
+  --color-orange: #f8bb86;
+  --color-navy: #16213e;
+
+  /* Typography */
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Aliases used by existing components (StickyCards, etc.) */
+  --bg-secondary: var(--bg-section);
+  --color-primary-light: #8b98f8;
+}
+
+/* Base styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+/* All page backgrounds */
+.page,
+main,
+section {
+  background-color: var(--bg-base);
+}
+
+/* Section cards / elevated containers */
+.card,
+.panel,
+.box {
+  background-color: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+/* All H1 headlines */
+h1 {
+  font-family: var(--font-display);
+  font-size: 80px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  line-height: 0.95;
+}
+
+/* H2 section titles */
+h2 {
+  font-family: var(--font-display);
+  font-size: 48px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: clamp(2.25rem, 14vw, 48px);
+  }
+  h2 {
+    font-size: clamp(1.5rem, 8vw, 32px);
+  }
+}
+
+/* Small uppercase labels */
+.label,
+.section-tag {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Body text */
+p {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* Orange accent text */
+.accent {
+  color: var(--text-accent);
 }
 
 code {
@@ -104,4 +203,76 @@ code {
 /* Smooth transitions for theme changes */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+@font-face {
+  font-family: "Monument Extended";
+  src: url("https://fonts.cdnfonts.com/s/19595/MonumentExtended-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Monument Extended";
+  src: url("https://fonts.cdnfonts.com/s/19595/MonumentExtended-Ultrabold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Stitch navbar — fixed glass bar */
+nav.stitch-navbar {
+  box-sizing: border-box;
+  height: 80px;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  nav.stitch-navbar {
+    height: 96px;
+    padding: 0 48px;
+  }
+}
+
+.stitch-navbar-logo {
+  font-family: "Monument Extended", "Monument", sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: #b9c3ff;
+}
+
+@media (min-width: 768px) {
+  .stitch-navbar-logo {
+    font-size: 24px;
+  }
+}
+
+.glass-nav {
+  background: rgba(14, 19, 34, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0px 24px 48px rgba(102, 126, 234, 0.15);
+}
+
+/* Content offset when Stitch fixed navbar is present (80px mobile / 96px desktop) */
+.stitch-navbar-offset {
+  padding-top: 80px;
+}
+
+@media (min-width: 768px) {
+  .stitch-navbar-offset {
+    padding-top: 96px;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
