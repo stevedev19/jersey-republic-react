@@ -3,7 +3,7 @@ import ArchiveTopNav from "../../screens/homePage/ArchiveTopNav";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
-  onAdd: (item: CartItem) => void;
+  onAdd: (item: CartItem) => boolean;
   onRemove: (item: CartItem) => void;
   onDelete: (item: CartItem) => void;
   onDeleteAll: () => void;

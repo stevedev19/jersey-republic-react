@@ -6,7 +6,7 @@ import "../../../css/products.css";
 import { CartItem } from "../../../lib/types/search";
 
 interface ProductsPageProps {
-  onAdd: (item: CartItem) => void;
+  onAdd: (item: CartItem) => boolean;
 }
 
 export default function ProductsPage(props: ProductsPageProps) {

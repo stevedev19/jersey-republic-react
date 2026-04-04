@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -10,6 +10,7 @@ import { Product } from "../../../lib/types/product";
 import { CartItem } from "../../../lib/types/search";
 import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
+import { sweetTopSmallSuccessAlert } from "../../../lib/sweetAlert";
 import "../../../css/home.css";
 
 type ArchiveLandingProps = ArchiveTopNavProps;
@@ -126,6 +127,7 @@ function useDropCountdown() {
 
 export default function ArchiveLanding(props: ArchiveLandingProps) {
   const { onAdd } = props;
+  const history = useHistory();
   const { trendingDishes } = useSelector(trendingDishesRetriever);
   const trendingProducts = Array.isArray(trendingDishes) ? trendingDishes : [];
   const { newDishes } = useSelector(newDishesRetriever);
@@ -411,23 +413,9 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
                                 {product.productName}
                               </h4>
                             </NavLink>
-                            <p className="mb-6 line-clamp-2 text-sm font-headline uppercase tracking-widest text-outline">
+                            <p className="line-clamp-2 text-sm font-headline uppercase tracking-widest text-outline">
                               {subtitle}
                             </p>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-white">{price}</span>
-                              <button
-                                type="button"
-                                className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary-container transition-transform hover:scale-110"
-                                aria-label={`Add ${product.productName} to cart`}
-                                onClick={(e) => {
-                                  stopCardToggle(e);
-                                  onAdd(productToCartItem(product));
-                                }}
-                              >
-                                <span className="material-symbols-outlined">add_shopping_cart</span>
-                              </button>
-                            </div>
                           </div>
                         </div>
 
@@ -439,14 +427,39 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
                           />
                           <NavLink
                             to={`/products/${product._id}`}
-                            className="absolute inset-0 z-[1] block"
+                            className="trending-flip-back-cover-link absolute inset-0 z-0 block"
+                            tabIndex={-1}
                             aria-label={`View ${product.productName} — campaign image`}
                             onClick={stopCardToggle}
                           />
-                          <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-background/85 via-transparent to-transparent" />
-                          <p className="pointer-events-none absolute bottom-6 left-6 right-6 z-[3] text-[10px] font-monument font-bold tracking-[0.25em] text-white/80">
-                            CAMPAIGN
-                          </p>
+                          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/55 to-transparent" />
+                          <div className="trending-flip-back-actions absolute inset-x-0 bottom-0 z-[2] flex flex-col p-6 pt-12">
+                            <p className="mb-4 text-[10px] font-monument font-bold tracking-[0.25em] text-white/80">
+                              CAMPAIGN
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-xl font-bold text-white">{price}</span>
+                              <button
+                                type="button"
+                                className="trending-flip-cart-btn flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary-container transition-transform hover:scale-110 active:scale-95"
+                                aria-label={`Add ${product.productName} to cart`}
+                                onPointerDown={(e) => e.stopPropagation()}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const added = onAdd(productToCartItem(product));
+                                  if (added) {
+                                    sweetTopSmallSuccessAlert("Added to cart", 1800);
+                                    window.setTimeout(() => {
+                                      history.push("/products");
+                                    }, 0);
+                                  }
+                                }}
+                              >
+                                <span className="material-symbols-outlined">add_shopping_cart</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

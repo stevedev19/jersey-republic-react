@@ -46,7 +46,7 @@ const SORT_FILTERS: { value: string; label: string }[] = [
 ];
 
 interface ProductsProps {
-  onAdd: (item: CartItem) => void;
+  onAdd: (item: CartItem) => boolean;
 }
 
 export default function Products(props: ProductsProps) {

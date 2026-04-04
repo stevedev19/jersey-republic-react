@@ -10,7 +10,7 @@ import FloatingElements from "../FloatingElements";
 
 interface HomeNavbarProps {
   cartItems: CartItem[];
-  onAdd: (item: CartItem) => void;
+  onAdd: (item: CartItem) => boolean;
   onRemove: (item: CartItem) => void;
   onDelete: (item: CartItem) => void;
   onDeleteAll: () => void;

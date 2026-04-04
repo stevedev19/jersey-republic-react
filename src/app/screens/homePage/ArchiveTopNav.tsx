@@ -8,7 +8,8 @@ import { useGlobals } from "../../hooks/useGlobals";
 
 export interface ArchiveTopNavProps {
   cartItems: CartItem[];
-  onAdd: (item: CartItem) => void;
+  /** Returns true if the item was added; false if login was required instead. */
+  onAdd: (item: CartItem) => boolean;
   onRemove: (item: CartItem) => void;
   onDelete: (item: CartItem) => void;
   onDeleteAll: () => void;

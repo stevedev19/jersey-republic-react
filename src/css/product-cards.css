@@ -88,6 +88,28 @@
   background: #0a0f1e;
 }
 
+/* Full-bleed link sat above the image and (in 3D) could steal taps; visuals unchanged. */
+.trending-flip .trending-flip-back-cover-link {
+  pointer-events: none;
+}
+
+/* Lift actions above 3D backface so clicks register (Safari / hover-flip cards). */
+.trending-flip .trending-flip-back-actions {
+  position: absolute;
+  transform: translateZ(80px);
+  -webkit-transform: translateZ(80px);
+  z-index: 10;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.trending-flip .trending-flip-cart-btn {
+  position: relative;
+  z-index: 11;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
 .trending-flip .trending-flip-photo {
   position: absolute;
   inset: 0;

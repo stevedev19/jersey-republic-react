@@ -490,8 +490,8 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
                 <button
                   type="button"
                   onClick={() => {
-                    onAdd(segmentToCartItem(result));
-                    closeResult();
+                    const added = onAdd(segmentToCartItem(result));
+                    if (added) closeResult();
                   }}
                   className="rounded-full bg-[#667EEA] px-10 py-4 font-grotesk text-sm font-bold uppercase tracking-[2px] text-white shadow-[0_8px_24px_rgba(102,126,234,0.35)] transition-all hover:-translate-y-0.5 hover:bg-[#4A62D8]"
                 >

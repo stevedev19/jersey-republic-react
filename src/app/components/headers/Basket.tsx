@@ -20,7 +20,7 @@ function formatMoney(n: number): string {
 
 interface BasketProps {
   cartItems: CartItem[];
-  onAdd: (item: CartItem) => void;
+  onAdd: (item: CartItem) => boolean;
   onRemove: (item: CartItem) => void;
   onDelete: (item: CartItem) => void;
   onDeleteAll: () => void;

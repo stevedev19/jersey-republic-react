@@ -13,6 +13,7 @@ import {createSelector} from "reselect";
 import { retrieveNewDishes} from "./selector";
 import { Product } from "../../../lib/types/product";
 import { getImageUrl } from "../../../lib/config";
+import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 
 
@@ -37,7 +38,7 @@ export default function NewDishes() {
                     <CssVarsProvider>
                         {safeNewDishes.length !== 0 ? (
                         safeNewDishes.map((product: Product)=>{
-                            const productImages = Array.isArray(product.productImages) ? product.productImages : [];
+                            const productImages = normalizeProductImages(product.productImages);
                             const hasImages = productImages.length > 0;
                             const firstImage = hasImages ? productImages[0] : "";
                             const imagePath = hasImages

@@ -2,21 +2,20 @@ import React from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Product } from "../../../lib/types/product";
 import { getImageUrl } from "../../../lib/config";
+import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { CartItem } from "../../../lib/types/search";
 import { collectionLabel, isNewProduct, sizeLabel } from "./archiveCardUtils";
 
 export interface ArchiveProductCardProps {
   product: Product;
   onNavigate: (id: string) => void;
-  onAddToCart?: (item: CartItem) => void;
+  onAddToCart?: (item: CartItem) => boolean;
 }
 
 export default function ArchiveProductCard(props: ArchiveProductCardProps) {
   const { product, onNavigate, onAddToCart } = props;
 
-  const productImages = Array.isArray(product.productImages)
-    ? product.productImages
-    : [];
+  const productImages = normalizeProductImages(product.productImages);
   const hasImages = productImages.length > 0;
   const firstImage = hasImages ? productImages[0] : "";
   const imagePath = hasImages

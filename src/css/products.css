@@ -884,7 +884,7 @@
   --swiper-navigation-size: 22px;
 }
 
-/* PDP image gallery (no Swiper — avoids flicker from observer / duplicate slides) */
+/* PDP image gallery — main stage + Drift pane + Swiper thumbs + PhotoSwipe */
 .products-page .chosen-product .pdp-gallery {
   display: flex;
   flex-direction: column;
@@ -897,11 +897,50 @@
   position: relative;
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   min-height: 480px;
   contain: layout style;
   background: #16213e;
+}
+
+.products-page .chosen-product .pdp-gallery__stage-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  gap: 12px;
+  box-sizing: border-box;
+  padding: 0 4px;
+}
+
+.products-page .chosen-product .pdp-gallery__main-col {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-page .chosen-product .pdp-gallery__drift-pane {
+  display: none;
+  flex: 0 0 min(32vw, 280px);
+  max-width: 40%;
+  min-height: 200px;
+  align-self: stretch;
+  background: #16213e;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .products-page .chosen-product .pdp-gallery__drift-pane {
+    display: block;
+  }
 }
 
 .products-page .chosen-product .pdp-gallery__main {
@@ -918,6 +957,22 @@
   background: transparent;
   -webkit-user-drag: none;
   user-select: none;
+  cursor: zoom-in;
+}
+
+@keyframes pdp-gallery-main-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.products-page .chosen-product .pdp-gallery__main--enter {
+  animation: pdp-gallery-main-enter 400ms ease-out forwards;
 }
 
 .products-page .chosen-product .pdp-gallery__nav {
@@ -953,11 +1008,21 @@
 }
 
 .products-page .chosen-product .pdp-gallery__thumbs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 14px 12px 4px;
-  justify-content: center;
+  padding: 14px 8px 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.products-page .chosen-product .pdp-gallery__thumb-swiper {
+  width: 100%;
+  padding: 0 36px;
+  box-sizing: border-box;
+}
+
+.products-page .chosen-product .pdp-gallery__thumb-slide {
+  width: 64px !important;
+  height: 64px;
+  flex-shrink: 0;
 }
 
 .products-page .chosen-product .pdp-gallery__thumb {

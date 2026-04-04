@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ProductCollection } from "../../lib/enums/product.enum";
 import { getImageUrl } from "../../lib/config";
+import { normalizeProductImages } from "../../lib/normalizeProductImages";
 import ProductService from "../services/ProductService";
 import type { Product } from "../../lib/types/product";
 import "../../css/brands-megamenu.css";
@@ -104,9 +105,9 @@ export default function BrandsMegaMenu({
     };
   }, []);
 
-  const featuredImage = newestProduct?.productImages?.[0]
-    ? getImageUrl(newestProduct.productImages[0])
-    : "";
+  const featuredPaths = normalizeProductImages(newestProduct?.productImages);
+  const featuredImage =
+    featuredPaths[0] != null ? getImageUrl(featuredPaths[0]) : "";
   const featuredHref = newestProduct ? `/products/${newestProduct._id}` : "/products?order=createdAt";
   const featuredTitle = newestProduct?.productName ?? "Latest kits this week";
   const imgAlt = newestProduct?.productName ?? "";

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Route, Switch, useLocation, useHistory } from "react-router-dom";
 import HomePage from "./screens/homePage";
 import ProductsPage from "./screens/productsPage";
 import OrdersPage from "./screens/ordersPage";
@@ -17,6 +17,14 @@ import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
 import ParticleBackground from "./components/ParticleBackground";
+import CartAuthRequiredDialog from "./components/cart/CartAuthRequiredDialog";
+import { CartItem } from "../lib/types/search";
+import {
+  clearPendingCartItem,
+  savePendingCartItem,
+  takePendingCartItemIfFresh,
+} from "../lib/pendingCartStorage";
+import { sweetTopSmallSuccessAlert } from "../lib/sweetAlert";
 import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
@@ -24,17 +32,82 @@ import "../css/admin.css";
 
 function App() {
   const location = useLocation();
-  const pathTrim = (location.pathname || "/").replace(/\/+$/, "") || "/";
+  const history = useHistory();
+  const { pathname } = location;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname]);
+
+  const pathTrim = (pathname || "/").replace(/\/+$/, "") || "/";
   const isProductsRoute = location.pathname.startsWith("/products");
   const isArchiveHome = pathTrim === "/";
   const isRouletteRoute = pathTrim === "/roulette";
   const isExperienceRoute = location.pathname === "/sticky-cards";
-  const { setAuthMember } = useGlobals();
+  const { authMember, setAuthMember } = useGlobals();
 
-  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
+  const {
+    cartItems,
+    onAdd: addToCartInternal,
+    onRemove,
+    onDelete,
+    onDeleteAll,
+  } = useBasket();
   const [signupOpen, setSignupOpen] = useState<boolean>(false);
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
+  const [cartAuthPromptOpen, setCartAuthPromptOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const cartReturnPath = `${location.pathname}${location.search || ""}`;
+
+  const onAdd = useCallback(
+    (item: CartItem) => {
+      if (!authMember) {
+        savePendingCartItem(item, cartReturnPath);
+        setCartAuthPromptOpen(true);
+        return false;
+      }
+      addToCartInternal(item);
+      return true;
+    },
+    [authMember, addToCartInternal, cartReturnPath]
+  );
+
+  const addToCartRef = useRef(addToCartInternal);
+  addToCartRef.current = addToCartInternal;
+  const locationRef = useRef(location);
+  locationRef.current = location;
+  const historyRef = useRef(history);
+  historyRef.current = history;
+
+  useEffect(() => {
+    if (!authMember) return;
+    const pending = takePendingCartItemIfFresh();
+    if (!pending) return;
+    addToCartRef.current(pending.item);
+    sweetTopSmallSuccessAlert("Added to cart", 2000);
+    const here = `${locationRef.current.pathname}${locationRef.current.search || ""}`;
+    if (pending.returnPath && pending.returnPath !== here) {
+      historyRef.current.replace(pending.returnPath);
+    }
+  }, [authMember]);
+
+  const dismissCartAuthPrompt = useCallback(() => {
+    clearPendingCartItem();
+    setCartAuthPromptOpen(false);
+  }, []);
+
+  const openLoginFromCartPrompt = useCallback(() => {
+    setCartAuthPromptOpen(false);
+    setLoginOpen(true);
+  }, []);
+
+  const openSignupFromCartPrompt = useCallback(() => {
+    setCartAuthPromptOpen(false);
+    setSignupOpen(true);
+  }, []);
 
   const handleSignupClose = () => setSignupOpen(false);
   const handleLoginClose = () => setLoginOpen(false);
@@ -108,6 +181,13 @@ function App() {
         </Route>
       </Switch>
       {location.pathname !== "/admin" && <Footer />}
+
+      <CartAuthRequiredDialog
+        open={cartAuthPromptOpen}
+        onClose={dismissCartAuthPrompt}
+        onSignIn={openLoginFromCartPrompt}
+        onCreateAccount={openSignupFromCartPrompt}
+      />
 
       <AuthenticationModal
         signupOpen={signupOpen}
