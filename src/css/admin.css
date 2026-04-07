@@ -280,3 +280,47 @@
   }
 }
 
+/* Admin product form — jersey made year */
+.admin-made-year-field {
+  width: 100%;
+}
+
+.admin-made-year-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+}
+
+.admin-made-year-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ede8df;
+  background: rgba(255, 255, 255, 0.96);
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.admin-made-year-input::placeholder {
+  color: rgba(26, 26, 46, 0.45);
+}
+
+.admin-made-year-input:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+}
+
+.admin-made-year-help {
+  font-size: 11px;
+  color: #8b7355;
+  margin-top: 8px;
+  margin-bottom: 0;
+  line-height: 1.45;
+  max-width: 420px;
+}

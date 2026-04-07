@@ -1,7 +1,26 @@
 import { serverApi } from "../../lib/config";
 import axios from "axios";
+import Cookies from "universal-cookie";
 import { Order, OrderInquiry, OrderItemInput, OrderUpdateInput } from "../../lib/types/order";
 import { CartItem } from "../../lib/types/search";
+
+function getBearerToken(): string | undefined {
+  const fromCookie = new Cookies().get("accessToken");
+  if (fromCookie) return String(fromCookie);
+  if (typeof localStorage !== "undefined") {
+    const fromStorage = localStorage.getItem("accessToken");
+    if (fromStorage) return fromStorage;
+  }
+  return undefined;
+}
+
+function orderAuthAxiosOptions(): { withCredentials: true; headers: Record<string, string> } {
+  const token = getBearerToken();
+  return {
+    withCredentials: true,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  };
+}
 
 class OrderService {
   private readonly path: string;
@@ -21,9 +40,12 @@ class OrderService {
       });
 
       const url = `${this.path}order/create`;
-      const result = await axios.post(url, orderItems, {
-        withCredentials: true,
-      });
+      console.log("token in storage:", localStorage.getItem("accessToken"));
+      console.log("accessToken cookie present:", Boolean(new Cookies().get("accessToken")));
+      const authOptions = orderAuthAxiosOptions();
+      console.log("checkout Authorization header set:", Boolean(authOptions.headers.Authorization));
+
+      const result = await axios.post(url, orderItems, authOptions);
 
       console.log("createOrder:", result);
 
@@ -54,7 +76,7 @@ class OrderService {
         try{
        
       const url = `${this.path}order/update`
-      const result = await axios.post(url, input, {withCredentials: true})
+      const result = await axios.post(url, input, { withCredentials: true })
       console.log("updateOrder:", result)
 
       return result.data

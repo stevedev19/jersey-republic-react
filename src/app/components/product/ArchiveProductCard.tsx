@@ -23,7 +23,7 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
       ? firstImage
       : getImageUrl(firstImage)
     : "/img/noimage-list.svg";
-  const showNew = isNewProduct(product.createdAt);
+  const showNew = isNewProduct(product);
 
   return (
     <article

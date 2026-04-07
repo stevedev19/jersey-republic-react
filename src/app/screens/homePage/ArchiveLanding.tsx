@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import ArchiveTopNav, { ArchiveTopNavProps } from "./ArchiveTopNav";
 import ActiveUsers from "./ActiveUsers";
+import HomeNewDropsSection from "../../components/HomeNewDropsSection";
 import { retrieveTrendingDishes, retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { CartItem } from "../../../lib/types/search";
@@ -12,6 +13,7 @@ import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { sweetTopSmallSuccessAlert } from "../../../lib/sweetAlert";
 import "../../../css/home.css";
+import "../../../css/products.css";
 
 type ArchiveLandingProps = ArchiveTopNavProps;
 
@@ -128,6 +130,15 @@ function useDropCountdown() {
 export default function ArchiveLanding(props: ArchiveLandingProps) {
   const { onAdd } = props;
   const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash !== "#drops") return;
+    const t = window.setTimeout(() => {
+      document.getElementById("drops")?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+    return () => window.clearTimeout(t);
+  }, [location.pathname, location.hash]);
   const { trendingDishes } = useSelector(trendingDishesRetriever);
   const trendingProducts = Array.isArray(trendingDishes) ? trendingDishes : [];
   const { newDishes } = useSelector(newDishesRetriever);
@@ -189,7 +200,9 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
           </div>
         </section>
 
-        <section id="drops" className="py-24 bg-surface-container-low scroll-mt-24">
+        <HomeNewDropsSection />
+
+        <section id="featured-drop" className="py-24 bg-surface-container-low scroll-mt-24">
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row gap-12 items-center">
               <div className="w-full md:w-1/2 relative group">

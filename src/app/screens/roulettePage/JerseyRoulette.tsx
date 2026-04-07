@@ -11,7 +11,7 @@ import "../../../css/roulette.css";
 import { getWinningIndexFromRotation, ROULETTE_SEGMENT_COUNT } from "./spinMath";
 
 const HISTORY_KEY = "rouletteHistory";
-const SPIN_MS = 4000;
+const SPIN_MS = 5500;
 
 export type JerseyRoulettePageProps = ArchiveTopNavProps;
 
@@ -277,16 +277,17 @@ export default function JerseyRoulette(props: JerseyRoulettePageProps) {
     el.style.transition = "none";
     el.style.transform = `rotate(${prev}deg)`;
     void el.offsetHeight;
-    el.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+    el.style.transition = `transform ${SPIN_MS / 1000}s cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
     el.style.transform = `rotate(${nextCumulative}deg)`;
     cumulativeRotationRef.current = nextCumulative;
 
     stopTicks();
     let tickCount = 0;
+    const maxTicks = Math.ceil(SPIN_MS / 220) + 2;
     tickTimerRef.current = window.setInterval(() => {
       playTick();
       tickCount += 1;
-      if (tickCount > 20) stopTicks();
+      if (tickCount > maxTicks) stopTicks();
     }, 220);
 
     let completed = false;

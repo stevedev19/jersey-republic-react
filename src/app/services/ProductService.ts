@@ -1,6 +1,7 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
+import { NEW_DROPS_MIN_MADE_YEAR } from "../../lib/newDropsCatalog";
 
 function shuffleInPlace<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -68,6 +69,53 @@ class ProductService {
     } catch {
       return [];
     }
+  }
+
+  private normalizeCatalogProducts(data: unknown): Product[] {
+    if (Array.isArray(data)) return data as Product[];
+    if (data && typeof data === "object") {
+      const o = data as Record<string, unknown>;
+      if (Array.isArray(o.data)) return o.data as Product[];
+      if (Array.isArray(o.products)) return o.products as Product[];
+    }
+    return [];
+  }
+
+  /** GET /api/products/new-drops — returns null if request fails or body is empty. */
+  public async getNewDropsFromApi(options?: { signal?: AbortSignal }): Promise<Product[] | null> {
+    try {
+      const url = `${this.path}api/products/new-drops`;
+      const result = await axios.get(url, { signal: options?.signal });
+      const list = this.normalizeCatalogProducts(result.data);
+      return list.length ? list : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Full list for NEW_DROPS: tries /api/products/new-drops, then /api/products?filter=NEW_DROPS,
+   * then client filter madeYear >= NEW_DROPS_MIN_MADE_YEAR from product/all.
+   */
+  public async getProductsNewDropsFullList(options?: { signal?: AbortSignal }): Promise<Product[]> {
+    const primary = await this.getNewDropsFromApi(options);
+    if (primary) return primary;
+    try {
+      const url = `${this.path}api/products?filter=${encodeURIComponent("NEW_DROPS")}`;
+      const result = await axios.get(url, { signal: options?.signal });
+      const list = this.normalizeCatalogProducts(result.data);
+      if (list.length) return list;
+    } catch {
+      /* fallback below */
+    }
+    const pool = await this.getProducts({ page: 1, limit: 200, order: "createdAt" }, options);
+    return pool.filter((p) => (p.madeYear ?? 0) >= NEW_DROPS_MIN_MADE_YEAR);
+  }
+
+  /** Homepage grid: up to 6 products from the same sources as the full list. */
+  public async getNewDropsHomepage(options?: { signal?: AbortSignal }): Promise<Product[]> {
+    const list = await this.getProductsNewDropsFullList(options);
+    return list.slice(0, 6);
   }
 
   public async getProduct(productId: string): Promise<Product> {

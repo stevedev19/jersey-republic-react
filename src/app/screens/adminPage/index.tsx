@@ -19,6 +19,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import "../../../css/admin.css";
+import AdminProductForm from "./AdminProductForm";
 
 // Styled Components for Glassmorphism
 const GlassNavbar = styled(motion.div)`
@@ -195,6 +196,7 @@ export default function AdminPage() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [adminAuthed, setAdminAuthed] = useState(false);
 
   // Clear errors when modals are closed
   const handleCloseLogin = () => {
@@ -274,6 +276,7 @@ export default function AdminPage() {
       // Mock authentication - replace with actual API call
       if (loginData.username === "admin" && loginData.password === "admin123") {
         setLoginSuccess(true);
+        setAdminAuthed(true);
         setTimeout(() => {
           setLoginOpen(false);
           setLoginData({ username: "", password: "" });
@@ -313,6 +316,15 @@ export default function AdminPage() {
           </Typography>
           
           <Stack direction="row" spacing={2} alignItems="center">
+            {adminAuthed ? (
+              <GlowingButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setAdminAuthed(false)}
+              >
+                Exit product tools
+              </GlowingButton>
+            ) : null}
             <GlowingButton
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -404,6 +416,8 @@ export default function AdminPage() {
             </Typography>
           </DashboardCard>
         </Box>
+
+        {adminAuthed ? <AdminProductForm /> : null}
 
         {/* Signup Modal */}
         <Modal

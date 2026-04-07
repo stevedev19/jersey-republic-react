@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import Basket from "./Basket";
 import BrandsMegaMenu from "../BrandsMegaMenu";
 import NavAccountMenu from "./NavAccountMenu";
@@ -34,6 +34,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
+  const history = useHistory();
+  const location = useLocation();
   const [brandsMegaOpen, setBrandsMegaOpen] = useState(false);
   const brandsCloseTimerRef = useRef<number | null>(null);
 
@@ -85,9 +87,16 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             <Stack className="links">
               <Box className={"hover-line"}>
                 <NavLink
-                  to={{ pathname: "/", hash: "drops" }}
+                  to="/#drops"
                   activeClassName={"underline"}
                   isActive={(_m, loc) => loc.pathname === "/" && loc.hash === "#drops"}
+                  onClick={(e) => {
+                    if (location.pathname === "/") {
+                      e.preventDefault();
+                      document.getElementById("drops")?.scrollIntoView({ behavior: "smooth" });
+                      history.replace({ pathname: "/", hash: "drops" });
+                    }
+                  }}
                 >
                   Drops
                 </NavLink>

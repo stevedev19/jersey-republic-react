@@ -1470,6 +1470,39 @@
   font-weight: 700 !important;
 }
 
+.archive-filter-btn--new-drops {
+  color: #f7ba85 !important;
+  font-weight: 700 !important;
+}
+
+.archive-filter-btn--new-drops-active {
+  background: rgba(247, 186, 133, 0.15) !important;
+  border-left: 2px solid #f7ba85 !important;
+  color: #f7ba85 !important;
+  font-weight: 700 !important;
+}
+
+.archive-filter-btn__new-pill {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #f7ba85;
+  color: #0e1322;
+  font-size: 9px;
+  font-weight: 700;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+}
+
+.products-archive__empty--new-drops {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  color: #8a94a6;
+  text-align: center;
+  padding: 40px;
+}
+
 .products-archive__main {
   flex: 1;
   min-width: 0;

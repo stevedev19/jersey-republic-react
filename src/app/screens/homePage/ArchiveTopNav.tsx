@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import BrandsMegaMenu from "../../components/BrandsMegaMenu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import Basket from "../../components/headers/Basket";
 import NavAccountMenu from "../../components/headers/NavAccountMenu";
 import { CartItem } from "../../../lib/types/search";
@@ -32,6 +32,8 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
     handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
+  const history = useHistory();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [brandsMegaOpen, setBrandsMegaOpen] = useState(false);
   const brandsCloseTimerRef = useRef<number | null>(null);
@@ -103,11 +105,18 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
             } absolute left-0 top-full z-[60] w-full flex-col gap-5 border-b border-[rgba(68,70,83,0.2)] bg-[rgba(22,24,39,0.98)] px-6 py-4 backdrop-blur-md md:relative md:top-auto md:z-auto md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:border-0 md:bg-transparent md:px-0 md:py-0`}
           >
             <NavLink
-              to={{ pathname: "/", hash: "drops" }}
+              to="/#drops"
               className={linkMain}
               activeClassName={linkMainActive}
               isActive={(_match, loc) => loc.pathname === "/" && loc.hash === "#drops"}
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                setMobileOpen(false);
+                if (location.pathname === "/") {
+                  e.preventDefault();
+                  document.getElementById("drops")?.scrollIntoView({ behavior: "smooth" });
+                  history.replace({ pathname: "/", hash: "drops" });
+                }
+              }}
             >
               Drops
             </NavLink>
