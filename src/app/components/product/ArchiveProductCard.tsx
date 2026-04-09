@@ -4,16 +4,18 @@ import { Product } from "../../../lib/types/product";
 import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { CartItem } from "../../../lib/types/search";
-import { collectionLabel, isNewProduct, sizeLabel } from "./archiveCardUtils";
+import { collectionLabel, sizeLabel } from "./archiveCardUtils";
 
 export interface ArchiveProductCardProps {
   product: Product;
   onNavigate: (id: string) => void;
   onAddToCart?: (item: CartItem) => boolean;
+  /** When true (New Drops catalog only), show the NEW badge on the card image */
+  showNewBadge?: boolean;
 }
 
 export default function ArchiveProductCard(props: ArchiveProductCardProps) {
-  const { product, onNavigate, onAddToCart } = props;
+  const { product, onNavigate, onAddToCart, showNewBadge = false } = props;
 
   const productImages = normalizeProductImages(product.productImages);
   const hasImages = productImages.length > 0;
@@ -23,7 +25,6 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
       ? firstImage
       : getImageUrl(firstImage)
     : "/img/noimage-list.svg";
-  const showNew = isNewProduct(product);
 
   return (
     <article
@@ -46,7 +47,7 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
           key={`${product._id}-${imagePath}`}
         />
         <span className="archive-card__badge-size">{sizeLabel(product)}</span>
-        {showNew ? <span className="archive-card__badge-new">NEW</span> : null}
+        {showNewBadge ? <span className="archive-card__badge-new">NEW</span> : null}
         {onAddToCart ? (
           <button
             type="button"

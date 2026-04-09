@@ -1,11 +1,10 @@
 const resolveBaseUrl = (): string => {
+  /** Prefer `REACT_APP_API_URL` in `.env` (see `.env.example`). Never use the CRA dev port as the API. */
   const envUrl = process.env.REACT_APP_API_URL?.trim();
   if (envUrl) return envUrl.replace(/\/+$/, "");
 
   /**
-   * When REACT_APP_API_URL is missing in development, default to the same host
-   * as `package.json` "proxy" so uploads/static files resolve (CRA serves the
-   * app on :3000; images are usually hosted on the API, e.g. :3003).
+   * Dev fallback matches `package.json` "proxy": API on :3003, React on :3000 (`PORT` in `.env`).
    */
   if (process.env.NODE_ENV === "development") {
     return "http://localhost:3003".replace(/\/+$/, "");

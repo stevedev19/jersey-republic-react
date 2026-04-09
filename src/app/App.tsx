@@ -8,6 +8,7 @@ import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
 import HelpPage from "./screens/helpPage";
 import AdminPage from "./screens/adminPage";
+import AdminJerseyManagement from "./screens/adminPage/AdminJerseyManagement";
 import StickyCardsPage from "./screens/stickyCardsPage";
 import JerseyRoulette from "./screens/roulettePage";
 import useBasket from "./hooks/useBasket";
@@ -43,6 +44,7 @@ function App() {
 
   const pathTrim = (pathname || "/").replace(/\/+$/, "") || "/";
   const isProductsRoute = location.pathname.startsWith("/products");
+  const isAdminRoute = location.pathname.startsWith("/admin");
   const isArchiveHome = pathTrim === "/";
   const isRouletteRoute = pathTrim === "/roulette";
   const isExperienceRoute = location.pathname === "/sticky-cards";
@@ -148,12 +150,12 @@ function App() {
 
   return (
     <>
-      {!isProductsRoute && !isArchiveHome && !isRouletteRoute && !isExperienceRoute && (
-        <ParticleBackground />
-      )}
-      {location.pathname !== "/" && location.pathname !== "/admin" ? (
-        <OtherNavbar {...navbarProps} />
-      ) : null}
+      {!isProductsRoute &&
+        !isArchiveHome &&
+        !isRouletteRoute &&
+        !isExperienceRoute &&
+        !isAdminRoute && <ParticleBackground />}
+      {location.pathname !== "/" && !isAdminRoute ? <OtherNavbar {...navbarProps} /> : null}
       <Switch>
         <Route path="/products">
           <ProductsPage onAdd={onAdd} />
@@ -173,14 +175,17 @@ function App() {
         <Route path="/roulette">
           <JerseyRoulette {...navbarProps} />
         </Route>
-        <Route path="/admin">
+        <Route path="/admin/product/all">
+          <AdminJerseyManagement />
+        </Route>
+        <Route exact path="/admin">
           <AdminPage />
         </Route>
         <Route path="/">
           <HomePage {...navbarProps} />
         </Route>
       </Switch>
-      {location.pathname !== "/admin" && <Footer />}
+      {!isAdminRoute && <Footer />}
 
       <CartAuthRequiredDialog
         open={cartAuthPromptOpen}

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import ArchiveTopNav, { ArchiveTopNavProps } from "./ArchiveTopNav";
 import ActiveUsers from "./ActiveUsers";
-import HomeNewDropsSection from "../../components/HomeNewDropsSection";
+import { HomeNewDropsSection } from "../../components/HomeNewDropsSection";
 import { retrieveTrendingDishes, retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { CartItem } from "../../../lib/types/search";
@@ -200,7 +200,7 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
           </div>
         </section>
 
-        <HomeNewDropsSection />
+        <HomeNewDropsSection onAdd={onAdd} />
 
         <section id="featured-drop" className="py-24 bg-surface-container-low scroll-mt-24">
           <div className="container mx-auto px-6 md:px-12">

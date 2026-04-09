@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
+import { ProductStatus } from "../../lib/enums/product.enum";
 import { NEW_DROPS_MIN_MADE_YEAR } from "../../lib/newDropsCatalog";
 
 function shuffleInPlace<T>(arr: T[]): T[] {
@@ -127,6 +128,41 @@ class ProductService {
       return data;
     } catch (err) {
       console.log("Error getProduct", err);
+      throw err;
+    }
+  }
+
+  /**
+   * Update jersey status (admin). Override URL/method when the server contract differs.
+   * Default: PUT `${base}product/:id` with body `{ productStatus }`.
+   */
+  public async updateJerseyStatus(
+    productId: string,
+    productStatus: ProductStatus,
+    options?: {
+      /** Full URL, or include `{id}` for substitution (e.g. `${serverApi}api/products/{id}/status`) */
+      patchUrl?: string;
+      method?: "put" | "patch" | "post";
+      axiosConfig?: AxiosRequestConfig;
+    }
+  ): Promise<void> {
+    const method = options?.method ?? "put";
+    const rawUrl =
+      options?.patchUrl?.replace(/\{id\}/g, encodeURIComponent(productId)) ??
+      `${this.path}product/${productId}`;
+    const response = await axios.request({
+      url: rawUrl,
+      method,
+      data: { productStatus },
+      withCredentials: true,
+      validateStatus: () => true,
+      ...options?.axiosConfig,
+    });
+    if (response.status < 200 || response.status >= 300) {
+      const err = new Error(
+        `updateJerseyStatus failed: HTTP ${response.status} ${response.statusText || ""}`.trim()
+      ) as Error & { response?: typeof response };
+      err.response = response;
       throw err;
     }
   }

@@ -408,6 +408,7 @@ export default function Products(props: ProductsProps) {
                     product={product}
                     onNavigate={chooseDishHandler}
                     onAddToCart={onAdd}
+                    showNewBadge={catalogFilter === "NEW_DROPS"}
                   />
                 ))
               ) : (
