@@ -8,6 +8,7 @@ import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
 import HelpPage from "./screens/helpPage";
 import AdminPage from "./screens/adminPage";
+import AdminLoginPage from "./screens/adminPage/AdminLoginPage";
 import AdminJerseyManagement from "./screens/adminPage/AdminJerseyManagement";
 import StickyCardsPage from "./screens/stickyCardsPage";
 import JerseyRoulette from "./screens/roulettePage";
@@ -177,6 +178,9 @@ function App() {
         </Route>
         <Route path="/admin/product/all">
           <AdminJerseyManagement />
+        </Route>
+        <Route exact path="/admin/login">
+          <AdminLoginPage />
         </Route>
         <Route exact path="/admin">
           <AdminPage />

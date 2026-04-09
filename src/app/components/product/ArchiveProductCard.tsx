@@ -12,10 +12,12 @@ export interface ArchiveProductCardProps {
   onAddToCart?: (item: CartItem) => boolean;
   /** When true (New Drops catalog only), show the NEW badge on the card image */
   showNewBadge?: boolean;
+  /** When false, hide the size/volume pill on the image (e.g. homepage #drops) */
+  showSizeBadge?: boolean;
 }
 
 export default function ArchiveProductCard(props: ArchiveProductCardProps) {
-  const { product, onNavigate, onAddToCart, showNewBadge = false } = props;
+  const { product, onNavigate, onAddToCart, showNewBadge = false, showSizeBadge = true } = props;
 
   const productImages = normalizeProductImages(product.productImages);
   const hasImages = productImages.length > 0;
@@ -46,7 +48,9 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
           decoding="async"
           key={`${product._id}-${imagePath}`}
         />
-        <span className="archive-card__badge-size">{sizeLabel(product)}</span>
+        {showSizeBadge ? (
+          <span className="archive-card__badge-size">{sizeLabel(product)}</span>
+        ) : null}
         {showNewBadge ? <span className="archive-card__badge-new">NEW</span> : null}
         {onAddToCart ? (
           <button

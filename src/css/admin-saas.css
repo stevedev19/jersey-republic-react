@@ -1,0 +1,406 @@
+/* Jersey Republic — admin public shell (/admin, /admin/login). Light, minimal SaaS. */
+
+.jr-admin-shell {
+  min-height: 100vh;
+  background: #fafafa;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+.jr-admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+.jr-admin-nav-logo {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.jr-admin-nav-logo:hover {
+  color: #0f172a;
+}
+
+.jr-admin-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.jr-admin-nav-link {
+  font-size: 14px;
+  font-weight: 400;
+  color: #64748b;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.jr-admin-nav-link:hover {
+  color: #0f172a;
+}
+
+.jr-admin-nav-link.is-active {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+/* Home hero */
+.jr-admin-home-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 64px;
+  text-align: center;
+}
+
+.jr-admin-home-inner {
+  max-width: 560px;
+  width: 100%;
+}
+
+.jr-admin-home-title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+.jr-admin-home-tagline {
+  margin: 0 0 36px;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.jr-admin-home-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.jr-admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: #0f172a;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.jr-admin-btn-primary:hover {
+  background: #1e293b;
+  color: #fff;
+}
+
+.jr-admin-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.jr-admin-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.jr-admin-btn-secondary:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.jr-admin-signedin {
+  margin-top: 48px;
+  padding: 20px 24px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+}
+
+.jr-admin-signedin p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.jr-admin-signedin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Login page */
+.jr-admin-login-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px 64px;
+}
+
+.jr-admin-login-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.jr-admin-login-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.jr-admin-login-heading {
+  margin: 0 0 28px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #0f172a;
+}
+
+.jr-admin-field {
+  margin-bottom: 20px;
+}
+
+.jr-admin-field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.jr-admin-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.jr-admin-input::placeholder {
+  color: #94a3b8;
+}
+
+.jr-admin-input:hover {
+  border-color: #94a3b8;
+}
+
+.jr-admin-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.jr-admin-login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.jr-admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+}
+
+.jr-admin-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+.jr-admin-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6366f1;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.jr-admin-link:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+.jr-admin-login-submit {
+  width: 100%;
+  height: 44px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.jr-admin-alert {
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+.jr-admin-alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.jr-admin-alert-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.jr-admin-login-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.jr-admin-login-footer a {
+  color: #6366f1;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.jr-admin-login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Signup modal (minimal) */
+.jr-admin-modal-backdrop {
+  background: rgba(15, 23, 42, 0.15) !important;
+}
+
+.jr-admin-modal-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+.jr-admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.jr-admin-modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.jr-admin-modal-close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.jr-admin-modal-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@media (max-width: 480px) {
+  .jr-admin-login-card {
+    padding: 24px 16px;
+  }
+
+  .jr-admin-nav {
+    padding: 0 16px;
+  }
+
+  .jr-admin-nav-links {
+    gap: 16px;
+  }
+}

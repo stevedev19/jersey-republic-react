@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Product } from "../../lib/types/product";
 import { CartItem } from "../../lib/types/search";
 import { getImageUrl } from "../../lib/config";
 import { normalizeProductImages } from "../../lib/normalizeProductImages";
-import { ProductSize } from "../../lib/enums/product.enum";
-import { collectionLabel, sizeLabel } from "./product/archiveCardUtils";
+import { collectionLabel } from "./product/archiveCardUtils";
 import { fetchNewDropsPageData, NewDropsWindow } from "../../lib/newDropsApi";
 import { sweetTopSmallSuccessAlert } from "../../lib/sweetAlert";
+import { JerseySwiperCarousel, JerseySwiperItem } from "./JerseySwiperCarousel";
 
+const ACCENT = "#FF6B35";
+const BG_NAVY = "#0a0f1e";
 const fontGrotesk = '"Space Grotesk", sans-serif';
 const fontMonument = '"Monument Extended", "Monument", sans-serif';
-
-const LOW_STOCK_MAX = 10;
 
 export interface HomeNewDropsSectionProps {
   /** Cart add handler from shell — optional hides quick-add buttons */
@@ -24,11 +24,6 @@ function cardImage(product: Product): string {
   if (imgs.length === 0) return "/img/noimage-list.svg";
   const first = imgs[0];
   return first.startsWith("http") ? first : getImageUrl(first) || "/img/noimage-list.svg";
-}
-
-function showNewDropsSizeBadge(product: Product): boolean {
-  const s = product.productSize;
-  return s !== ProductSize.L && s !== ProductSize.XL;
 }
 
 function productToCartItem(product: Product): CartItem {
@@ -59,68 +54,30 @@ function windowProgressPercent(w: NewDropsWindow): number {
   return Math.min(100, Math.max(0, pct));
 }
 
-type BadgeKind = "latest" | "popular" | "low-stock";
-
-function computeBadgeMeta(products: Product[]): Map<string, { kind: BadgeKind; label: string }> {
-  const map = new Map<string, { kind: BadgeKind; label: string }>();
-  if (!products.length) return map;
-
-  let newestId = products[0]._id;
-  let newestT = new Date(products[0].createdAt).getTime();
-  let maxViews = -1;
-  let popularId = products[0]._id;
+function newestProductId(products: Product[]): string | null {
+  if (!products.length) return null;
+  let id = products[0]._id;
+  let best = new Date(products[0].createdAt).getTime();
   for (const p of products) {
     const t = new Date(p.createdAt).getTime();
-    if (Number.isFinite(t) && t >= newestT) {
-      newestT = t;
-      newestId = p._id;
-    }
-    if (p.productViews > maxViews) {
-      maxViews = p.productViews;
-      popularId = p._id;
+    if (Number.isFinite(t) && t >= best) {
+      best = t;
+      id = p._id;
     }
   }
-
-  for (const p of products) {
-    const left = p.productLeftCount ?? 0;
-    if (left <= LOW_STOCK_MAX) {
-      map.set(p._id, { kind: "low-stock", label: `${Math.max(0, left)} left` });
-      continue;
-    }
-    if (p._id === popularId && maxViews > 0) {
-      map.set(p._id, { kind: "popular", label: "Popular" });
-      continue;
-    }
-    if (p._id === newestId) {
-      map.set(p._id, { kind: "latest", label: "Latest drop" });
-      continue;
-    }
-    map.set(p._id, { kind: "latest", label: "Latest drop" });
-  }
-  return map;
+  return id;
 }
 
-function badgeStyles(kind: BadgeKind): React.CSSProperties {
-  const base: React.CSSProperties = {
-    position: "absolute",
-    top: 12,
-    left: 12,
-    zIndex: 2,
-    borderRadius: 999,
-    padding: "4px 10px",
-    fontFamily: fontGrotesk,
-    fontSize: 9,
-    fontWeight: 700,
-    letterSpacing: 1,
-    textTransform: "uppercase",
-  };
-  if (kind === "latest") {
-    return { ...base, background: "#f7ba85", color: "#0e1322" };
-  }
-  if (kind === "popular") {
-    return { ...base, background: "#c62828", color: "#ffffff" };
-  }
-  return { ...base, background: "rgba(138, 148, 166, 0.95)", color: "#0e1322" };
+function productsToJerseyItems(products: Product[], latestId: string | null): JerseySwiperItem[] {
+  return products.map((product) => ({
+    id: product._id,
+    name: product.productName,
+    league: collectionLabel(product.productCollection),
+    year: product.madeYear ?? product.uniformSeason ?? null,
+    price: product.productPrice,
+    imageUrl: cardImage(product),
+    isLatestDrop: latestId != null && product._id === latestId,
+  }));
 }
 
 export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.ReactElement {
@@ -129,7 +86,11 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
   const [dropWindow, setDropWindow] = useState<NewDropsWindow | null>(null);
   const [loaded, setLoaded] = useState(false);
 
-  const badgeMeta = useMemo(() => computeBadgeMeta(newDrops), [newDrops]);
+  const latestId = useMemo(() => newestProductId(newDrops), [newDrops]);
+  const jerseyItems = useMemo(
+    () => productsToJerseyItems(newDrops, latestId),
+    [newDrops, latestId]
+  );
 
   useEffect(() => {
     const ac = new AbortController();
@@ -151,23 +112,26 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
 
   const progressPct = dropWindow ? windowProgressPercent(dropWindow) : 0;
 
-  const quickAdd = (e: React.MouseEvent, product: Product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!onAdd) return;
-    const added = onAdd(productToCartItem(product));
-    if (added) {
-      sweetTopSmallSuccessAlert("Added to cart", 1800);
-      window.setTimeout(() => history.push("/products"), 0);
-    }
-  };
+  const handleAddById = useCallback(
+    (id: string) => {
+      if (!onAdd) return;
+      const product = newDrops.find((p) => p._id === id);
+      if (!product) return;
+      const added = onAdd(productToCartItem(product));
+      if (added) {
+        sweetTopSmallSuccessAlert("Added to cart", 1800);
+        window.setTimeout(() => history.push("/products"), 0);
+      }
+    },
+    [newDrops, onAdd, history]
+  );
 
   return (
     <section
       id="drops"
       className="home-new-drops scroll-mt-28"
       style={{
-        background: "#0e1322",
+        background: BG_NAVY,
         padding: "80px 64px",
         boxSizing: "border-box",
       }}
@@ -179,7 +143,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            marginBottom: dropWindow ? 16 : 48,
+            marginBottom: 36,
             flexWrap: "wrap",
             gap: "12px 24px",
           }}
@@ -192,7 +156,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                 fontWeight: 700,
                 letterSpacing: 5,
                 textTransform: "uppercase",
-                color: "#f7ba85",
+                color: ACCENT,
                 margin: "0 0 12px 0",
               }}
             >
@@ -214,7 +178,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
               style={{
                 fontFamily: fontGrotesk,
                 fontSize: 14,
-                color: "#8a94a6",
+                color: "rgba(138, 148, 166, 0.95)",
                 marginTop: 8,
                 marginBottom: 0,
               }}
@@ -238,7 +202,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                 style={{
                   fontFamily: fontGrotesk,
                   fontSize: 11,
-                  color: "#8a94a6",
+                  color: "rgba(138, 148, 166, 0.95)",
                   letterSpacing: 1,
                   margin: 0,
                 }}
@@ -253,7 +217,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: 2,
-                color: "#667eea",
+                color: ACCENT,
                 textDecoration: "none",
               }}
               className="home-new-drops__view-all"
@@ -263,67 +227,12 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
           </div>
         </header>
 
-        {dropWindow ? (
-          <div
-            className="home-new-drops__progress-row"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: 28,
-              flexWrap: "wrap",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: fontGrotesk,
-                fontSize: 11,
-                color: "#8a94a6",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Window closes in
-            </span>
-            <div
-              style={{
-                flex: "1 1 120px",
-                height: 3,
-                borderRadius: 2,
-                background: "rgba(255,255,255,0.08)",
-                overflow: "hidden",
-                minWidth: 80,
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  width: `${progressPct}%`,
-                  background: "linear-gradient(90deg, #f7ba85 0%, #e65100 100%)",
-                  borderRadius: 2,
-                  transition: "width 0.4s ease",
-                }}
-              />
-            </div>
-            <span
-              style={{
-                fontFamily: fontGrotesk,
-                fontSize: 11,
-                fontWeight: 700,
-                color: "#f7ba85",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {dropWindow.daysRemaining} days left
-            </span>
-          </div>
-        ) : null}
-
         {!loaded ? null : newDrops.length === 0 ? (
           <div
             style={{
               padding: 60,
               textAlign: "center",
-              border: "1px dashed rgba(255,255,255,0.1)",
+              border: "1px dashed rgba(255,255,255,0.12)",
               borderRadius: 16,
             }}
           >
@@ -341,7 +250,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
               style={{
                 fontFamily: fontGrotesk,
                 fontSize: 13,
-                color: "#8a94a6",
+                color: "rgba(138, 148, 166, 0.95)",
                 marginTop: 8,
                 marginBottom: 0,
               }}
@@ -350,167 +259,27 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
             </p>
           </div>
         ) : (
-          <div className="home-new-drops__grid">
-            {newDrops.map((product) => {
-              const badge = badgeMeta.get(product._id) ?? {
-                kind: "latest" as const,
-                label: "Latest drop",
-              };
-              return (
-                <div
-                  key={product._id}
-                  className="home-new-drops__card-wrap archive-card"
-                >
-                  <div className="archive-card__image" style={{ position: "relative" }}>
-                    <Link
-                      to={`/products/${product._id}`}
-                      className="home-new-drops__card-img-link"
-                      style={{ textDecoration: "none" }}
-                      aria-label={`View ${product.productName}`}
-                    >
-                      <span style={badgeStyles(badge.kind)}>{badge.label}</span>
-                      <img src={cardImage(product)} alt="" decoding="async" />
-                    </Link>
-                    {showNewDropsSizeBadge(product) ? (
-                      <span className="archive-card__badge-size">{sizeLabel(product)}</span>
-                    ) : null}
-                    {onAdd ? (
-                      <button
-                        type="button"
-                        className="home-new-drops__quick-add"
-                        aria-label={`Add ${product.productName} to cart`}
-                        onClick={(e) => quickAdd(e, product)}
-                      >
-                        +
-                      </button>
-                    ) : null}
-                  </div>
-                  <Link
-                    to={`/products/${product._id}`}
-                    style={{ textDecoration: "none", color: "inherit", display: "block" }}
-                  >
-                    <div className="archive-card__body">
-                      <h2 className="archive-card__name">{product.productName}</h2>
-                      <p className="archive-card__league">
-                        {collectionLabel(product.productCollection)}
-                      </p>
-                      {product.madeYear != null ? (
-                        <p
-                          style={{
-                            fontFamily: fontGrotesk,
-                            fontSize: 10,
-                            color: "#8a94a6",
-                            margin: "4px 0 0 0",
-                          }}
-                        >
-                          Made: {product.madeYear}
-                        </p>
-                      ) : null}
-                      <div className="archive-card__row home-new-drops__price-row">
-                        <span className="archive-card__price">${product.productPrice}</span>
-                        <span className="home-new-drops__currency">USD</span>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
+          <JerseySwiperCarousel
+            jerseys={jerseyItems}
+            daysRemaining={dropWindow?.daysRemaining ?? null}
+            progressPercent={progressPct}
+            onAddToCart={onAdd ? handleAddById : undefined}
+          />
         )}
       </div>
       <style>{`
-        .home-new-drops__grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-        .home-new-drops .home-new-drops__card-img-link {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          padding: 16px;
-          box-sizing: border-box;
-          line-height: 0;
-        }
-        .home-new-drops .archive-card__image img {
-          width: auto;
-          height: auto;
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
-          object-position: center;
-          padding: 0;
-        }
-        .home-new-drops__card-wrap {
-          position: relative;
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-        .home-new-drops__card-wrap:hover {
-          transform: translateY(-2px);
-          border-color: rgba(102, 126, 234, 0.35);
-          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-        }
-        .home-new-drops__price-row {
-          display: flex;
-          align-items: baseline;
-          gap: 6px;
-          flex-wrap: wrap;
-        }
-        .home-new-drops__currency {
-          font-family: ${fontGrotesk};
-          font-size: 10px;
-          font-weight: 500;
-          color: rgba(138, 148, 166, 0.75);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-        }
-        .home-new-drops__quick-add {
-          position: absolute;
-          right: 10px;
-          bottom: 10px;
-          z-index: 4;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          border: none;
-          padding: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          line-height: 1;
-          font-weight: 700;
-          cursor: pointer;
-          background: #667eea;
-          color: #fff;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.45);
-          transition: transform 0.15s ease, background 0.15s ease;
-        }
-        .home-new-drops__quick-add:hover {
-          transform: scale(1.06);
-          background: #4a62d8;
-        }
-        .home-new-drops__quick-add:active {
-          transform: scale(0.96);
-        }
-        @media (max-width: 1024px) {
-          .home-new-drops__grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
         @media (max-width: 640px) {
           .home-new-drops {
             padding: 48px 24px !important;
           }
-          .home-new-drops__grid {
-            grid-template-columns: 1fr !important;
-          }
         }
         .home-new-drops__view-all:hover {
           color: #ffffff !important;
+        }
+        /* No size pills on homepage new-drops cards (#drops) */
+        #drops .archive-card__badge-size,
+        .home-new-drops .archive-card__badge-size {
+          display: none !important;
         }
       `}</style>
     </section>
