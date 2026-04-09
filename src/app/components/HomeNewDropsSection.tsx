@@ -4,6 +4,7 @@ import { Product } from "../../lib/types/product";
 import { CartItem } from "../../lib/types/search";
 import { getImageUrl } from "../../lib/config";
 import { normalizeProductImages } from "../../lib/normalizeProductImages";
+import { ProductSize } from "../../lib/enums/product.enum";
 import { collectionLabel, sizeLabel } from "./product/archiveCardUtils";
 import { fetchNewDropsPageData, NewDropsWindow } from "../../lib/newDropsApi";
 import { sweetTopSmallSuccessAlert } from "../../lib/sweetAlert";
@@ -23,6 +24,11 @@ function cardImage(product: Product): string {
   if (imgs.length === 0) return "/img/noimage-list.svg";
   const first = imgs[0];
   return first.startsWith("http") ? first : getImageUrl(first) || "/img/noimage-list.svg";
+}
+
+function showNewDropsSizeBadge(product: Product): boolean {
+  const s = product.productSize;
+  return s !== ProductSize.L && s !== ProductSize.XL;
 }
 
 function productToCartItem(product: Product): CartItem {
@@ -359,13 +365,15 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                     <Link
                       to={`/products/${product._id}`}
                       className="home-new-drops__card-img-link"
-                      style={{ display: "block", lineHeight: 0, textDecoration: "none" }}
+                      style={{ textDecoration: "none" }}
                       aria-label={`View ${product.productName}`}
                     >
                       <span style={badgeStyles(badge.kind)}>{badge.label}</span>
                       <img src={cardImage(product)} alt="" decoding="async" />
                     </Link>
-                    <span className="archive-card__badge-size">{sizeLabel(product)}</span>
+                    {showNewDropsSizeBadge(product) ? (
+                      <span className="archive-card__badge-size">{sizeLabel(product)}</span>
+                    ) : null}
                     {onAdd ? (
                       <button
                         type="button"
@@ -415,6 +423,25 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 16px;
+        }
+        .home-new-drops .home-new-drops__card-img-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          padding: 16px;
+          box-sizing: border-box;
+          line-height: 0;
+        }
+        .home-new-drops .archive-card__image img {
+          width: auto;
+          height: auto;
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+          object-position: center;
+          padding: 0;
         }
         .home-new-drops__card-wrap {
           position: relative;
