@@ -44,7 +44,9 @@ class MemberService {
       const result = await axios.post(url, input, { withCredentials: true });
 
       const member: Member = result.data.member;
+      const token: string = result.data.accessToken;
       localStorage.setItem("memberData", JSON.stringify(member));
+      if (token) localStorage.setItem("accessToken", token);
       return member;
     } catch (err) {
       console.log("Error signup", err);
@@ -58,7 +60,9 @@ class MemberService {
       const result = await axios.post(url, input, { withCredentials: true });
 
       const member: Member = result.data.member;
+      const token: string = result.data.accessToken;
       localStorage.setItem("memberData", JSON.stringify(member));
+      if (token) localStorage.setItem("accessToken", token);
       return member;
     } catch (err) {
       console.log("Error login", err);
@@ -73,6 +77,7 @@ class MemberService {
       console.log("logout", result);
 
       localStorage.removeItem("memberData");
+      localStorage.removeItem("accessToken");
     } catch (err) {
       console.log("Error logout", err);
       throw err;

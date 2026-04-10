@@ -135,41 +135,32 @@ export default function PausedOrders(props: PausedOrderProps) {
                 <Box className="box-total">
                   <p>Product price</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img
-                    src="/icons/plus.svg"
-                    style={{ marginLeft: "20px" }}
-                    alt=""
-                  />
+                  <img src="/icons/plus.svg" style={{ marginLeft: "20px" }} alt="" />
                   <p>Delivery cost</p>
-                   <p>${order.orderDelivery}</p>
-                  <img
-                    src="/icons/pause.svg"
-                    style={{ marginLeft: "20px" }}
-                    alt=""
-                  />
+                  <p>${order.orderDelivery}</p>
+                  <img src="/icons/pause.svg" style={{ marginLeft: "20px" }} alt="" />
                   <p>Total</p>
-                   <p>${order.orderTotal}</p>
+                  <p>${order.orderTotal}</p>
                 </Box>
-                <Button
-                  value={order._id}
-                  variant="contained"
-                  color="secondary"
-                  className="cancel-button"
-                  sx={{ marginRight: "20px", marginLeft: "20px" }}
-                  onClick={deleteOrderHandler}
-                >
-                  Cancel
-                </Button>
-             <Button
-                  value={order._id}
-                  variant="contained"
-                  className="pay-button"
-                  onClick={processOrderHandler}
-                  sx={{ marginRight: "20px" }}
-                >
-            Payment
-            </Button>
-
+                <Box className="order-card-actions">
+                  <Button
+                    value={order._id}
+                    variant="contained"
+                    color="secondary"
+                    className="cancel-button"
+                    onClick={deleteOrderHandler}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    value={order._id}
+                    variant="contained"
+                    className="pay-button"
+                    onClick={processOrderHandler}
+                  >
+                    Payment
+                  </Button>
+                </Box>
               </Box>
             </Box>
           );

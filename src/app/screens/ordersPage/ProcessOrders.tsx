@@ -111,32 +111,24 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
                 <Box className="box-total">
                   <p>Product price</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img
-                    src="/icons/plus.svg"
-                    style={{ marginLeft: "20px" }}
-                    alt=""
-                  />
+                  <img src="/icons/plus.svg" style={{ marginLeft: "20px" }} alt="" />
                   <p>Delivery cost</p>
                   <p>${order.orderDelivery}</p>
-                  <img
-                    src="/icons/pause.svg"
-                    style={{ marginLeft: "20px" }}
-                    alt=""
-                  />
+                  <img src="/icons/pause.svg" style={{ marginLeft: "20px" }} alt="" />
                   <p>Total</p>
                   <p>${order.orderTotal}</p>
                 </Box>
-                <Button
-                  value={order._id}
-                  variant="contained"
-                  color="secondary"
-                  className="verify-button"
-                  onClick={finishOrderHandler}
-                  sx={{ marginRight: "10px", marginLeft: "10px" }}
-                >
-                 VERIFY TO FULFILL
-                 </Button>
-
+                <Box className="order-card-actions">
+                  <Button
+                    value={order._id}
+                    variant="contained"
+                    color="secondary"
+                    className="verify-button"
+                    onClick={finishOrderHandler}
+                  >
+                    VERIFY TO FULFILL
+                  </Button>
+                </Box>
               </Box>
             </Box>
           );
