@@ -6,6 +6,7 @@ import Fade from "@material-ui/core/Fade";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { useTranslation } from "react-i18next";
 import { T } from "../../../lib/types/common";
 import MemberService from "../../services/MemberService";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
@@ -13,8 +14,11 @@ import { Messages } from "../../../lib/config";
 import { LoginInput, MemberInput } from "../../../lib/types/member";
 import { useGlobals } from "../../hooks/useGlobals";
 import {
+  AUTH_BACKDROP,
   AUTH_BORDER,
-  AUTH_PRIMARY,
+  AUTH_INK,
+  AUTH_MODAL_SHADOW,
+  AUTH_MUTED,
   AUTH_SURFACE,
   authFormColumnSx,
   authModalStackSx,
@@ -38,7 +42,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: AUTH_SURFACE,
     border: `1px solid ${AUTH_BORDER}`,
     borderRadius: 20,
-    boxShadow: "0 24px 80px rgba(0,0,0,0.55), 0 0 60px rgba(102,126,234,0.08)",
+    boxShadow: AUTH_MODAL_SHADOW,
     padding: 0,
     outline: "none",
     maxHeight: "92vh",
@@ -47,16 +51,16 @@ const useStyles = makeStyles(() => ({
   /** Softer rim on /roulette login — lifts off backdrop */
   paperRoulette: {
     backgroundColor: AUTH_SURFACE,
-    border: "1px solid rgba(102,126,234,0.2)",
+    border: "1px solid var(--gold)",
     borderRadius: 20,
-    boxShadow: "0 24px 80px rgba(0,0,0,0.55), 0 0 60px rgba(102,126,234,0.08)",
+    boxShadow: AUTH_MODAL_SHADOW,
     padding: 0,
     outline: "none",
     maxHeight: "92vh",
     overflow: "hidden",
   },
   backdrop: {
-    backgroundColor: "rgba(14, 19, 34, 0.9)",
+    backgroundColor: AUTH_BACKDROP,
   },
 }));
 
@@ -71,7 +75,7 @@ const modalImageWrapSx = {
   mb: { md: 1.5 },
   borderRadius: "16px",
   overflow: "hidden",
-  border: "1px solid rgba(102, 126, 234, 0.28)",
+  border: "1px solid var(--sand)",
   alignSelf: "stretch",
   minHeight: { md: 320 },
 };
@@ -86,7 +90,7 @@ const modalImageWrapRouletteSx = {
   height: { md: "auto" },
   overflow: "hidden",
   borderRadius: { md: "20px 0 0 20px" },
-  borderRight: { md: "1px solid rgba(102, 126, 234, 0.2)" },
+  borderRight: { md: "1px solid var(--sand)" },
 };
 
 interface AuthenticationModalProps {
@@ -104,6 +108,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const isRouletteLogin = rouletteLogin;
 
   const classes = useStyles();
+  const { t } = useTranslation();
   const [memberNick, setMemberNick] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
@@ -215,54 +220,40 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "linear-gradient(135deg, rgba(102,126,234,0.12) 0%, transparent 55%)",
+                  background: "linear-gradient(135deg, rgba(201,162,39,0.14) 0%, transparent 55%)",
                   pointerEvents: "none",
                 }}
               />
             </Stack>
             <Stack sx={authFormColumnSx}>
-              <p
-                style={{
-                  margin: 0,
-                  fontFamily: '"Space Grotesk", sans-serif',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.35em",
-                  color: AUTH_PRIMARY,
-                  textTransform: "uppercase",
-                  textAlign: "center",
-                }}
-              >
-                Join the republic
-              </p>
               <h2
                 id="transition-modal-title"
                 style={{
-                  margin: "6px 0 8px",
-                  fontFamily: '"Monument Extended", "Monument", sans-serif',
+                  margin: "0 0 8px",
+                  fontFamily: '"Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif',
                   fontWeight: 800,
                   fontSize: "clamp(1.35rem, 4vw, 1.65rem)",
-                  color: "#fff",
+                  color: AUTH_INK,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
                   textAlign: "center",
                   lineHeight: 1.05,
                 }}
               >
-                Create account
+                {t("auth.createTitle")}
               </h2>
               <TextField
                 sx={authTextFieldSx}
                 id="signup-username"
-                label="Username"
+                label={t("auth.username")}
                 variant="outlined"
                 onChange={handleUserName}
               />
-              <TextField sx={authTextFieldSx} id="signup-phone" label="Phone number" variant="outlined" onChange={handlePhone} />
+              <TextField sx={authTextFieldSx} id="signup-phone" label={t("auth.phone")} variant="outlined" onChange={handlePhone} />
               <TextField
                 sx={authTextFieldSx}
                 id="signup-password"
-                label="Password"
+                label={t("auth.password")}
                 variant="outlined"
                 type="password"
                 onChange={handlePassword}
@@ -275,7 +266,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 onClick={handleSignupRequest}
                 startIcon={<LoginIcon sx={{ fontSize: 20 }} />}
               >
-                Sign up
+                {t("auth.signUp")}
               </Button>
             </Stack>
           </Stack>
@@ -333,20 +324,20 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                     <p
                       style={{
                         margin: "0 0 8px",
-                        fontFamily: '"Space Grotesk", sans-serif',
+                        fontFamily: '"Archivo", "Pretendard", "Noto Sans KR", sans-serif',
                         fontSize: 10,
                         fontWeight: 700,
                         letterSpacing: "3px",
-                        color: "#f7ba85",
+                        color: "var(--cream)", // over the photo's dark scrim
                         textTransform: "uppercase",
                       }}
                     >
-                      MEMBERS ONLY
+                      {t("auth.membersOnly")}
                     </p>
                     <p
                       style={{
                         margin: 0,
-                        fontFamily: '"Monument Extended", "Monument", sans-serif',
+                        fontFamily: '"Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif',
                         fontSize: 24,
                         fontWeight: 800,
                         color: "#fff",
@@ -354,7 +345,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                         textTransform: "uppercase",
                       }}
                     >
-                      SPIN. WIN. WEAR.
+                      {t("auth.spinWinWear")}
                     </p>
                   </div>
                 </Stack>
@@ -375,7 +366,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                     style={{
                       position: "absolute",
                       inset: 0,
-                      background: "linear-gradient(135deg, rgba(102,126,234,0.12) 0%, transparent 55%)",
+                      background: "linear-gradient(135deg, rgba(201,162,39,0.14) 0%, transparent 55%)",
                       pointerEvents: "none",
                     }}
                   />
@@ -387,58 +378,44 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   borderRadius: isRouletteLogin ? { xs: "20px", md: "0 20px 20px 0" } : undefined,
                 }}
               >
-                <p
-                  style={{
-                    margin: 0,
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: isRouletteLogin ? "0.25em" : "0.35em",
-                    color: AUTH_PRIMARY,
-                    textTransform: "uppercase",
-                    textAlign: "center",
-                  }}
-                >
-                  Member access
-                </p>
                 <h2
                   id="login-modal-title"
                   style={{
-                    margin: "6px 0 0",
-                    fontFamily: '"Monument Extended", "Monument", sans-serif',
+                    margin: 0,
+                    fontFamily: '"Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif',
                     fontWeight: 800,
                     fontSize: "clamp(1.35rem, 4vw, 1.65rem)",
-                    color: "#fff",
+                    color: AUTH_INK,
                     textTransform: "uppercase",
                     letterSpacing: "0.06em",
                     textAlign: "center",
                     lineHeight: 1.05,
                   }}
                 >
-                  Log in
+                  {t("auth.loginTitle")}
                 </h2>
                 {isRouletteLogin ? (
                   <p
                     style={{
                       margin: "12px 0 20px",
-                      fontFamily: '"Space Grotesk", sans-serif',
+                      fontFamily: '"Archivo", "Pretendard", "Noto Sans KR", sans-serif',
                       fontSize: 13,
-                      color: "#8A94A6",
+                      color: AUTH_MUTED,
                       textAlign: "center",
                       lineHeight: 1.45,
                       maxWidth: 320,
                     }}
                   >
-                    Log in to spin the wheel
+                    {t("auth.rouletteLine1")}
                     <br />
-                    and claim your next kit.
+                    {t("auth.rouletteLine2")}
                   </p>
                 ) : null}
-                <TextField sx={loginFieldSx} id="login-username" label="Username" variant="outlined" onChange={handleUserName} />
+                <TextField sx={loginFieldSx} id="login-username" label={t("auth.username")} variant="outlined" onChange={handleUserName} />
                 <TextField
                   sx={loginFieldSx}
                   id="login-password"
-                  label="Password"
+                  label={t("auth.password")}
                   variant="outlined"
                   type="password"
                   onChange={handlePassword}
@@ -451,7 +428,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   onClick={handleLoginRequest}
                   startIcon={<LoginIcon sx={{ fontSize: 20 }} />}
                 >
-                  Log in
+                  {t("auth.loginTitle")}
                 </Button>
                 <Button
                   variant="outlined"
@@ -460,13 +437,12 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   onClick={switchToSignup}
                   startIcon={<PersonAddIcon sx={{ fontSize: 20 }} />}
                 >
-                  Sign up
+                  {t("auth.signUp")}
                 </Button>
               </Stack>
             </Stack>
             {isRouletteLogin ? (
               <>
-                <p className="roulette-login-modal__teaser-label">FEELING LUCKY?</p>
                 <div className="roulette-login-modal__wheel" aria-hidden />
               </>
             ) : null}

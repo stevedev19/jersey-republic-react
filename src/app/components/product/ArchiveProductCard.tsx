@@ -1,5 +1,6 @@
 import React from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useTranslation } from "react-i18next";
 import { Product } from "../../../lib/types/product";
 import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
@@ -18,6 +19,7 @@ export interface ArchiveProductCardProps {
 
 export default function ArchiveProductCard(props: ArchiveProductCardProps) {
   const { product, onNavigate, onAddToCart, showNewBadge = false, showSizeBadge = true } = props;
+  const { t } = useTranslation();
 
   const productImages = normalizeProductImages(product.productImages);
   const hasImages = productImages.length > 0;
@@ -51,12 +53,12 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
         {showSizeBadge ? (
           <span className="archive-card__badge-size">{sizeLabel(product)}</span>
         ) : null}
-        {showNewBadge ? <span className="archive-card__badge-new">NEW</span> : null}
+        {showNewBadge ? <span className="archive-card__badge-new">{t("common.new")}</span> : null}
         {onAddToCart ? (
           <button
             type="button"
             className="archive-card__cart"
-            aria-label="Add to cart"
+            aria-label={t("common.addToCartNamed", { name: product.productName })}
             onClick={(e) => {
               e.stopPropagation();
               onAddToCart({
@@ -68,7 +70,7 @@ export default function ArchiveProductCard(props: ArchiveProductCardProps) {
               });
             }}
           >
-            <ShoppingCartOutlinedIcon sx={{ fontSize: 18, color: "#fff" }} />
+            <ShoppingCartOutlinedIcon sx={{ fontSize: 18, color: "#ffffff" }} />
           </button>
         ) : null}
       </div>

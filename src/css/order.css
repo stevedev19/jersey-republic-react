@@ -6,7 +6,7 @@
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  background: #0e1322;
+  background: var(--paper);
   display: flex;
   flex-direction: column;
 }
@@ -46,7 +46,7 @@
 }
 
 .order-tabs-pill-bar {
-  background: #161b27;
+  background: var(--white);
   border-radius: 999px;
   padding: 6px;
   display: inline-flex;
@@ -58,7 +58,7 @@
   appearance: none;
   border: none;
   cursor: pointer;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -66,24 +66,25 @@
   border-radius: 999px;
   padding: 8px 20px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--sand);
+  color: var(--ink-soft);
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .order-tab:hover {
-  color: rgba(255, 255, 255, 0.65);
-  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--ink-soft);
+  border-color: var(--sand);
 }
 
 .order-tab--active {
-  background: #667eea;
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
   border-color: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .order-tab--active:hover {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .order-main-content {
@@ -100,9 +101,9 @@
   max-height: none;
   margin-bottom: 20px;
   border-radius: 16px;
-  background: #161b27;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  background: var(--white);
+  border: 1px solid var(--sand);
+  box-shadow: 0 8px 32px rgba(20, 27, 43, 0.15);
 }
 
 .order-box-scroll {
@@ -138,7 +139,7 @@
   flex-shrink: 0;
   border-radius: 29px;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 12px rgba(20, 27, 43, 0.21);
 }
 
 .title-dish {
@@ -146,11 +147,11 @@
   flex: 1 1 160px;
   min-width: 120px;
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-weight: 500;
   font-size: 15px;
   line-height: 1.3;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .price-box {
@@ -165,14 +166,14 @@
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 8px;
-  font-family: "Inter", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 .price-box p {
   margin: 0;
-  color: #cbd5e0;
+  color: var(--ink-soft);
 }
 
 .box-total {
@@ -189,10 +190,10 @@
 
 .box-total p {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 13px;
   line-height: 1.4;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 .total-price-box {
@@ -204,7 +205,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--sand);
   border-radius: 0 0 16px 16px;
   overflow: hidden;
 }
@@ -221,7 +222,7 @@
 .total-price-box .MuiButton-root {
   text-transform: none;
   border-radius: 999px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 1px;
@@ -229,35 +230,41 @@
 
 .cancel-button {
   min-width: 88px;
-  color: rgba(255, 255, 255, 0.7) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--ink-soft) !important;
+  background: rgba(30, 42, 90, 0.08) !important;
   box-shadow: none !important;
 }
 
 .cancel-button:hover {
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(30, 42, 90, 0.14) !important;
 }
 
 .pay-button {
   min-width: 100px;
-  color: #fff !important;
-  background: #667eea !important;
+  color: var(--white) !important;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep)) !important;
   box-shadow: none !important;
 }
 
 .pay-button:hover {
-  background: #7b8ef0 !important;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep)) !important;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 .verify-button {
-  color: #fff !important;
-  background: #667eea !important;
+  color: var(--white) !important;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep)) !important;
   box-shadow: none !important;
   border-radius: 999px !important;
 }
 
 .verify-button:hover {
-  background: #7b8ef0 !important;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep)) !important;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 /* Profile card */
@@ -270,9 +277,9 @@
   align-items: center;
   text-align: center;
   border-radius: 20px;
-  background: #161b27;
-  border: 1px solid rgba(102, 126, 234, 0.15);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+  background: var(--white);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  box-shadow: none;
 }
 
 .order-profile-avatar {
@@ -280,17 +287,17 @@
   height: 96px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #667eea;
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+  border: 3px solid var(--navy);
+  box-shadow: none;
 }
 
 .order-profile-name {
   margin: 20px 0 0;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-weight: 800;
   font-size: 24px;
   line-height: 1.2;
-  color: #ffffff;
+  color: var(--ink);
   word-break: break-word;
   max-width: 100%;
 }
@@ -298,11 +305,11 @@
 .order-profile-badge {
   display: inline-block;
   margin-top: 12px;
-  background: rgba(102, 126, 234, 0.15);
-  color: #b9c3ff;
+  background: rgba(201, 162, 39, 0.15);
+  color: var(--ink);
   border-radius: 999px;
   padding: 4px 14px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -317,24 +324,24 @@
   width: 100%;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--sand);
   gap: 10px;
 }
 
 .order-profile-location-icon {
   flex-shrink: 0;
   font-size: 22px !important;
-  color: #667eea !important;
+  color: var(--navy) !important;
   margin-top: 1px;
 }
 
 .order-profile-location p {
   margin: 0;
   flex: 1;
-  font-family: "Inter", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 /* Payment card */
@@ -346,8 +353,8 @@
   flex-direction: column;
   align-items: stretch;
   border-radius: 20px;
-  background: linear-gradient(135deg, #1a2342, #16213e);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, var(--white), var(--white));
+  border: 1px solid rgba(201, 162, 39, 0.2);
 }
 
 .order-payment-input {
@@ -357,22 +364,22 @@
   margin: 0;
   padding: 0 16px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-  color: #ffffff;
-  font-family: "Inter", sans-serif;
+  border: 1px solid var(--sand);
+  background: rgba(30, 42, 90, 0.04);
+  color: var(--ink);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .order-payment-input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--ink-soft);
 }
 
 .order-payment-input:focus {
-  border-color: #667eea;
-  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--navy);
+  background: rgba(30, 42, 90, 0.06);
 }
 
 .order-payment-input + .order-payment-input,
@@ -420,19 +427,23 @@
   height: 48px;
   border: none;
   border-radius: 999px;
-  background: #667eea;
-  color: #ffffff;
-  font-family: "Space Grotesk", sans-serif;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.2s ease;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .order-payment-save:hover {
-  background: #7b8ef0;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 /* Empty state */
@@ -458,20 +469,20 @@
 
 .orders-empty-state__title {
   margin: 0 0 16px;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-weight: 800;
   font-size: clamp(24px, 5vw, 32px);
   line-height: 1.15;
-  color: #ffffff;
+  color: var(--ink);
   text-transform: uppercase;
 }
 
 .orders-empty-state__sub {
   margin: 0 0 28px;
-  font-family: "Inter", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: #8a94a6;
+  color: var(--ink-soft);
   max-width: 320px;
 }
 
@@ -479,20 +490,24 @@
   appearance: none;
   border: none;
   cursor: pointer;
-  background: #667eea;
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
   border-radius: 999px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   padding: 14px 32px;
   transition: background 0.2s ease;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .orders-empty-state__cta:hover {
-  background: #7b8ef0;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 @media (max-width: 960px) {

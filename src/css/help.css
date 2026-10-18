@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
   display: flex;
-  background: var(--bg-base);
+  background: var(--paper);
   color: var(--text-secondary);
   font-family: var(--font-body);
   min-height: 100vh;
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--sand);
 }
 
 .help-page .help-menu .table-list {
@@ -54,9 +54,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  background: var(--white);
+  border: 1px solid var(--sand);
+  box-shadow: 0 20px 40px rgba(20, 27, 43, 0.15);
   border-radius: 16px;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .rules-box .rules-frame p {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--sand);
   color: var(--text-secondary);
   font-family: var(--font-body);
   font-weight: 400;
@@ -93,9 +93,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  background: var(--white);
+  border: 1px solid var(--sand);
+  box-shadow: 0 20px 40px rgba(20, 27, 43, 0.15);
   border-radius: 16px;
 }
 
@@ -162,8 +162,8 @@
   width: 100%;
   height: 60px;
   display: flex;
-  background: var(--bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--white);
+  border: 1px solid var(--sand);
   border-radius: 12px;
   font-family: var(--font-body);
   font-style: normal;
@@ -180,8 +180,8 @@
   width: 100%;
   height: 150px;
   display: flex;
-  background: var(--bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--white);
+  border: 1px solid var(--sand);
   border-radius: 12px;
   font-family: var(--font-body);
   font-style: normal;
@@ -194,7 +194,9 @@
 
 /* MUI tabs + accordion — match tokens */
 .help-page .MuiTabs-indicator {
-  background-color: var(--color-blue);
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
 }
 
 .help-page .MuiTab-root {
@@ -209,9 +211,9 @@
 }
 
 .help-page .MuiAccordion-root {
-  background: var(--bg-card);
+  background: var(--white);
   color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--sand);
   border-radius: 12px !important;
   box-shadow: none;
 }
@@ -232,10 +234,11 @@
 }
 
 .help-page .MuiButton-contained {
-  background-color: var(--color-blue);
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
   color: var(--text-primary);
   font-family: var(--font-body);
   font-weight: 600;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .help-page .MuiButton-contained:hover {

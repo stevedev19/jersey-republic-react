@@ -3,17 +3,24 @@ import { NavLink, useHistory, useLocation } from "react-router-dom";
 import EastIcon from "@mui/icons-material/East";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 import ArchiveTopNav, { ArchiveTopNavProps } from "./ArchiveTopNav";
 import ActiveUsers from "./ActiveUsers";
 import { HomeNewDropsSection } from "../../components/HomeNewDropsSection";
+import TrustStrip from "../../components/TrustStrip";
+import HeroFeatured from "../../components/HeroFeatured";
+import ArchiveProductCard from "../../components/product/ArchiveProductCard";
 import { retrieveTrendingDishes, retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { CartItem } from "../../../lib/types/search";
 import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { sweetTopSmallSuccessAlert } from "../../../lib/sweetAlert";
+import { collectionLabel } from "../../components/product/archiveCardUtils";
 import "../../../css/home.css";
 import "../../../css/products.css";
+import "../../../css/home-theme.css";
 
 type ArchiveLandingProps = ArchiveTopNavProps;
 
@@ -24,40 +31,6 @@ const trendingDishesRetriever = createSelector(retrieveTrendingDishes, (trending
 const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
   newDishes,
 }));
-
-const ARCHIVE_GRID_TILES = [
-  {
-    colSpan: "md:col-span-8",
-    minH: "min-h-[280px]",
-    titleClass: "font-monument text-3xl md:text-5xl text-white mb-4 line-clamp-2",
-    subtitleClass: "font-headline text-primary text-sm tracking-widest font-bold",
-  },
-  {
-    colSpan: "md:col-span-4",
-    minH: "min-h-[240px]",
-    titleClass: "font-monument text-2xl text-white mb-2 line-clamp-2",
-    subtitleClass: "text-white/60 text-xs font-headline tracking-widest group-hover:text-white transition-colors",
-  },
-  {
-    colSpan: "md:col-span-5",
-    minH: "min-h-[240px]",
-    titleClass: "font-monument text-2xl text-white uppercase line-clamp-2",
-    subtitleClass: "text-outline text-sm font-headline uppercase tracking-widest",
-  },
-  {
-    colSpan: "md:col-span-7",
-    minH: "min-h-[240px]",
-    titleClass: "font-monument text-2xl md:text-3xl text-white mb-2 uppercase line-clamp-2",
-    subtitleClass: "text-outline text-sm",
-  },
-] as const;
-
-const TRENDING_BADGES = [
-  { label: "POPULAR", badgeClass: "text-primary" },
-  { label: "TRENDING", badgeClass: "text-tertiary" },
-  { label: "TOP VIEWS", badgeClass: "text-primary" },
-  { label: "ARCHIVE", badgeClass: "text-tertiary" },
-];
 
 function getProductCardImage(product: Product): string {
   const imgs = normalizeProductImages(product.productImages);
@@ -73,12 +46,12 @@ function getTrendingBackImage(product: Product): string {
   return getProductCardImage(product);
 }
 
-function getTrendingSubtitle(product: Product): string {
+function getTrendingSubtitle(product: Product, t: TFunction): string {
   const desc = product.productDesc?.trim();
   if (desc) {
     return desc.length > 52 ? `${desc.slice(0, 49)}…` : desc;
   }
-  return `${product.productCollection.replace(/_/g, " ")} · ${product.productViews} views`;
+  return `${collectionLabel(product.productCollection)} · ${t("common.views", { count: product.productViews })}`;
 }
 
 function productToCartItem(product: Product): CartItem {
@@ -129,6 +102,7 @@ function useDropCountdown() {
 
 export default function ArchiveLanding(props: ArchiveLandingProps) {
   const { onAdd } = props;
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
 
@@ -143,6 +117,7 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
   const trendingProducts = Array.isArray(trendingDishes) ? trendingDishes : [];
   const { newDishes } = useSelector(newDishesRetriever);
   const archiveNewJerseys = Array.isArray(newDishes) ? newDishes.slice(0, 4) : [];
+  const heroProducts: Product[] = (archiveNewJerseys.length > 0 ? archiveNewJerseys : trendingProducts).slice(0, 3);
 
   const { h, m, s } = useDropCountdown();
   const trendingRef = useRef<HTMLDivElement>(null);
@@ -160,208 +135,149 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
   };
 
   return (
-    <div className="dark bg-background text-on-background selection:bg-primary selection:text-on-primary min-h-screen overflow-x-hidden font-body">
+    <div className="jr-home min-h-screen overflow-x-hidden font-body">
       <ArchiveTopNav {...props} />
       <main>
-        <section className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-background">
-          <div className="absolute inset-0 z-0">
+        <section className="home-hero relative overflow-hidden pt-32 pb-16 md:pt-36 md:pb-20">
+          <div className="absolute inset-0 z-0" aria-hidden>
             <img
-              className="w-full h-full object-cover opacity-40 mix-blend-luminosity min-h-[100vh]"
-              alt="Professional sports stadium at night under floodlights"
+              className="w-full h-full object-cover opacity-25 mix-blend-luminosity"
+              alt=""
               src={HERO_IMG}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+            {/* light scrim: the text column sits on ~96% white, so ink/ink-soft keep their contrast */}
+            <div className="home-hero__scrim absolute inset-0" />
           </div>
-          <div className="container mx-auto px-6 md:px-12 relative z-10">
-            <div className="max-w-6xl">
-              <h1 className="font-monument text-5xl md:text-8xl lg:text-[10rem] leading-none tracking-tighter text-white mb-8">
-                WEAR THE <br /> <span className="text-primary italic">GAME.</span>
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-                <p className="md:col-span-6 text-outline text-lg md:text-xl font-light leading-relaxed">
-                  The definitive archive of football culture. Curated, authenticated, and delivered
-                  worldwide. High-performance artifacts meeting street-ready aesthetics.
+          <div className="site-container relative z-10">
+            <div className="grid grid-cols-1 min-[720px]:grid-cols-12 gap-10 lg:gap-12 items-start">
+              <div className="min-[720px]:col-span-7 min-[720px]:pt-6 lg:pt-16">
+                <h1 className="font-monument text-[clamp(2.25rem,6.4vw,6rem)] min-[720px]:text-[clamp(2.25rem,5.6vw,6rem)] leading-[0.95] tracking-tight home-hero__title mb-6">
+                  {t("home.hero.titleLine1")} <br /> <span className="home-accent">{t("home.hero.titleAccent")}</span>
+                </h1>
+                <p className="home-hero__lead text-lg md:text-xl leading-relaxed max-w-xl mb-8">
+                  {t("home.hero.description")}
                 </p>
-                <div className="md:col-span-6 flex md:justify-end">
-                  <NavLink
-                    to="/products"
-                    className="inline-flex items-center justify-center bg-primary text-on-primary px-10 py-5 rounded-full font-headline font-bold text-sm tracking-[0.2em] shadow-[0px_24px_48px_rgba(102,126,234,0.35)] hover:scale-105 active:scale-95 transition-all duration-300"
-                  >
-                    EXPLORE THE ARCHIVE
-                  </NavLink>
-                </div>
+                <NavLink
+                  to="/products"
+                  className="jr-btn-primary inline-flex items-center justify-center px-10 py-5 rounded-full font-headline font-bold text-sm tracking-[0.12em]"
+                >
+                  {t("home.hero.cta")}
+                </NavLink>
+              </div>
+              <div className="min-[720px]:col-span-5">
+                <HeroFeatured products={heroProducts} isNewDrop={archiveNewJerseys.length > 0} />
               </div>
             </div>
           </div>
-          <div className="absolute right-[-5%] bottom-20 vertical-text hidden xl:block">
-            <span className="font-monument text-surface-container-highest text-9xl uppercase opacity-20 select-none">
-              REPUBLIC
-            </span>
-          </div>
         </section>
+
+        <TrustStrip />
+
+        <div className="home-transition-strip" aria-hidden="true" />
 
         <HomeNewDropsSection onAdd={onAdd} />
 
-        <section id="featured-drop" className="py-24 bg-surface-container-low scroll-mt-24">
+        <section id="featured-drop" className="home-light-section py-24 scroll-mt-24">
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row gap-12 items-center">
               <div className="w-full md:w-1/2 relative group">
-                <div className="absolute -inset-4 bg-primary/10 rounded-lg blur-3xl group-hover:bg-primary/20 transition-all duration-700" />
-                <div className="relative bg-surface-container-high rounded-lg overflow-hidden aspect-[4/5]">
+                <div className="home-media relative rounded-lg overflow-hidden aspect-[4/5]">
                   <img
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    alt="Vintage football jersey fabric with embroidered crest"
+                    className="w-full h-full object-cover"
+                    alt={t("home.featured.imageAlt")}
                     src={FEATURED_IMG}
                   />
-                  <div className="absolute top-6 left-6 flex gap-3 flex-wrap">
-                    <span className="bg-tertiary text-on-tertiary px-4 py-1 rounded-full text-[10px] font-monument font-bold tracking-widest">
-                      RARE FIND
-                    </span>
-                    <span className="bg-white/10 backdrop-blur-md text-white px-4 py-1 rounded-full text-[10px] font-monument font-bold tracking-widest border border-white/20">
-                      AUTHENTICATED
-                    </span>
-                  </div>
                 </div>
               </div>
               <div className="w-full md:w-1/2">
-                <div className="inline-block px-4 py-2 bg-surface-container-highest rounded-full mb-8">
-                  <p className="font-headline text-primary text-xs tracking-[0.3em] font-bold uppercase">
-                    NEXT DROP ARRIVING
-                  </p>
-                </div>
-                <h2 className="font-monument text-4xl md:text-6xl text-white mb-6 uppercase leading-tight">
-                  Arsenal 05/06 <br /> <span className="text-tertiary">Highbury Final</span>
+                <h2 className="home-heading font-monument text-4xl md:text-6xl mb-6 uppercase leading-tight">
+                  {t("home.featured.titleLine1")} <br />{" "}
+                  <span className="home-accent">{t("home.featured.titleAccent")}</span>
                 </h2>
-                <p className="text-outline text-lg mb-12 max-w-md leading-relaxed">
-                  The iconic maroon farewell to Highbury. Featuring gold detailing and the definitive Thierry Henry #14
-                  customization. Limited to 50 verified pieces.
+                <p className="home-text-soft text-lg mb-12 max-w-md leading-relaxed">
+                  {t("home.featured.description")}
                 </p>
                 <div className="mb-12">
-                  <p className="font-headline text-white/40 text-[10px] tracking-[0.4em] uppercase mb-4">
-                    TIME REMAINING
+                  <p className="home-text-soft font-headline text-xs font-bold tracking-widest uppercase mb-4">
+                    {t("home.featured.timeRemaining")}
                   </p>
                   <div className="flex gap-6">
                     <div className="flex flex-col">
-                      <span className="font-monument text-4xl md:text-6xl text-white">{h}</span>
-                      <span className="text-[10px] text-outline font-bold tracking-widest">HRS</span>
+                      <span className="home-heading font-monument text-4xl md:text-6xl">{h}</span>
+                      <span className="home-text-soft text-[10px] font-bold tracking-widest">{t("home.featured.hours")}</span>
                     </div>
-                    <span className="font-monument text-4xl md:text-6xl text-primary">:</span>
+                    <span className="home-gold-text font-monument text-4xl md:text-6xl">:</span>
                     <div className="flex flex-col">
-                      <span className="font-monument text-4xl md:text-6xl text-white">{m}</span>
-                      <span className="text-[10px] text-outline font-bold tracking-widest">MINS</span>
+                      <span className="home-heading font-monument text-4xl md:text-6xl">{m}</span>
+                      <span className="home-text-soft text-[10px] font-bold tracking-widest">{t("home.featured.minutes")}</span>
                     </div>
-                    <span className="font-monument text-4xl md:text-6xl text-primary">:</span>
+                    <span className="home-gold-text font-monument text-4xl md:text-6xl">:</span>
                     <div className="flex flex-col">
-                      <span className="font-monument text-4xl md:text-6xl text-white">{s}</span>
-                      <span className="text-[10px] text-outline font-bold tracking-widest">SECS</span>
+                      <span className="home-heading font-monument text-4xl md:text-6xl">{s}</span>
+                      <span className="home-text-soft text-[10px] font-bold tracking-widest">{t("home.featured.seconds")}</span>
                     </div>
                   </div>
                 </div>
                 <button
                   type="button"
-                  className="w-full md:w-auto bg-white text-background px-12 py-5 rounded-full font-headline font-bold text-sm tracking-[0.2em] hover:bg-primary hover:text-on-primary transition-all duration-300"
+                  className="jr-btn-primary w-full md:w-auto cursor-pointer border-0 px-12 py-5 rounded-full font-headline font-bold text-sm tracking-[0.2em]"
                 >
-                  NOTIFY ME ON DROP
+                  {t("home.featured.notify")}
                 </button>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-24 bg-background">
+        <section className="home-light-section py-24">
           <div className="container mx-auto px-6 md:px-12">
-            <div className="flex justify-between items-end mb-16">
-              <div>
-                <p className="font-headline text-primary text-xs tracking-[0.3em] font-bold uppercase mb-4">
-                  CURATED COLLECTIONS
-                </p>
-                <h2 className="font-monument text-4xl text-white uppercase">THE ARCHIVE</h2>
-                <p className="text-outline text-xs font-headline tracking-widest mt-3 max-w-md">
-                  Latest arrivals from the catalog — updated as new jerseys drop.
-                </p>
+            <div className="mb-12">
+              <h2 className="home-heading font-monument text-4xl uppercase">{t("home.archive.title")}</h2>
+              <p className="home-text-soft text-base mt-3 max-w-md">{t("home.archive.subtitle")}</p>
+            </div>
+            {archiveNewJerseys.length === 0 ? (
+              <div className="home-empty flex flex-col items-start justify-center min-h-[200px] rounded-2xl px-8 py-10">
+                <p className="home-text-soft text-base mb-4">{t("home.archive.empty")}</p>
+                <NavLink
+                  to="/products"
+                  className="home-view-all inline-flex font-headline text-sm font-bold"
+                >
+                  {t("home.archive.browseAll")}
+                </NavLink>
               </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[800px]">
-              {archiveNewJerseys.length === 0 ? (
-                <div className="md:col-span-12 flex flex-col items-start justify-center min-h-[200px] rounded-lg border border-outline-variant/20 bg-surface-container px-8 py-10">
-                  <p className="text-outline text-sm font-headline mb-4">
-                    New jerseys are loading or none are available yet.
-                  </p>
-                  <NavLink
-                    to="/products"
-                    className="inline-flex text-primary font-headline text-xs font-bold tracking-widest uppercase hover:text-tertiary transition-colors"
-                  >
-                    Browse all products →
-                  </NavLink>
-                </div>
-              ) : (
-                ARCHIVE_GRID_TILES.map((tile, i) => {
-                  const product = archiveNewJerseys[i];
-                  return (
-                    <NavLink
-                      key={product?._id ?? `archive-empty-${i}`}
-                      to={product ? `/products/${product._id}` : "/products"}
-                      className={`${tile.colSpan} group relative overflow-hidden rounded-lg bg-surface-container ${tile.minH} md:min-h-0 md:h-full block`}
-                    >
-                      {product ? (
-                        <div className="card-image-wrapper card-image-wrapper--bleed md:absolute md:inset-0">
-                          <img
-                            className="opacity-60"
-                            alt={product.productName}
-                            src={getProductCardImage(product)}
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          className={`w-full ${tile.minH} md:absolute md:inset-0 bg-surface-container-high flex items-center justify-center`}
-                        >
-                          <span className="text-outline text-xs font-headline tracking-widest uppercase px-4 text-center">
-                            More in shop →
-                          </span>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute bottom-10 left-10 right-6">
-                        <h3 className={tile.titleClass}>
-                          {product ? product.productName : "New arrivals"}
-                        </h3>
-                        {product ? (
-                          <p className={tile.subtitleClass}>
-                            ${Number(product.productPrice).toFixed(2)} ·{" "}
-                            <span className="text-tertiary">NEW</span>
-                            {product.productViews > 0 ? (
-                              <span className="text-outline"> · {product.productViews} views</span>
-                            ) : null}
-                          </p>
-                        ) : (
-                          <p className={tile.subtitleClass}>Open the catalog →</p>
-                        )}
-                      </div>
-                    </NavLink>
-                  );
-                })
-              )}
-            </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {archiveNewJerseys.map((product) => (
+                  <ArchiveProductCard
+                    key={product._id}
+                    product={product}
+                    onNavigate={(id) => history.push(`/products/${id}`)}
+                    onAddToCart={onAdd}
+                    showNewBadge
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        <section className="py-24 bg-surface-container-lowest overflow-hidden">
+        <section className="home-light-section home-trending py-24 overflow-hidden">
           <div className="container mx-auto px-6 md:px-12 mb-12">
             <div className="flex justify-between items-center">
-              <h2 className="font-monument text-3xl text-white uppercase">Trending Now</h2>
+              <h2 className="home-heading font-monument text-3xl uppercase">{t("home.trending.title")}</h2>
               <div className="flex gap-4">
                 <button
                   type="button"
-                  aria-label="Scroll trending left"
-                  className="h-12 w-12 rounded-full border border-outline-variant/30 flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all"
+                  aria-label={t("home.trending.scrollLeft")}
+                  className="home-round-btn h-12 w-12 cursor-pointer rounded-full border border-solid flex items-center justify-center"
                   onClick={() => scrollTrending("left")}
                 >
                   <span className="material-symbols-outlined">arrow_back</span>
                 </button>
                 <button
                   type="button"
-                  aria-label="Scroll trending right"
-                  className="h-12 w-12 rounded-full border border-outline-variant/30 flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all"
+                  aria-label={t("home.trending.scrollRight")}
+                  className="home-round-btn h-12 w-12 cursor-pointer rounded-full border border-solid flex items-center justify-center"
                   onClick={() => scrollTrending("right")}
                 >
                   <span className="material-symbols-outlined">arrow_forward</span>
@@ -374,22 +290,21 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
             className="flex gap-8 px-6 md:px-12 overflow-x-auto no-scrollbar pb-12 scroll-smooth"
           >
             {trendingProducts.length === 0 ? (
-              <p className="text-outline text-sm font-headline px-2">
-                Popular jerseys will appear here once loaded. Open the shop or check back shortly.
+              <p className="home-text-soft text-sm font-headline px-2">
+                {t("home.trending.empty")}
               </p>
             ) : (
-              trendingProducts.map((product: Product, index: number) => {
-                const badge = TRENDING_BADGES[index % TRENDING_BADGES.length];
+              trendingProducts.map((product: Product) => {
                 const imgSrc = getProductCardImage(product);
                 const backImgSrc = getTrendingBackImage(product);
-                const subtitle = getTrendingSubtitle(product);
+                const subtitle = getTrendingSubtitle(product, t);
                 const price = `$${Number(product.productPrice).toFixed(2)}`;
                 const stopCardToggle = (e: React.SyntheticEvent) => e.stopPropagation();
 
                 return (
                   <div
                     key={product._id}
-                    className="trending-flip min-w-[300px] rounded-[20px] md:min-w-[400px] shadow-[0px_24px_48px_rgba(102,126,234,0.1)]"
+                    className="trending-flip min-w-[300px] rounded-[20px] md:min-w-[400px]"
                   >
                     <div
                       className="card-wrapper h-full"
@@ -398,7 +313,7 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
                       <div
                         className={`card-inner ${trendingFlipped[product._id] ? "is-flipped" : ""}`}
                       >
-                        <div className="card-front bg-surface-container-high">
+                        <div className="card-front home-card-surface">
                           <img
                             className="trending-flip-photo"
                             alt={product.productName}
@@ -407,26 +322,21 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
                           <NavLink
                             to={`/products/${product._id}`}
                             className="absolute inset-0 z-0 block"
-                            aria-label={`View ${product.productName}`}
+                            aria-label={t("common.viewNamed", { name: product.productName })}
                             onClick={stopCardToggle}
                           />
-                          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/55 to-transparent" />
+                          <div className="home-trending__scrim pointer-events-none absolute inset-0 z-[1]" />
                           <div className="absolute inset-x-0 bottom-0 z-[2] flex flex-col p-6 pt-16">
-                            <p
-                              className={`${badge.badgeClass} mb-2 text-[10px] font-monument font-bold tracking-[0.2em]`}
-                            >
-                              {badge.label}
-                            </p>
                             <NavLink
                               to={`/products/${product._id}`}
                               className="block"
                               onClick={stopCardToggle}
                             >
-                              <h4 className="mb-2 font-monument text-xl text-white transition-colors hover:text-primary">
+                              <h4 className="home-trending__name mb-2 font-monument text-xl">
                                 {product.productName}
                               </h4>
                             </NavLink>
-                            <p className="line-clamp-2 text-sm font-headline uppercase tracking-widest text-outline">
+                            <p className="home-text-soft line-clamp-2 text-sm font-headline uppercase tracking-widest">
                               {subtitle}
                             </p>
                           </div>
@@ -442,27 +352,27 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
                             to={`/products/${product._id}`}
                             className="trending-flip-back-cover-link absolute inset-0 z-0 block"
                             tabIndex={-1}
-                            aria-label={`View ${product.productName} — campaign image`}
+                            aria-label={t("home.trending.campaignImage", { name: product.productName })}
                             onClick={stopCardToggle}
                           />
-                          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background via-background/55 to-transparent" />
+                          <div className="home-trending__scrim pointer-events-none absolute inset-0 z-[1]" />
                           <div className="trending-flip-back-actions absolute inset-x-0 bottom-0 z-[2] flex flex-col p-6 pt-12">
-                            <p className="mb-4 text-[10px] font-monument font-bold tracking-[0.25em] text-white/80">
-                              CAMPAIGN
+                            <p className="home-text-soft mb-4 text-[10px] font-monument font-bold tracking-[0.25em]">
+                              {t("home.trending.campaign")}
                             </p>
                             <div className="flex items-center justify-between">
-                              <span className="text-xl font-bold text-white">{price}</span>
+                              <span className="home-heading text-xl font-bold">{price}</span>
                               <button
                                 type="button"
-                                className="trending-flip-cart-btn flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary-container transition-transform hover:scale-110 active:scale-95"
-                                aria-label={`Add ${product.productName} to cart`}
+                                className="trending-flip-cart-btn jr-btn-primary flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0"
+                                aria-label={t("common.addToCartNamed", { name: product.productName })}
                                 onPointerDown={(e) => e.stopPropagation()}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
                                   const added = onAdd(productToCartItem(product));
                                   if (added) {
-                                    sweetTopSmallSuccessAlert("Added to cart", 1800);
+                                    sweetTopSmallSuccessAlert(t("common.addedToCart"), 1800);
                                     window.setTimeout(() => {
                                       history.push("/products");
                                     }, 0);
@@ -483,25 +393,22 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
           </div>
         </section>
 
-        <section className="py-24 bg-background border-y border-outline-variant/10">
+        <section className="home-light-section py-24">
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-7 order-2 md:order-1">
-                <p className="font-headline text-primary text-xs tracking-[0.3em] font-bold uppercase mb-6">
-                  CAN&apos;T DECIDE?
-                </p>
-                <h2 className="font-monument text-4xl md:text-7xl text-white mb-8 leading-[0.9]">
-                  STITCHED <br /> IN <span className="text-tertiary">FATE.</span>
+                <h2 className="home-heading font-monument text-4xl md:text-7xl mb-8 leading-[0.9]">
+                  {t("home.roulette.titleLine1")} <br /> {t("home.roulette.titleLine2")}{" "}
+                  <span className="home-accent">{t("home.roulette.titleAccent")}</span>
                 </h2>
-                <p className="text-outline text-lg leading-relaxed mb-10 max-w-xl">
-                  Can&apos;t pick a jersey? Let the wheel decide. Perfect for gift hunting or when you just can&apos;t
-                  choose — spin the archive and let fate land on your next kit.
+                <p className="home-text-soft text-lg leading-relaxed mb-10 max-w-xl">
+                  {t("home.roulette.description")}
                 </p>
                 <NavLink
                   to="/roulette"
-                  className="inline-flex items-center gap-4 text-white font-headline font-bold text-sm tracking-widest group"
+                  className="home-view-all inline-flex items-center gap-4 font-headline font-bold text-sm tracking-widest group"
                 >
-                  SPIN THE WHEEL
+                  {t("home.roulette.cta")}
                   <EastIcon
                     className="shrink-0 group-hover:translate-x-2 transition-transform"
                     sx={{ fontSize: "1.25rem" }}
@@ -511,19 +418,12 @@ export default function ArchiveLanding(props: ArchiveLandingProps) {
               </div>
               <div className="md:col-span-5 order-1 md:order-2">
                 <div className="relative">
-                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
                   <div className="rounded-lg overflow-hidden relative z-10 aspect-[3/4]">
                     <img
                       className="w-full h-full object-cover"
-                      alt="Editorial vintage jersey styling"
+                      alt={t("home.roulette.imageAlt")}
                       src={EDITORIAL_IMG}
                     />
-                  </div>
-                  <div className="absolute -bottom-6 -left-6 bg-surface-container-highest p-6 rounded-lg z-20 max-w-[200px]">
-                    <p className="text-white font-monument text-xs mb-2">CURATOR NOTE</p>
-                    <p className="text-outline text-[10px] leading-relaxed">
-                      &quot;The texture of a 1996 mesh is unmistakable. It&apos;s a tactile memory.&quot;
-                    </p>
                   </div>
                 </div>
               </div>

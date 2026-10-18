@@ -5,6 +5,7 @@ import Pagination, {
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useTranslation } from "react-i18next";
 import ArchiveProductCard from "../../components/product/ArchiveProductCard";
 import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,25 +26,22 @@ const productsRetriever = createSelector(retrieveProducts, (products) => ({
   products,
 }));
 
+/** `labelKey` is an i18n key */
 const COLLECTION_FILTERS: {
   value: ProductCollection | undefined;
-  label: string;
+  labelKey: string;
 }[] = [
-  { value: undefined, label: "All Products" },
-  { value: ProductCollection.NATIONAL_TEAMS, label: "National Teams" },
-  { value: ProductCollection.LA_LIGA, label: "La Liga" },
-  { value: ProductCollection.PREMIER_LEAGUE, label: "Premier League" },
-  { value: ProductCollection.SERIE_A, label: "Serie A" },
-  { value: ProductCollection.BUNDESLIGA, label: "Bundesliga" },
-  { value: ProductCollection.LIGUE_1, label: "Ligue 1" },
-  { value: ProductCollection.UZBEKISTAN_LEAGUE, label: "Uzbekistan" },
+  { value: undefined, labelKey: "products.filters.all" },
+  { value: ProductCollection.NATIONAL_TEAMS, labelKey: "collections.NATIONAL_TEAMS" },
+  { value: ProductCollection.LA_LIGA, labelKey: "collections.LA_LIGA" },
+  { value: ProductCollection.PREMIER_LEAGUE, labelKey: "collections.PREMIER_LEAGUE" },
+  { value: ProductCollection.SERIE_A, labelKey: "collections.SERIE_A" },
+  { value: ProductCollection.BUNDESLIGA, labelKey: "collections.BUNDESLIGA" },
+  { value: ProductCollection.LIGUE_1, labelKey: "collections.LIGUE_1" },
+  { value: ProductCollection.UZBEKISTAN_LEAGUE, labelKey: "products.filters.uzbekistan" },
 ];
 
-const SORT_FILTERS: { value: string; label: string }[] = [
-  { value: "createdAt", label: "New" },
-  { value: "productPrice", label: "Price" },
-  { value: "productViews", label: "Views" },
-];
+const SORT_FILTERS = ["createdAt", "productPrice", "productViews"] as const;
 
 function readInitialCatalogFilter(): "none" | "NEW_DROPS" {
   if (typeof window === "undefined") return "none";
@@ -58,6 +56,7 @@ interface ProductsProps {
 
 export default function Products(props: ProductsProps) {
   const { onAdd } = props;
+  const { t } = useTranslation();
   const { setProducts } = actionDispatch(useDispatch());
   const { products } = useSelector(productsRetriever);
   const safeProducts = Array.isArray(products) ? products : [];
@@ -298,13 +297,13 @@ export default function Products(props: ProductsProps) {
   const archiveSubtext =
     catalogFilter === "NEW_DROPS"
       ? newDropsLoading
-        ? "Loading new drops…"
+        ? t("products.loadingNewDrops")
         : sortedNewDrops && sortedNewDrops.length > 0
-          ? `${sortedNewDrops.length} new drop${sortedNewDrops.length === 1 ? "" : "s"}`
-          : "No new drops in this window"
+          ? t("products.newDropsCount", { count: sortedNewDrops.length })
+          : t("products.noNewDropsInWindow")
       : safeProducts.length === 0
-        ? "No jerseys match your filters"
-        : `${safeProducts.length} jersey${safeProducts.length === 1 ? "" : "s"} available`;
+        ? t("products.noMatches")
+        : t("products.available", { count: safeProducts.length });
 
   const showNewDropsEmpty =
     catalogFilter === "NEW_DROPS" && !newDropsLoading && sortedNewDrops && sortedNewDrops.length === 0;
@@ -314,30 +313,30 @@ export default function Products(props: ProductsProps) {
       <div className="products-archive__shell">
         <header className="products-archive__top">
           <div className="products-archive__heading">
-            <h1 className="products-archive__title">THE ARCHIVE</h1>
+            <h1 className="products-archive__title">{t("products.title")}</h1>
             <p className="products-archive__sub">{archiveSubtext}</p>
           </div>
           <div className="products-archive__search-row">
             <input
               type="search"
               className="products-archive__search-input"
-              placeholder="SEARCH ARCHIVE..."
+              placeholder={t("products.searchPlaceholder")}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") searchProductHandler();
               }}
-              aria-label="Search archive"
+              aria-label={t("products.searchLabel")}
             />
             <button type="button" className="products-archive__search-btn" onClick={searchProductHandler}>
-              SEARCH
+              {t("products.search")}
             </button>
           </div>
         </header>
 
         <div className="products-archive__layout">
           <aside className="products-archive__sidebar">
-            <p className="products-archive__sidebar-heading">FILTER BY</p>
+            <p className="products-archive__sidebar-heading">{t("products.filterBy")}</p>
             <div className="products-archive__filter-list">
               <button
                 type="button"
@@ -348,17 +347,17 @@ export default function Products(props: ProductsProps) {
                 }
                 onClick={activateNewDropsFilter}
               >
-                NEW DROPS
+                {t("products.newDrops")}
                 <span className="archive-filter-btn__new-pill" aria-hidden>
-                  NEW
+                  {t("common.new")}
                 </span>
               </button>
-              {COLLECTION_FILTERS.map(({ value, label }) => {
+              {COLLECTION_FILTERS.map(({ value, labelKey }) => {
                 const active =
                   catalogFilter !== "NEW_DROPS" && productSearch.productCollection === value;
                 return (
                   <button
-                    key={label}
+                    key={labelKey}
                     type="button"
                     className={
                       active
@@ -367,15 +366,15 @@ export default function Products(props: ProductsProps) {
                     }
                     onClick={() => searchCollectionHandler(value)}
                   >
-                    {label}
+                    {t(labelKey)}
                   </button>
                 );
               })}
             </div>
             <hr className="products-archive__divider" />
-            <p className="products-archive__sidebar-heading">SORT BY</p>
+            <p className="products-archive__sidebar-heading">{t("products.sortBy")}</p>
             <div className="products-archive__filter-list">
-              {SORT_FILTERS.map(({ value, label }) => {
+              {SORT_FILTERS.map((value) => {
                 const active = productSearch.order === value;
                 return (
                   <button
@@ -388,7 +387,7 @@ export default function Products(props: ProductsProps) {
                     }
                     onClick={() => searchOrderHandler(value)}
                   >
-                    {label}
+                    {t(`products.sort.${value}`)}
                   </button>
                 );
               })}
@@ -399,7 +398,7 @@ export default function Products(props: ProductsProps) {
             <div className="products-archive__grid">
               {showNewDropsEmpty ? (
                 <p className="products-archive__empty products-archive__empty--new-drops">
-                  No new drops yet. Check back soon!
+                  {t("products.newDropsEmpty")}
                 </p>
               ) : safeProducts.length !== 0 ? (
                 safeProducts.map((product: Product) => (
@@ -412,7 +411,7 @@ export default function Products(props: ProductsProps) {
                   />
                 ))
               ) : (
-                <p className="products-archive__empty">No products match your search.</p>
+                <p className="products-archive__empty">{t("products.noResults")}</p>
               )}
             </div>
 
@@ -439,12 +438,13 @@ export default function Products(props: ProductsProps) {
                 color="primary"
                 sx={{
                   "& .MuiPaginationItem-root": {
-                    color: "rgba(255,255,255,0.65)",
-                    borderColor: "rgba(255,255,255,0.12)",
+                    color: "var(--ink-soft)",
+                    borderColor: "var(--sand)",
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "rgba(102,126,234,0.25) !important",
-                    color: "#b9c3ff",
+                    backgroundColor: "var(--navy) !important",
+                    color: "#ffffff",
+                    boxShadow: "inset 0 0 0 1px var(--gold)",
                   },
                 }}
               />

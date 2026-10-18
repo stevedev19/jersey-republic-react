@@ -20,7 +20,7 @@ export default function Advertisement() {
       subtitle: "Elite European Football",
       description: "Show your support for the greatest club competition with our exclusive Champions League collection.",
       image: "/img/champions-league.webp", 
-      color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      color: "linear-gradient(135deg, #ee6a37 0%, #d4572a 100%)"
     },
     {
       title: "World Cup Edition",

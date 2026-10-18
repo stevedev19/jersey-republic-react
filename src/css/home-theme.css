@@ -1,0 +1,149 @@
+/* ------------------------------------------------------------------ */
+/* Home page — sections specific to the landing page                   */
+/* Tokens: index.css :root. Shared pieces (buttons, header, product     */
+/* cards): theme.css. .jr-home is the ArchiveLanding root.              */
+/* ------------------------------------------------------------------ */
+
+.jr-home {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* index.css paints every main/section with --bg-base; let the section gradients show */
+.jr-home main {
+  background: transparent;
+}
+
+.jr-home .homepage {
+  background: transparent;
+}
+
+/* 1. Hero ---------------------------------------------------------------- */
+
+.jr-home .home-hero {
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 110%, rgba(201, 162, 39, 0.22), transparent 65%),
+    radial-gradient(ellipse 60% 70% at 90% 0%, var(--cream), transparent 60%),
+    linear-gradient(180deg, var(--white), var(--paper));
+}
+
+.jr-home .home-hero__scrim {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(247, 246, 242, 0.82) 50%, rgba(246, 239, 217, 0.55));
+}
+
+.jr-home .home-hero__title {
+  color: var(--ink);
+}
+
+/* 56 × 3 gold rule under the headline */
+.jr-home .home-hero__title::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 24px;
+  background: var(--gold);
+}
+
+.jr-home .home-hero__lead {
+  color: var(--ink-soft);
+}
+
+/* "GAME." and the other headline accents */
+.jr-home .home-accent {
+  color: var(--navy);
+}
+
+/* 2. Trust bar: see trust-strip.css ----------------------------------------- */
+
+/* 3. Trust bar → first light section ----------------------------------------- */
+
+.jr-home .home-transition-strip {
+  height: 120px;
+  background: linear-gradient(180deg, #fbf7ea, var(--paper));
+}
+
+/* 4. Light sections ------------------------------------------------------------ */
+
+.jr-home .home-light-section {
+  background:
+    radial-gradient(ellipse 60% 70% at 90% 0%, var(--cream), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--white));
+  color: var(--ink);
+}
+
+.jr-home .home-heading {
+  color: var(--ink);
+}
+
+.jr-home .home-text-soft {
+  color: var(--ink-soft);
+}
+
+/* decorative separators (countdown colons); 4.7:1 on paper anyway */
+.jr-home .home-gold-text {
+  color: var(--gold-deep);
+}
+
+.jr-home .home-view-all {
+  color: var(--navy);
+  transition: color 0.2s ease;
+}
+
+.jr-home .home-view-all:hover {
+  color: var(--navy-light);
+}
+
+.jr-home .home-view-all:focus-visible,
+.jr-home .home-round-btn:focus-visible {
+  outline: 3px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+.jr-home .home-empty {
+  background: var(--white);
+  border: 1px solid var(--sand);
+}
+
+.jr-home .home-media {
+  background: radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand));
+}
+
+.jr-home .home-round-btn {
+  border-color: var(--sand);
+  background: var(--white);
+  color: var(--navy);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.jr-home .home-round-btn:hover {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* 5. Product cards (archive-card styles: theme.css) ------------------------------ */
+
+.jr-home .home-card-surface,
+.jr-home .home-trending .trending-flip .card-back {
+  background: radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand));
+  box-shadow: 0 20px 50px -25px rgba(20, 27, 43, 0.35);
+}
+
+.jr-home .trending-flip-photo {
+  mix-blend-mode: multiply;
+}
+
+/* Trending flip cards: light scrim under the text instead of the dark one */
+.jr-home .home-trending__scrim {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.96), rgba(247, 246, 242, 0.75) 40%, transparent 75%);
+}
+
+.jr-home .home-trending__name {
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+
+.jr-home .home-trending__name:hover {
+  color: var(--navy);
+}

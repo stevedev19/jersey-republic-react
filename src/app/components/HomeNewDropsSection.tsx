@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Product } from "../../lib/types/product";
 import { CartItem } from "../../lib/types/search";
 import { getImageUrl } from "../../lib/config";
@@ -9,10 +10,12 @@ import { fetchNewDropsPageData, NewDropsWindow } from "../../lib/newDropsApi";
 import { sweetTopSmallSuccessAlert } from "../../lib/sweetAlert";
 import { JerseySwiperCarousel, JerseySwiperItem } from "./JerseySwiperCarousel";
 
-const ACCENT = "#FF6B35";
-const BG_NAVY = "#0a0f1e";
-const fontGrotesk = '"Space Grotesk", sans-serif';
-const fontMonument = '"Monument Extended", "Monument", sans-serif';
+// Light section (home-theme.css .home-light-section): ink / ink-soft text, "View all" in navy (12.7:1 on paper).
+const ACCENT_TEXT = "var(--navy)";
+const INK = "var(--ink)";
+const INK_MUTED = "var(--ink-soft)";
+const fontGrotesk = '"Archivo", "Pretendard", "Noto Sans KR", sans-serif';
+const fontMonument = '"Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif';
 
 export interface HomeNewDropsSectionProps {
   /** Cart add handler from shell — optional hides quick-add buttons */
@@ -82,6 +85,7 @@ function productsToJerseyItems(products: Product[], latestId: string | null): Je
 
 export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.ReactElement {
   const history = useHistory();
+  const { t, i18n } = useTranslation();
   const [newDrops, setNewDrops] = useState<Product[]>([]);
   const [dropWindow, setDropWindow] = useState<NewDropsWindow | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -89,7 +93,9 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
   const latestId = useMemo(() => newestProductId(newDrops), [newDrops]);
   const jerseyItems = useMemo(
     () => productsToJerseyItems(newDrops, latestId),
-    [newDrops, latestId]
+    // league labels are translated, so rebuild when the language changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [newDrops, latestId, i18n.language]
   );
 
   useEffect(() => {
@@ -119,24 +125,19 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
       if (!product) return;
       const added = onAdd(productToCartItem(product));
       if (added) {
-        sweetTopSmallSuccessAlert("Added to cart", 1800);
+        sweetTopSmallSuccessAlert(t("common.addedToCart"), 1800);
         window.setTimeout(() => history.push("/products"), 0);
       }
     },
-    [newDrops, onAdd, history]
+    [newDrops, onAdd, history, t]
   );
 
   return (
     <section
       id="drops"
-      className="home-new-drops scroll-mt-28"
-      style={{
-        background: BG_NAVY,
-        padding: "80px 64px",
-        boxSizing: "border-box",
-      }}
+      className="home-new-drops home-light-section scroll-mt-28 py-24"
     >
-      <div style={{ maxWidth: 1400, margin: "0 auto" }}>
+      <div className="container mx-auto px-6 md:px-12">
         <header
           className="home-new-drops__header"
           style={{
@@ -149,41 +150,28 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
           }}
         >
           <div style={{ flex: "1 1 280px", minWidth: 0 }}>
-            <p
-              style={{
-                fontFamily: fontGrotesk,
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: 5,
-                textTransform: "uppercase",
-                color: ACCENT,
-                margin: "0 0 12px 0",
-              }}
-            >
-              FRESH FROM THE ARCHIVE
-            </p>
             <h2
               style={{
                 fontFamily: fontMonument,
                 fontSize: "clamp(40px, 6vw, 64px)",
                 lineHeight: 0.9,
-                color: "#ffffff",
+                color: INK,
                 margin: 0,
                 fontWeight: 800,
               }}
             >
-              NEW DROPS.
+              {t("home.newDrops.title")}
             </h2>
             <p
               style={{
                 fontFamily: fontGrotesk,
                 fontSize: 14,
-                color: "rgba(138, 148, 166, 0.95)",
+                color: INK_MUTED,
                 marginTop: 8,
                 marginBottom: 0,
               }}
             >
-              Latest kits added to the Republic.
+              {t("home.newDrops.subtitle")}
             </p>
           </div>
           <div
@@ -202,12 +190,12 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                 style={{
                   fontFamily: fontGrotesk,
                   fontSize: 11,
-                  color: "rgba(138, 148, 166, 0.95)",
+                  color: INK_MUTED,
                   letterSpacing: 1,
                   margin: 0,
                 }}
               >
-                Drop window: {dropWindow.startYear}–{dropWindow.endYear}
+                {t("home.newDrops.window", { start: dropWindow.startYear, end: dropWindow.endYear })}
               </p>
             ) : null}
             <Link
@@ -217,12 +205,12 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: 2,
-                color: ACCENT,
+                color: ACCENT_TEXT,
                 textDecoration: "none",
               }}
               className="home-new-drops__view-all"
             >
-              View All →
+              {t("home.newDrops.viewAll")}
             </Link>
           </div>
         </header>
@@ -232,7 +220,7 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
             style={{
               padding: 60,
               textAlign: "center",
-              border: "1px dashed rgba(255,255,255,0.12)",
+              border: "1px dashed var(--sand)",
               borderRadius: 16,
             }}
           >
@@ -240,22 +228,22 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
               style={{
                 fontFamily: fontMonument,
                 fontSize: 32,
-                color: "rgba(255,255,255,0.15)",
+                color: INK_MUTED,
                 margin: 0,
               }}
             >
-              NO DROPS YET
+              {t("home.newDrops.emptyTitle")}
             </p>
             <p
               style={{
                 fontFamily: fontGrotesk,
                 fontSize: 13,
-                color: "rgba(138, 148, 166, 0.95)",
+                color: INK_MUTED,
                 marginTop: 8,
                 marginBottom: 0,
               }}
             >
-              New kits dropping soon. Stay tuned.
+              {t("home.newDrops.emptyDesc")}
             </p>
           </div>
         ) : (
@@ -268,13 +256,8 @@ export function HomeNewDropsSection({ onAdd }: HomeNewDropsSectionProps): React.
         )}
       </div>
       <style>{`
-        @media (max-width: 640px) {
-          .home-new-drops {
-            padding: 48px 24px !important;
-          }
-        }
         .home-new-drops__view-all:hover {
-          color: #ffffff !important;
+          color: var(--navy-light) !important;
         }
         /* No size pills on homepage new-drops cards (#drops) */
         #drops .archive-card__badge-size,

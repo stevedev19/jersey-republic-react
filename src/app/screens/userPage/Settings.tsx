@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useGlobals } from "../../hooks/useGlobals";
 import { MemberUpdateInput } from "../../../lib/types/member";
 import { T } from "../../../lib/types/common";
@@ -24,6 +25,7 @@ export function Settings({
   setMemberImage,
 }: SettingsProps) {
   const { authMember, setAuthMember } = useGlobals();
+  const { t } = useTranslation();
 
   const memberNickHandler = (e: T) => {
     const v = e.target.value;
@@ -70,7 +72,7 @@ export function Settings({
         }));
       }
 
-      await sweetTopSmallSuccessAlert("Modified successfully!", 700);
+      await sweetTopSmallSuccessAlert(t("profile.saved"), 700);
     } catch (err) {
       console.log(err);
       sweetErrorHandling(err).then();
@@ -100,7 +102,7 @@ export function Settings({
           <img src={memberImage} alt="" />
         </div>
         <label className="member-page-form__upload">
-          CHANGE PHOTO
+          {t("profile.changePhoto")}
           <input
             type="file"
             accept="image/jpeg,image/jpg,image/png"
@@ -108,13 +110,13 @@ export function Settings({
           />
         </label>
         <p className="member-page-form__hint">
-          JPG, JPEG, PNG formats only!
+          {t("profile.formatHint")}
         </p>
       </div>
 
       <div className="member-page-form__field">
         <label className="member-page-form__label" htmlFor="member-display-name">
-          Display Name
+          {t("profile.displayName")}
         </label>
         <input
           id="member-display-name"
@@ -131,14 +133,14 @@ export function Settings({
       <div className="member-page-form__row">
         <div className="member-page-form__field member-page-form__field--half">
           <label className="member-page-form__label" htmlFor="member-phone">
-            Phone
+            {t("profile.phone")}
           </label>
           <input
             id="member-phone"
             className="member-page-form__input"
             type="text"
             placeholder={
-              authMember?.memberPhone ? authMember.memberPhone : "No phone"
+              authMember?.memberPhone ? authMember.memberPhone : t("profile.noPhone")
             }
             value={memberUpdateInput.memberPhone ?? ""}
             name="memberPhone"
@@ -151,7 +153,7 @@ export function Settings({
             className="member-page-form__label"
             htmlFor="member-location"
           >
-            Location
+            {t("profile.location")}
           </label>
           <input
             id="member-location"
@@ -160,7 +162,7 @@ export function Settings({
             placeholder={
               authMember?.memberAddress
                 ? authMember.memberAddress
-                : "No address"
+                : t("common.noAddress")
             }
             value={memberUpdateInput.memberAddress ?? ""}
             name="memberAddress"
@@ -172,13 +174,13 @@ export function Settings({
 
       <div className="member-page-form__field">
         <label className="member-page-form__label" htmlFor="member-bio">
-          Bio
+          {t("profile.bio")}
         </label>
         <textarea
           id="member-bio"
           className="member-page-form__textarea"
           placeholder={
-            authMember?.memberDesc ? authMember.memberDesc : "No description"
+            authMember?.memberDesc ? authMember.memberDesc : t("profile.noDescription")
           }
           value={memberUpdateInput.memberDesc ?? ""}
           name="memberDesc"
@@ -192,7 +194,7 @@ export function Settings({
           className="member-page-form__save"
           onClick={handleSubmitButton}
         >
-          SAVE CHANGES
+          {t("profile.save")}
         </button>
       </div>
     </div>

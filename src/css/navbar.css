@@ -170,7 +170,7 @@
 
 .home-navbar__link-about {
     font-size: 12px !important;
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .home-navbar .hover-line.home-navbar-about-wrap:hover .home-navbar__link-about,

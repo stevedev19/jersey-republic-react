@@ -8,7 +8,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(14, 19, 34, 0.2) 0%, rgba(14, 19, 34, 0.6) 100%);
+  /* navy-deep scrim so the white caption on the photo stays readable */
+  background: linear-gradient(to right, rgba(21, 30, 68, 0.25) 0%, rgba(21, 30, 68, 0.7) 100%);
   border-radius: 20px 0 0 20px;
   z-index: 1;
   pointer-events: none;
@@ -27,13 +28,13 @@
 .roulette-login-modal__teaser-label {
   margin: 0;
   margin-top: 32px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
   text-align: center;
-  color: #8a94a6;
+  color: var(--ink-soft);
   opacity: 0.5;
 }
 
@@ -46,17 +47,17 @@
   pointer-events: none;
   opacity: 0.08;
   filter: blur(12px);
-  box-shadow: inset 0 0 0 3px rgba(102, 126, 234, 0.25);
+  box-shadow: inset 0 0 0 3px rgba(201, 162, 39, 0.25);
   background: conic-gradient(
     from -90deg,
-    #161b27 0deg 45deg,
-    #1a2342 45deg 90deg,
-    #161b27 90deg 135deg,
-    #1a2342 135deg 180deg,
-    #161b27 180deg 225deg,
-    #1a2342 225deg 270deg,
-    #161b27 270deg 315deg,
-    #1a2342 315deg 360deg
+    var(--cream) 0deg 45deg,
+    var(--white) 45deg 90deg,
+    var(--cream) 90deg 135deg,
+    var(--white) 135deg 180deg,
+    var(--cream) 180deg 225deg,
+    var(--white) 225deg 270deg,
+    var(--cream) 270deg 315deg,
+    var(--white) 315deg 360deg
   );
 }
 

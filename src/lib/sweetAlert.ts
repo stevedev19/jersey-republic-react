@@ -1,6 +1,7 @@
 /** SweetAlertHandling **/
 import Swal from "sweetalert2";
 import { Messages } from "./config";
+import i18n from "../i18n";
 
 export const sweetErrorHandling = async (err: any) => {
   const error = err.response?.data ?? err;
@@ -52,7 +53,8 @@ export const sweetFailureProvider = (
     icon: "error",
     title: msg,
     showConfirmButton: show_button,
-    confirmButtonText: "OK",
+    confirmButtonText: i18n.t("messages.ok"),
+    confirmButtonColor: "#1e2a5a", // --navy
   }).then(() => {
     if (forward_url !== "") {
       window.location.replace(forward_url);

@@ -1,7 +1,9 @@
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function OrdersEmptyState() {
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <div className="orders-empty-state">
@@ -10,18 +12,16 @@ export default function OrdersEmptyState() {
         alt=""
         className="orders-empty-state__icon"
       />
-      <h2 className="orders-empty-state__title">NO ORDERS YET</h2>
+      <h2 className="orders-empty-state__title">{t("orders.empty.title")}</h2>
       <p className="orders-empty-state__sub">
-        Your archive is empty.
-        <br />
-        Start building your collection.
+        {t("orders.empty.line1")}
       </p>
       <button
         type="button"
         className="orders-empty-state__cta"
         onClick={() => history.push("/products")}
       >
-        EXPLORE THE ARCHIVE →
+        {t("orders.empty.cta")}
       </button>
     </div>
   );

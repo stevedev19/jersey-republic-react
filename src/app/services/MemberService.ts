@@ -1,5 +1,6 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
+import { clearAuthSession, getAccessToken } from "../../lib/authSession";
 import {
   LoginInput,
   Member,
@@ -70,17 +71,22 @@ class MemberService {
     }
   }
 
+  /**
+   * Server logout is best-effort: an expired token or a cross-site cookie that
+   * isn't sent makes the API answer 401, but the local session must still end.
+   */
   public async logout(): Promise<void> {
     try {
       const url = this.path + "member/logout";
-      const result = await axios.post(url, {}, { withCredentials: true });
-      console.log("logout", result);
-
-      localStorage.removeItem("memberData");
-      localStorage.removeItem("accessToken");
+      const token = getAccessToken();
+      await axios.post(url, {}, {
+        withCredentials: true,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
     } catch (err) {
-      console.log("Error logout", err);
-      throw err;
+      console.log("Error logout (local session cleared anyway)", err);
+    } finally {
+      clearAuthSession();
     }
   }
 

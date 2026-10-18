@@ -10,20 +10,20 @@ const light = {
 	palette: {
 		type: 'light',
 		background: {
-			default: '#0d1117',
-			paper: '#161b27',
+			default: '#f7f6f2', // --paper
+			paper: '#ffffff',
 		},
 		primary: {
-			contrastText: '#d7b586',
-			main: '#343434',
+			contrastText: '#ffffff',
+			main: '#1e2a5a', // --navy
 		},
 		secondary: {
-			contrastText: '#343434',
-			main: '#d7b586',
+			contrastText: '#ffffff',
+			main: '#8a6a12', // --gold-deep
 		},
 		text: {
-			primary: '#ffffff',
-			secondary: '#cbd5e0',
+			primary: '#141b2b', // --ink
+			secondary: '#4a5263', // --ink-soft
 			dark: common.black,
 		},
 	},
@@ -39,7 +39,7 @@ const light = {
 			styleOverrides: {
 				html: { height: '100%' },
 				body: {
-					background: 'var(--bg-base, #0d1117)',
+					background: 'var(--bg-base, #f7f6f2)',
 					height: '100%',
 					minHeight: '100%',
 				},

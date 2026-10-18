@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ProductCollection } from "../../lib/enums/product.enum";
 import { getImageUrl } from "../../lib/config";
 import { normalizeProductImages } from "../../lib/normalizeProductImages";
@@ -8,40 +9,38 @@ import type { Product } from "../../lib/types/product";
 import "../../css/brands-megamenu.css";
 
 type LeagueRow = {
-  emoji: string;
-  label: string;
-  count: number;
+  /** i18n key for the row label */
+  labelKey: string;
   collection: ProductCollection;
   search?: string;
 };
 
 type NationRow = {
-  emoji: string;
-  label: string;
-  count: number;
+  /** i18n key for the row label */
+  labelKey: string;
   collection: ProductCollection;
   search?: string;
 };
 
 const LEAGUES: LeagueRow[] = [
-  { emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", label: "Premier League", count: 48, collection: ProductCollection.PREMIER_LEAGUE },
-  { emoji: "🇪🇸", label: "La Liga", count: 36, collection: ProductCollection.LA_LIGA },
-  { emoji: "🇩🇪", label: "Bundesliga", count: 32, collection: ProductCollection.BUNDESLIGA },
-  { emoji: "🇮🇹", label: "Serie A", count: 30, collection: ProductCollection.SERIE_A },
-  { emoji: "🇫🇷", label: "Ligue 1", count: 28, collection: ProductCollection.LIGUE_1 },
-  { emoji: "🏆", label: "Champions League", count: 12, collection: ProductCollection.CHAMPIONS_LEAGUE },
-  { emoji: "🌍", label: "World Cup 2026", count: 32, collection: ProductCollection.NATIONAL_TEAMS, search: "World Cup" },
+  { labelKey: "collections.PREMIER_LEAGUE", collection: ProductCollection.PREMIER_LEAGUE },
+  { labelKey: "collections.LA_LIGA", collection: ProductCollection.LA_LIGA },
+  { labelKey: "collections.BUNDESLIGA", collection: ProductCollection.BUNDESLIGA },
+  { labelKey: "collections.SERIE_A", collection: ProductCollection.SERIE_A },
+  { labelKey: "collections.LIGUE_1", collection: ProductCollection.LIGUE_1 },
+  { labelKey: "collections.CHAMPIONS_LEAGUE", collection: ProductCollection.CHAMPIONS_LEAGUE },
+  { labelKey: "megaMenu.worldCup", collection: ProductCollection.NATIONAL_TEAMS, search: "World Cup" },
 ];
 
 const NATIONS: NationRow[] = [
-  { emoji: "🇧🇷", label: "Brazil", count: 18, collection: ProductCollection.NATIONAL_TEAMS, search: "Brazil" },
-  { emoji: "🇫🇷", label: "France", count: 14, collection: ProductCollection.NATIONAL_TEAMS, search: "France" },
-  { emoji: "🇩🇪", label: "Germany", count: 12, collection: ProductCollection.NATIONAL_TEAMS, search: "Germany" },
-  { emoji: "🇦🇷", label: "Argentina", count: 10, collection: ProductCollection.NATIONAL_TEAMS, search: "Argentina" },
-  { emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", label: "England", count: 16, collection: ProductCollection.NATIONAL_TEAMS, search: "England" },
-  { emoji: "🇵🇹", label: "Portugal", count: 8, collection: ProductCollection.NATIONAL_TEAMS, search: "Portugal" },
-  { emoji: "🇪🇸", label: "Spain", count: 12, collection: ProductCollection.NATIONAL_TEAMS, search: "Spain" },
-  { emoji: "🇺🇿", label: "Uzbekistan", count: 6, collection: ProductCollection.UZBEKISTAN_LEAGUE },
+  { labelKey: "megaMenu.nations.brazil", collection: ProductCollection.NATIONAL_TEAMS, search: "Brazil" },
+  { labelKey: "megaMenu.nations.france", collection: ProductCollection.NATIONAL_TEAMS, search: "France" },
+  { labelKey: "megaMenu.nations.germany", collection: ProductCollection.NATIONAL_TEAMS, search: "Germany" },
+  { labelKey: "megaMenu.nations.argentina", collection: ProductCollection.NATIONAL_TEAMS, search: "Argentina" },
+  { labelKey: "megaMenu.nations.england", collection: ProductCollection.NATIONAL_TEAMS, search: "England" },
+  { labelKey: "megaMenu.nations.portugal", collection: ProductCollection.NATIONAL_TEAMS, search: "Portugal" },
+  { labelKey: "megaMenu.nations.spain", collection: ProductCollection.NATIONAL_TEAMS, search: "Spain" },
+  { labelKey: "megaMenu.nations.uzbekistan", collection: ProductCollection.UZBEKISTAN_LEAGUE },
 ];
 
 function productsHref(opts: { collection?: ProductCollection; search?: string }) {
@@ -72,6 +71,7 @@ export default function BrandsMegaMenu({
   onMouseLeave,
   onNavigate,
 }: BrandsMegaMenuProps) {
+  const { t } = useTranslation();
   const wrapNavigate = () => onNavigate();
   const [newestProduct, setNewestProduct] = useState<Product | null>(null);
   const [featuredLoading, setFeaturedLoading] = useState(true);
@@ -109,58 +109,46 @@ export default function BrandsMegaMenu({
   const featuredImage =
     featuredPaths[0] != null ? getImageUrl(featuredPaths[0]) : "";
   const featuredHref = newestProduct ? `/products/${newestProduct._id}` : "/products?order=createdAt";
-  const featuredTitle = newestProduct?.productName ?? "Latest kits this week";
+  const featuredTitle = newestProduct?.productName ?? t("megaMenu.latestKits");
   const imgAlt = newestProduct?.productName ?? "";
 
   return (
     <div
       id="teams-mega-menu"
       role="navigation"
-      aria-label="Shop by league and nation"
+      aria-label={t("megaMenu.label")}
       className={`brands-mega ${open ? "brands-mega--open" : ""}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       <div className="brands-mega__inner">
         <div className="brands-mega__col">
-          <span className="brands-mega__section-head">BY LEAGUE</span>
+          <span className="brands-mega__section-head">{t("megaMenu.byLeague")}</span>
           <div className="brands-mega__rows">
             {LEAGUES.map((row) => (
               <Link
-                key={`${row.collection}-${row.label}`}
+                key={`${row.collection}-${row.labelKey}`}
                 to={productsHref({ collection: row.collection, search: row.search })}
                 className="brands-mega__row"
                 onClick={wrapNavigate}
               >
-                <span className="brands-mega__row-left">
-                  <span className="brands-mega__row-emoji" aria-hidden>
-                    {row.emoji}
-                  </span>
-                  <span className="brands-mega__row-label">{row.label}</span>
-                </span>
-                <span className="brands-mega__row-count">{row.count}</span>
+                <span className="brands-mega__row-label">{t(row.labelKey)}</span>
               </Link>
             ))}
           </div>
         </div>
 
         <div className="brands-mega__col">
-          <span className="brands-mega__section-head">BY NATION</span>
+          <span className="brands-mega__section-head">{t("megaMenu.byNation")}</span>
           <div className="brands-mega__rows">
             {NATIONS.map((row) => (
               <Link
-                key={`${row.collection}-${row.label}-${row.search || ""}`}
+                key={`${row.collection}-${row.labelKey}-${row.search || ""}`}
                 to={productsHref({ collection: row.collection, search: row.search })}
                 className="brands-mega__row"
                 onClick={wrapNavigate}
               >
-                <span className="brands-mega__row-left">
-                  <span className="brands-mega__row-emoji" aria-hidden>
-                    {row.emoji}
-                  </span>
-                  <span className="brands-mega__row-label">{row.label}</span>
-                </span>
-                <span className="brands-mega__row-count">{row.count}</span>
+                <span className="brands-mega__row-label">{t(row.labelKey)}</span>
               </Link>
             ))}
           </div>
@@ -169,7 +157,7 @@ export default function BrandsMegaMenu({
         <div className="brands-mega__col brands-mega__col--spacer" aria-hidden="true" />
 
         <div className="brands-mega__col brands-mega__col--featured">
-          <span className="brands-mega__section-head brands-mega__section-head--featured">FEATURED DROP</span>
+          <span className="brands-mega__section-head brands-mega__section-head--featured">{t("megaMenu.featuredDrop")}</span>
           <Link to={featuredHref} className="brands-mega__featured-card" onClick={wrapNavigate}>
             <div className="brands-mega__featured-visual">
               {featuredLoading ? (
@@ -181,9 +169,9 @@ export default function BrandsMegaMenu({
               )}
             </div>
             <div className="brands-mega__featured-info">
-              <span className="brands-mega__featured-badge">NEW DROP</span>
+              <span className="brands-mega__featured-badge">{t("megaMenu.newDrop")}</span>
               <h3 className="brands-mega__featured-name">
-                {featuredLoading ? "Loading…" : featuredTitle}
+                {featuredLoading ? t("megaMenu.loading") : featuredTitle}
               </h3>
               <p className="brands-mega__featured-kit">
                 {newestProduct && !featuredLoading ? kitTypeLabel(newestProduct) : "—"}
@@ -194,7 +182,7 @@ export default function BrandsMegaMenu({
                     ? `$${Number(newestProduct.productPrice).toFixed(2)}`
                     : "—"}
                 </span>
-                <span className="brands-mega__featured-view">VIEW →</span>
+                <span className="brands-mega__featured-view">{t("megaMenu.view")}</span>
               </div>
             </div>
           </Link>
@@ -204,24 +192,24 @@ export default function BrandsMegaMenu({
       <div className="brands-mega__footer">
         <div className="brands-mega__footer-links">
           <Link to="/products" className="brands-mega__footer-link" onClick={wrapNavigate}>
-            ALL JERSEYS →
+            {t("megaMenu.allJerseys")}
           </Link>
           <Link
             to="/products?order=createdAt"
             className="brands-mega__footer-link"
             onClick={wrapNavigate}
           >
-            NEW ARRIVALS →
+            {t("megaMenu.newArrivals")}
           </Link>
           <Link
             to="/products?order=productPrice"
             className="brands-mega__footer-link"
             onClick={wrapNavigate}
           >
-            ON SALE →
+            {t("megaMenu.onSale")}
           </Link>
         </div>
-        <p className="brands-mega__footer-hint">Press ESC to close</p>
+        <p className="brands-mega__footer-hint">{t("megaMenu.escHint")}</p>
       </div>
     </div>
   );

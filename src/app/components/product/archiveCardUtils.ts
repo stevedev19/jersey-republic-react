@@ -1,23 +1,15 @@
 import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import { getNewDropRegisteredDate, isNewDrop } from "../../../lib/newDrops";
+import i18n from "../../../i18n";
 
+/** Translated league / collection name; callers re-render on language change via useTranslation. */
 export function collectionLabel(collection: ProductCollection): string {
-  const names: Record<string, string> = {
-    PREMIER_LEAGUE: "Premier League",
-    LA_LIGA: "La Liga",
-    SERIE_A: "Serie A",
-    BUNDESLIGA: "Bundesliga",
-    LIGUE_1: "Ligue 1",
-    CHAMPIONS_LEAGUE: "Champions League",
-    NATIONAL_TEAMS: "National Teams",
-    UZBEKISTAN_LEAGUE: "Uzbekistan League",
-    RETRO: "Retro",
-    OTHER: "Other",
-    DISH: "Other",
-    DRINK: "Other",
-  };
-  return names[collection] || String(collection).replace(/_/g, " ");
+  const key =
+    collection === ProductCollection.DISH || collection === ProductCollection.DRINK
+      ? ProductCollection.OTHER
+      : collection;
+  return i18n.t(`collections.${key}`, { defaultValue: String(collection).replace(/_/g, " ") });
 }
 
 export function isNewProduct(product: Product): boolean {

@@ -9,12 +9,16 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
+import { useTranslation } from "react-i18next";
 import "../../../css/help.css";
-import { faq } from "../../../lib/data/faq";
-import { terms } from "../../../lib/data/terms";
+
+type FaqItem = { question: string; answer: string };
 
 export default function HelpPage() {
   const [value, setValue] = React.useState("1");
+  const { t } = useTranslation();
+  const terms = t("help.terms", { returnObjects: true }) as string[];
+  const faq = t("help.faq", { returnObjects: true }) as FaqItem[];
 
   /** HANDLERS **/
   const handleChange = (e: React.SyntheticEvent, newValue: string) => {
@@ -30,17 +34,17 @@ export default function HelpPage() {
               <Tabs
                 value={value}
                 onChange={handleChange}
-                aria-label="lab API tabs example"
+                aria-label={t("help.tabsLabel")}
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
                   width: "100%", // ensures it stretches across
                 }}
               >
-                <Tab label="TERMS" value="1" />
-                <Tab label="FAQ" value="2" sx={{ margin: "0 auto" }} />{" "}
+                <Tab label={t("help.tabs.terms")} value="1" />
+                <Tab label={t("help.tabs.faq")} value="2" sx={{ margin: "0 auto" }} />{" "}
                 {/* stays in center */}
-                <Tab label="CONTACT" value="3" />
+                <Tab label={t("help.tabs.contact")} value="3" />
               </Tabs>
             </Box>
           </Box>
@@ -79,8 +83,8 @@ export default function HelpPage() {
                 <Stack className={"admin-letter-box"}>
                   <Stack className={"admin-letter-container"}>
                     <Box className={"admin-letter-frame"}>
-                      <span>Contact us!</span>
-                      <p>Fill out below form to send a message!</p>
+                      <span>{t("help.contact.title")}</span>
+                      <p>{t("help.contact.subtitle")}</p>
                     </Box>
                     <form
                       action={"#"}
@@ -88,26 +92,26 @@ export default function HelpPage() {
                       className={"admin-letter-frame"}
                     >
                       <div className={"admin-input-box"}>
-                        <label>Your name</label>
+                        <label>{t("help.contact.name")}</label>
                         <input
                           type={"text"}
                           name={"memberNick"}
-                          placeholder={"Type your name here"}
+                          placeholder={t("help.contact.namePlaceholder")}
                         />
                       </div>
                       <div className={"admin-input-box"}>
-                        <label>Your email</label>
+                        <label>{t("help.contact.email")}</label>
                         <input
                           type={"text"}
                           name={"memberEmail"}
-                          placeholder={"Type your email here"}
+                          placeholder={t("help.contact.emailPlaceholder")}
                         />
                       </div>
                       <div className={"admin-input-box"}>
-                        <label>Message</label>
+                        <label>{t("help.contact.message")}</label>
                         <textarea
                           name={"memberMsg"}
-                          placeholder={"Your message"}
+                          placeholder={t("help.contact.messagePlaceholder")}
                         ></textarea>
                       </div>
                       <Box
@@ -116,7 +120,7 @@ export default function HelpPage() {
                         sx={{ mt: "30px" }}
                       >
                         <Button type={"submit"} variant="contained">
-                          Send
+                          {t("help.contact.send")}
                         </Button>
                       </Box>
                     </form>

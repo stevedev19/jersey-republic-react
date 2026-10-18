@@ -2,13 +2,20 @@ import React, { useCallback, useEffect, useState } from "react";
 import type { EmblaCarouselType } from "embla-carousel";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
+import { useTranslation } from "react-i18next";
 
-const NAVY = "#0a0f1e";
-const ORANGE = "#FF6B35";
-const LIGHT_PANEL = "#e8ecf2";
-const SUBTLE_BORDER = "rgba(255, 255, 255, 0.12)";
-const fontGrotesk = '"Space Grotesk", sans-serif';
-const fontMonument = '"Monument Extended", "Monument", sans-serif';
+// Sits on the light "New drops" section: navy & gold theme tokens from index.css.
+// Gold is decorative only (progress bar, badge ring); the days-left label is navy because
+// --gold-deep drops to 4.4:1 where the section's cream glow reaches it.
+const INK = "var(--ink)";
+const INK_MUTED = "var(--ink-soft)";
+const NAVY = "var(--navy)";
+const GOLD = "var(--gold)";
+const CARD_BG = "radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand))";
+const CARD_BORDER = "var(--sand)";
+const CARD_SHADOW = "0 20px 50px -25px rgba(20, 27, 43, 0.35)";
+const fontGrotesk = '"Archivo", "Pretendard", "Noto Sans KR", sans-serif';
+const fontMonument = '"Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif';
 
 export interface JerseySwiperItem {
   id: string;
@@ -44,6 +51,7 @@ export function JerseySwiperCarousel({
   progressPercent = 0,
   onAddToCart,
 }: JerseySwiperCarouselProps): React.ReactElement {
+  const { t } = useTranslation();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: false,
@@ -102,28 +110,28 @@ export function JerseySwiperCarousel({
                 fontWeight: 700,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.55)",
+                color: INK_MUTED,
               }}
             >
-              Drop window
+              {t("carousel.dropWindow")}
             </span>
             <span
               style={{
                 fontFamily: fontGrotesk,
                 fontSize: 13,
                 fontWeight: 700,
-                color: ORANGE,
+                color: NAVY,
                 whiteSpace: "nowrap",
               }}
             >
-              {Math.floor(daysRemaining as number)} days left
+              {t("carousel.daysLeft", { count: Math.floor(daysRemaining as number) })}
             </span>
           </div>
           <div
             style={{
               height: 4,
               borderRadius: 999,
-              background: "rgba(255,255,255,0.08)",
+              background: "var(--sand)",
               overflow: "hidden",
             }}
           >
@@ -131,7 +139,7 @@ export function JerseySwiperCarousel({
               style={{
                 height: "100%",
                 width: `${Math.min(100, Math.max(0, progressPercent))}%`,
-                background: `linear-gradient(90deg, ${ORANGE} 0%, #ff9f70 100%)`,
+                background: GOLD,
                 borderRadius: 999,
                 transition: "width 0.45s ease",
               }}
@@ -147,7 +155,7 @@ export function JerseySwiperCarousel({
         <button
           type="button"
           className="jersey-swiper-arrow jersey-swiper-arrow--prev"
-          aria-label="Previous"
+          aria-label={t("carousel.previous")}
           disabled={!canPrev}
           onClick={scrollPrev}
         >
@@ -158,7 +166,7 @@ export function JerseySwiperCarousel({
         <button
           type="button"
           className="jersey-swiper-arrow jersey-swiper-arrow--next"
-          aria-label="Next"
+          aria-label={t("carousel.next")}
           disabled={!canNext}
           onClick={scrollNext}
         >
@@ -189,9 +197,12 @@ export function JerseySwiperCarousel({
                 <article
                   style={{
                     borderRadius: 16,
-                    border: `1px solid ${SUBTLE_BORDER}`,
+                    border: `1px solid ${CARD_BORDER}`,
                     overflow: "hidden",
-                    background: "rgba(255,255,255,0.04)",
+                    background: CARD_BG,
+                    boxShadow: CARD_SHADOW,
+                    padding: 12,
+                    boxSizing: "border-box",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -204,11 +215,10 @@ export function JerseySwiperCarousel({
                       color: "inherit",
                       display: "block",
                       position: "relative",
-                      background: LIGHT_PANEL,
-                      flex: "1 1 auto",
-                      minHeight: 200,
+                      borderRadius: 10,
+                      overflow: "hidden",
                     }}
-                    aria-label={`View ${j.name}`}
+                    aria-label={t("common.viewNamed", { name: j.name })}
                   >
                     {j.isLatestDrop ? (
                       <span
@@ -217,40 +227,32 @@ export function JerseySwiperCarousel({
                           top: 10,
                           left: 10,
                           zIndex: 2,
-                          background: ORANGE,
-                          color: "#fff",
+                          background: NAVY,
+                          color: "#ffffff",
+                          boxShadow: `inset 0 0 0 1px ${GOLD}`,
                           fontFamily: fontGrotesk,
-                          fontSize: 9,
+                          fontSize: 10,
                           fontWeight: 800,
-                          letterSpacing: "0.14em",
+                          letterSpacing: "0.04em",
                           textTransform: "uppercase",
                           padding: "5px 10px",
                           borderRadius: 999,
-                          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                         }}
                       >
-                        Latest drop
+                        {t("carousel.latestDrop")}
                       </span>
                     ) : null}
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "20px 16px",
-                        minHeight: 220,
-                      }}
-                    >
+                    <div style={{ aspectRatio: "4 / 5", padding: 8, boxSizing: "border-box" }}>
                       <img
                         src={j.imageUrl}
                         alt=""
                         decoding="async"
                         style={{
-                          maxWidth: "100%",
-                          maxHeight: 200,
-                          width: "auto",
-                          height: "auto",
+                          display: "block",
+                          width: "100%",
+                          height: "100%",
                           objectFit: "contain",
+                          mixBlendMode: "multiply",
                         }}
                       />
                     </div>
@@ -258,14 +260,13 @@ export function JerseySwiperCarousel({
 
                   <div
                     style={{
-                      padding: "16px 16px 18px",
-                      background: NAVY,
+                      padding: "14px 4px 4px",
                       flex: "0 0 auto",
                     }}
                   >
                     <Link
                       to={`/products/${j.id}`}
-                      style={{ textDecoration: "none", color: "#fff" }}
+                      style={{ textDecoration: "none", color: INK }}
                     >
                       <h3
                         style={{
@@ -274,7 +275,7 @@ export function JerseySwiperCarousel({
                           fontWeight: 800,
                           lineHeight: 1.25,
                           margin: "0 0 6px 0",
-                          color: "#fff",
+                          color: INK,
                         }}
                       >
                         {j.name}
@@ -286,7 +287,7 @@ export function JerseySwiperCarousel({
                           fontWeight: 600,
                           letterSpacing: "0.06em",
                           textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.5)",
+                          color: INK_MUTED,
                           margin: "0 0 4px 0",
                         }}
                       >
@@ -296,7 +297,7 @@ export function JerseySwiperCarousel({
                         style={{
                           fontFamily: fontGrotesk,
                           fontSize: 12,
-                          color: "rgba(255,255,255,0.45)",
+                          color: INK_MUTED,
                           margin: "0 0 14px 0",
                         }}
                       >
@@ -317,7 +318,7 @@ export function JerseySwiperCarousel({
                           fontFamily: fontMonument,
                           fontSize: 18,
                           fontWeight: 800,
-                          color: "#fff",
+                          color: INK,
                         }}
                       >
                         {formatPrice(j.price)}
@@ -325,7 +326,7 @@ export function JerseySwiperCarousel({
                       {onAddToCart ? (
                         <button
                           type="button"
-                          aria-label={`Add ${j.name} to cart`}
+                          aria-label={t("common.addToCartNamed", { name: j.name })}
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -337,8 +338,6 @@ export function JerseySwiperCarousel({
                             height: 44,
                             borderRadius: "50%",
                             border: "none",
-                            background: ORANGE,
-                            color: "#fff",
                             fontSize: 24,
                             fontWeight: 300,
                             lineHeight: 1,
@@ -346,10 +345,8 @@ export function JerseySwiperCarousel({
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            boxShadow: "0 6px 20px rgba(255,107,53,0.35)",
-                            transition: "transform 0.15s ease, filter 0.15s ease",
                           }}
-                          className="jersey-swiper-add"
+                          className="jersey-swiper-add jr-btn-primary"
                         >
                           +
                         </button>
@@ -374,7 +371,7 @@ export function JerseySwiperCarousel({
             marginTop: 24,
           }}
           role="tablist"
-          aria-label="Slides"
+          aria-label={t("carousel.slides")}
         >
           {Array.from({ length: snapCount }).map((_, i) => {
             const active = i === selectedIndex;
@@ -384,7 +381,7 @@ export function JerseySwiperCarousel({
                 type="button"
                 role="tab"
                 aria-selected={active}
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={t("carousel.goToSlide", { number: i + 1 })}
                 onClick={() => scrollTo(i)}
                 style={{
                   width: active ? 22 : 8,
@@ -393,7 +390,7 @@ export function JerseySwiperCarousel({
                   border: "none",
                   padding: 0,
                   cursor: "pointer",
-                  background: active ? ORANGE : "rgba(255,255,255,0.22)",
+                  background: active ? NAVY : "var(--sand)",
                   transition: "width 0.25s ease, background 0.2s ease",
                 }}
               />
@@ -411,9 +408,9 @@ export function JerseySwiperCarousel({
           width: 44px;
           height: 44px;
           border-radius: 50%;
-          border: 1px solid ${SUBTLE_BORDER};
-          background: rgba(10, 15, 30, 0.92);
-          color: #fff;
+          border: 1px solid ${CARD_BORDER};
+          background: var(--white);
+          color: ${NAVY};
           display: flex;
           align-items: center;
           justify-content: center;
@@ -421,9 +418,13 @@ export function JerseySwiperCarousel({
           transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
         }
         .jersey-swiper-arrow:hover:not(:disabled) {
-          border-color: ${ORANGE};
-          background: rgba(255, 107, 53, 0.15);
-          color: ${ORANGE};
+          border-color: ${NAVY};
+          background: ${NAVY};
+          color: #fff;
+        }
+        .jersey-swiper-arrow:focus-visible {
+          outline: 3px solid var(--gold-deep);
+          outline-offset: 3px;
         }
         .jersey-swiper-arrow:disabled {
           opacity: 0.35;
@@ -431,13 +432,6 @@ export function JerseySwiperCarousel({
         }
         .jersey-swiper-arrow--prev { left: -6px; }
         .jersey-swiper-arrow--next { right: -6px; }
-        .jersey-swiper-add:hover {
-          transform: scale(1.06);
-          filter: brightness(1.05);
-        }
-        .jersey-swiper-add:active {
-          transform: scale(0.96);
-        }
         @media (max-width: 640px) {
           .jersey-swiper-arrow--prev { left: 2px; }
           .jersey-swiper-arrow--next { right: 2px; }

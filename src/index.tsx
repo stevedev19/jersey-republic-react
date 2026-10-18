@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+import "./i18n";
 import { store } from "./app/store";
 import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
@@ -13,6 +14,10 @@ import { SocketProvider } from "./app/context/SocketContext";
 import "./css/index.css";
 import "./css/tailwind.css";
 import "./css/product-cards.css";
+// Last on purpose: overrides component colors for the light product/account surfaces.
+import "./css/light-surfaces.css";
+// Navy & gold theme: shared buttons, header and product cards; after light-surfaces so it wins ties.
+import "./css/theme.css";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

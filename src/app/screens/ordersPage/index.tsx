@@ -13,20 +13,22 @@ import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../hooks/useGlobals";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getImageUrl } from "../../../lib/config";
 
 const ORDER_LIST_PARAMS = { page: 1, limit: 5 } as const;
 
 const TAB_LABELS = [
-  { value: "1", label: "PAUSED ORDERS" },
-  { value: "2", label: "PROCESS ORDERS" },
-  { value: "3", label: "FINISHED ORDERS" },
+  { value: "1", labelKey: "orders.tabs.paused" },
+  { value: "2", labelKey: "orders.tabs.process" },
+  { value: "3", labelKey: "orders.tabs.finished" },
 ] as const;
 
 export default function OrdersPage() {
   const dispatch = useDispatch();
   const { orderBuilder, authMember } = useGlobals();
   const history = useHistory();
+  const { t } = useTranslation();
   const [value, setValue] = useState("1");
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export default function OrdersPage() {
                 <div
                   className="order-tabs-pill-bar"
                   role="tablist"
-                  aria-label="Order categories"
+                  aria-label={t("orders.categories")}
                 >
                   {TAB_LABELS.map((tab) => (
                     <button
@@ -81,7 +83,7 @@ export default function OrdersPage() {
                       }
                       onClick={() => setValue(tab.value)}
                     >
-                      {tab.label}
+                      {t(tab.labelKey)}
                     </button>
                   ))}
                 </div>
@@ -114,7 +116,7 @@ export default function OrdersPage() {
               <p>
                 {authMember?.memberAddress
                   ? authMember.memberAddress
-                  : "No address"}
+                  : t("common.noAddress")}
               </p>
             </div>
           </Box>
@@ -123,27 +125,27 @@ export default function OrdersPage() {
             <input
               className="order-payment-input"
               type="text"
-              placeholder="Card number"
+              placeholder={t("orders.cardNumber")}
               autoComplete="cc-number"
             />
             <div className="order-payment-row">
               <input
                 className="order-payment-input"
                 type="text"
-                placeholder="MM / YY"
+                placeholder={t("orders.expiry")}
                 autoComplete="cc-exp"
               />
               <input
                 className="order-payment-input"
                 type="text"
-                placeholder="CVV"
+                placeholder={t("orders.cvv")}
                 autoComplete="cc-csc"
               />
             </div>
             <input
               className="order-payment-input"
               type="text"
-              placeholder="Cardholder name"
+              placeholder={t("orders.cardholder")}
               autoComplete="cc-name"
             />
             <div className="order-payment-brands">
@@ -152,7 +154,7 @@ export default function OrdersPage() {
               <img src="/icons/paypal-card.svg" alt="PayPal" />
             </div>
             <button type="button" className="order-payment-save">
-              SAVE CARD
+              {t("orders.saveCard")}
             </button>
           </Box>
         </Stack>

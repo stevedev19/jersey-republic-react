@@ -119,7 +119,7 @@ export default function FloatingElements() {
         <div style={{
           width: '25px',
           height: '25px',
-          background: 'linear-gradient(45deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3))',
+          background: 'linear-gradient(45deg, rgba(238, 106, 55, 0.3), rgba(118, 75, 162, 0.3))',
           borderRadius: '8px',
           transform: 'rotate(45deg)',
           top: '40%',

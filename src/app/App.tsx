@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Route, Switch, useLocation, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import HomePage from "./screens/homePage";
 import ProductsPage from "./screens/productsPage";
 import OrdersPage from "./screens/ordersPage";
@@ -14,11 +15,15 @@ import StickyCardsPage from "./screens/stickyCardsPage";
 import JerseyRoulette from "./screens/roulettePage";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
-import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
-import { Messages } from "../lib/config";
+import { useDispatch } from "react-redux";
+import { sweetTopSuccessAlert } from "../lib/sweetAlert";
 import MemberService from "./services/MemberService";
+import {
+  setFinishedOrders,
+  setPausedOrders,
+  setProcessOrders,
+} from "./screens/ordersPage/slice";
 import { useGlobals } from "./hooks/useGlobals";
-import ParticleBackground from "./components/ParticleBackground";
 import CartAuthRequiredDialog from "./components/cart/CartAuthRequiredDialog";
 import { CartItem } from "../lib/types/search";
 import {
@@ -27,14 +32,16 @@ import {
   takePendingCartItemIfFresh,
 } from "../lib/pendingCartStorage";
 import { sweetTopSmallSuccessAlert } from "../lib/sweetAlert";
+import i18n from "../i18n";
 import "../css/app.css";
 import "../css/navbar.css";
-import "../css/footer.css";
 import "../css/admin.css";
 
 function App() {
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { pathname } = location;
 
   useEffect(() => {
@@ -44,11 +51,8 @@ function App() {
   }, [pathname]);
 
   const pathTrim = (pathname || "/").replace(/\/+$/, "") || "/";
-  const isProductsRoute = location.pathname.startsWith("/products");
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const isArchiveHome = pathTrim === "/";
   const isRouletteRoute = pathTrim === "/roulette";
-  const isExperienceRoute = location.pathname === "/sticky-cards";
   const { authMember, setAuthMember } = useGlobals();
 
   const {
@@ -90,7 +94,7 @@ function App() {
     const pending = takePendingCartItemIfFresh();
     if (!pending) return;
     addToCartRef.current(pending.item);
-    sweetTopSmallSuccessAlert("Added to cart", 2000);
+    sweetTopSmallSuccessAlert(i18n.t("common.addedToCart"), 2000);
     const here = `${locationRef.current.pathname}${locationRef.current.search || ""}`;
     if (pending.returnPath && pending.returnPath !== here) {
       historyRef.current.replace(pending.returnPath);
@@ -124,14 +128,18 @@ function App() {
 
   const handleLogoutRequest = async () => {
     try {
-      const member = new MemberService();
-      await member.logout();
-
-      sweetTopSuccessAlert("success", 700);
+      // Never throws: the API call is best-effort and local storage is always cleared.
+      await new MemberService().logout();
+    } finally {
       setAuthMember(null);
-    } catch (err) {
-      console.log(err);
-      sweetErrorHandling(Messages.error1);
+      onDeleteAll();
+      dispatch(setPausedOrders([]));
+      dispatch(setProcessOrders([]));
+      dispatch(setFinishedOrders([]));
+      setCartAuthPromptOpen(false);
+      setAnchorEl(null);
+      history.push("/");
+      sweetTopSuccessAlert(t("messages.signedOut"), 700);
     }
   };
 
@@ -151,11 +159,6 @@ function App() {
 
   return (
     <>
-      {!isProductsRoute &&
-        !isArchiveHome &&
-        !isRouletteRoute &&
-        !isExperienceRoute &&
-        !isAdminRoute && <ParticleBackground />}
       {location.pathname !== "/" && !isAdminRoute ? <OtherNavbar {...navbarProps} /> : null}
       <Switch>
         <Route path="/products">

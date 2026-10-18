@@ -1,0 +1,432 @@
+{
+  "meta": {
+    "title": "JERSEY REPUBLIC | The Definitive Archive",
+    "description": "Club, national team and retro football shirts. Checked before they ship, delivered worldwide."
+  },
+  "language": {
+    "groupLabel": "Language",
+    "en": "English",
+    "ko": "Korean"
+  },
+  "common": {
+    "addedToCart": "Added to cart",
+    "addToCartNamed": "Add {{name}} to cart",
+    "viewNamed": "View {{name}}",
+    "close": "Close",
+    "views_one": "{{count}} view",
+    "views_other": "{{count}} views",
+    "new": "NEW",
+    "unknownProduct": "Unknown Product",
+    "noAddress": "No address",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity"
+  },
+  "messages": {
+    "error1": "Something went wrong!",
+    "error2": "Please login first!",
+    "error3": "Please fulfill all inputs!",
+    "error4": "Message is empty!",
+    "error5": "Only images with jpeg, jpg, png format allowed",
+    "ok": "OK",
+    "signedOut": "Signed out"
+  },
+  "collections": {
+    "PREMIER_LEAGUE": "Premier League",
+    "LA_LIGA": "La Liga",
+    "SERIE_A": "Serie A",
+    "BUNDESLIGA": "Bundesliga",
+    "LIGUE_1": "Ligue 1",
+    "CHAMPIONS_LEAGUE": "Champions League",
+    "NATIONAL_TEAMS": "National Teams",
+    "UZBEKISTAN_LEAGUE": "Uzbekistan League",
+    "RETRO": "Retro",
+    "OTHER": "Other"
+  },
+  "nav": {
+    "mainLabel": "Main navigation",
+    "drops": "Drops",
+    "shopAll": "Shop All",
+    "roulette": "ROULETTE",
+    "teams": "Teams",
+    "about": "About",
+    "searchPlaceholder": "Search shirts",
+    "searchLabel": "Search shirts",
+    "menu": "Menu"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "menuLabel": "Account menu",
+    "member": "Member",
+    "user": "User",
+    "profile": "My Profile",
+    "orders": "My Orders",
+    "signOut": "Sign Out"
+  },
+  "cart": {
+    "label": "Cart",
+    "title": "My Cart",
+    "close": "Close cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyDesc": "Shirts you add will show up here.",
+    "shopNow": "Shop now →",
+    "size": "Size: {{size}}",
+    "remove": "Remove item",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "FREE",
+    "total": "Total",
+    "checkout": "Checkout →",
+    "continue": "Continue shopping"
+  },
+  "cartAuth": {
+    "title": "Sign in to continue",
+    "body": "You need an account to add items to your cart.",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "later": "Maybe Later"
+  },
+  "auth": {
+    "createTitle": "Create account",
+    "username": "Username",
+    "phone": "Phone number",
+    "password": "Password",
+    "signUp": "Sign up",
+    "membersOnly": "MEMBERS ONLY",
+    "spinWinWear": "SPIN. WIN. WEAR.",
+    "loginTitle": "Log in",
+    "rouletteLine1": "Log in to spin the wheel",
+    "rouletteLine2": "and claim your next kit."
+  },
+  "megaMenu": {
+    "label": "Shop by league and nation",
+    "byLeague": "BY LEAGUE",
+    "byNation": "BY NATION",
+    "featuredDrop": "FEATURED DROP",
+    "newDrop": "NEW DROP",
+    "loading": "Loading…",
+    "latestKits": "Newest shirt",
+    "view": "VIEW →",
+    "allJerseys": "ALL JERSEYS →",
+    "newArrivals": "NEW ARRIVALS →",
+    "onSale": "ON SALE →",
+    "escHint": "Press ESC to close",
+    "worldCup": "World Cup 2026",
+    "nations": {
+      "brazil": "Brazil",
+      "france": "France",
+      "germany": "Germany",
+      "argentina": "Argentina",
+      "england": "England",
+      "portugal": "Portugal",
+      "spain": "Spain",
+      "uzbekistan": "Uzbekistan"
+    }
+  },
+  "home": {
+    "hero": {
+      "imageAlt": "Professional sports stadium at night under floodlights",
+      "titleLine1": "WEAR THE",
+      "titleAccent": "GAME.",
+      "description": "Club, national team and retro football shirts. We check every shirt before it ships, and we deliver worldwide.",
+      "cta": "SHOP ALL SHIRTS",
+      "featured": {
+        "label": "Featured shirts",
+        "newDrop": "NEW DROP",
+        "viewShirt": "View shirt →",
+        "slide": "{{current}} of {{total}}",
+        "prev": "Previous shirt",
+        "next": "Next shirt",
+        "goTo": "Show shirt {{number}}",
+        "pause": "Pause rotation",
+        "play": "Resume rotation"
+      }
+    },
+    "featured": {
+      "imageAlt": "Vintage football jersey fabric with embroidered crest",
+      "titleLine1": "Arsenal 05/06",
+      "titleAccent": "Highbury Final",
+      "description": "The maroon shirt Arsenal wore in their last season at Highbury, with gold trim and Henry #14 on the back. 50 pieces, each checked by hand.",
+      "timeRemaining": "Drops in",
+      "hours": "HRS",
+      "minutes": "MINS",
+      "seconds": "SECS",
+      "notify": "NOTIFY ME ON DROP"
+    },
+    "archive": {
+      "title": "JUST IN",
+      "subtitle": "The four newest shirts in the shop.",
+      "empty": "No new shirts yet.",
+      "browseAll": "Browse all shirts →"
+    },
+    "trending": {
+      "title": "Trending Now",
+      "scrollLeft": "Scroll trending left",
+      "scrollRight": "Scroll trending right",
+      "empty": "Popular shirts show up here once they load.",
+      "campaign": "SECOND LOOK",
+      "campaignImage": "View {{name}}, second photo"
+    },
+    "roulette": {
+      "titleLine1": "CAN'T",
+      "titleLine2": "PICK ONE?",
+      "titleAccent": "SPIN.",
+      "description": "Spin the wheel and it picks a shirt from the shop for you. Useful when you are buying a gift.",
+      "cta": "SPIN THE WHEEL",
+      "imageAlt": "Editorial vintage jersey styling"
+    },
+    "newDrops": {
+      "title": "NEW DROPS.",
+      "subtitle": "Shirts added this season.",
+      "window": "Drop window: {{start}}–{{end}}",
+      "viewAll": "View All →",
+      "emptyTitle": "NO DROPS YET",
+      "emptyDesc": "Nothing new yet. Check back next week."
+    },
+    "activeUsers": {
+      "titleLine1": "ACTIVE",
+      "titleAccent": "USERS.",
+      "subtitle": "Members with the most points.",
+      "empty": "No active members to show yet.",
+      "memberSince": "MEMBER SINCE {{year}}",
+      "memberSinceUnknown": "MEMBER"
+    }
+  },
+  "carousel": {
+    "dropWindow": "Drop window",
+    "daysLeft_one": "{{count}} day left",
+    "daysLeft_other": "{{count}} days left",
+    "latestDrop": "Latest drop",
+    "previous": "Previous",
+    "next": "Next",
+    "slides": "Slides",
+    "goToSlide": "Go to slide {{number}}"
+  },
+  "trust": {
+    "label": "Why shop with us",
+    "authenticity": "Authenticity checks",
+    "shipping": "Worldwide shipping",
+    "returns": "Easy returns",
+    "payment": "Secure payment"
+  },
+  "footer": {
+    "newsletter": {
+      "title": "JOIN THE REPUBLIC.",
+      "text": "New releases and restocks, about once a week.",
+      "label": "Email address",
+      "placeholder": "Email address",
+      "submit": "SUBSCRIBE",
+      "submitting": "Subscribing…",
+      "success": "You're in. See you at the next drop.",
+      "errorEmpty": "Enter your email address.",
+      "errorInvalid": "That email address doesn't look right.",
+      "errorFailed": "Something went wrong. Please try again."
+    },
+    "links": {
+      "label": "Footer",
+      "shop": {
+        "title": "Shop",
+        "all": "All jerseys",
+        "newArrivals": "New arrivals",
+        "retro": "Retro",
+        "teams": "Teams",
+        "sizeGuide": "Size guide"
+      },
+      "support": {
+        "title": "Support",
+        "shipping": "Shipping",
+        "returns": "Returns",
+        "contact": "Contact"
+      },
+      "about": {
+        "title": "About",
+        "story": "Our story",
+        "verify": "How we verify"
+      }
+    },
+    "utility": {
+      "language": "Language",
+      "currency": "Currency",
+      "usd": "USD ($)",
+      "krw": "KRW (₩)",
+      "social": "Social media",
+      "socialLink": "{{name}} (opens in a new tab)"
+    },
+    "bottom": {
+      "copyright": "© {{year}} Jersey Republic",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "credit": "Designed & built by {{name}}",
+      "portfolio": "Portfolio",
+      "disclaimer": "Demo project, not a real store. Club names and crests belong to their owners."
+    }
+  },
+  "products": {
+    "title": "ALL SHIRTS",
+    "loadingNewDrops": "Loading new drops…",
+    "newDropsCount_one": "{{count}} new drop",
+    "newDropsCount_other": "{{count}} new drops",
+    "noNewDropsInWindow": "No new drops in this window",
+    "noMatches": "No jerseys match your filters",
+    "available_one": "{{count}} jersey available",
+    "available_other": "{{count}} jerseys available",
+    "searchPlaceholder": "Search shirts",
+    "searchLabel": "Search shirts",
+    "search": "SEARCH",
+    "filterBy": "FILTER BY",
+    "newDrops": "NEW DROPS",
+    "sortBy": "SORT BY",
+    "newDropsEmpty": "No new drops yet. Check back soon!",
+    "noResults": "No products match your search.",
+    "filters": {
+      "all": "All Products",
+      "uzbekistan": "Uzbekistan"
+    },
+    "sort": {
+      "createdAt": "New",
+      "productPrice": "Price",
+      "productViews": "Views"
+    }
+  },
+  "product": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "collections": {
+      "UZBEKISTAN_LEAGUE": "Uzbekistan",
+      "RETRO": "Retro Collection",
+      "DISH": "Dish",
+      "DRINK": "Drink"
+    },
+    "supplier": "{{name}} · Official replica supplier",
+    "defaultDesc": "Premium quality football jersey with authentic team colors and official design.",
+    "selectSize": "Select size",
+    "quantity": "Quantity",
+    "freeShipping": "Free shipping over $50",
+    "authenticQuality": "Authentic quality",
+    "officialDesign": "Official design",
+    "teamLicensed": "Team licensed",
+    "outOfStock": "OUT OF STOCK",
+    "addToCart": "ADD TO CART",
+    "addedToCart": "{{name}} ({{size}}) added to cart!",
+    "selectSizeFirst": "Please select a size first!",
+    "gallery": {
+      "previous": "Previous image",
+      "next": "Next image",
+      "imageAlt": "{{name}}, photo {{current}} of {{total}}",
+      "fullscreen": "View fullscreen",
+      "images": "Product images"
+    }
+  },
+  "orders": {
+    "categories": "Order categories",
+    "tabs": {
+      "paused": "PAUSED ORDERS",
+      "process": "PROCESS ORDERS",
+      "finished": "FINISHED ORDERS"
+    },
+    "cardNumber": "Card number",
+    "expiry": "MM / YY",
+    "cvv": "CVV",
+    "cardholder": "Cardholder name",
+    "saveCard": "SAVE CARD",
+    "productPrice": "Product price",
+    "deliveryCost": "Delivery cost",
+    "total": "Total",
+    "cancel": "Cancel",
+    "payment": "Payment",
+    "verify": "VERIFY TO FULFILL",
+    "confirmDelete": "Do you want to delete the order?",
+    "confirmPayment": "Do you want to proceed this payment?",
+    "confirmReceived": "Have you received your order?",
+    "empty": {
+      "title": "NO ORDERS YET",
+      "line1": "Orders you place will show up here.",
+      "cta": "BROWSE SHIRTS →"
+    }
+  },
+  "profile": {
+    "title": "MY PROFILE",
+    "subtitle": "Your name, photo and contact details.",
+    "livePreview": "LIVE PREVIEW",
+    "yourName": "Your name",
+    "noLocation": "No location",
+    "noBio": "No bio yet.",
+    "memberSince": "MEMBER SINCE {{date}}",
+    "memberSinceUnknown": "MEMBER SINCE",
+    "changePhoto": "CHANGE PHOTO",
+    "formatHint": "JPG, JPEG, PNG formats only!",
+    "displayName": "Display Name",
+    "phone": "Phone",
+    "noPhone": "No phone",
+    "location": "Location",
+    "bio": "Bio",
+    "noDescription": "No description",
+    "save": "SAVE CHANGES",
+    "saved": "Modified successfully!"
+  },
+  "help": {
+    "tabsLabel": "Help sections",
+    "tabs": {
+      "terms": "TERMS",
+      "faq": "FAQ",
+      "contact": "CONTACT"
+    },
+    "terms": [
+      "Making orders from the site is complete, live register to use communications you must pass.",
+      "This is why you cannot cancel your orders once you have paid for them check before making payments.",
+      "It is not possible to write and distribute personal ads without the permission of the admin.",
+      "All your actions are under the control of our restaurant administration, so please follow the general rules."
+    ],
+    "faq": [
+      {
+        "question": "How to make order?",
+        "answer": "You should choose products and make an order via basket!"
+      },
+      {
+        "question": "How long does delivery takes?",
+        "answer": "It depends on your location. The max delivery time is 1 hour!"
+      },
+      {
+        "question": "Is our details secure in this platform?",
+        "answer": "Of course, we take full responsibility for your provided user details!"
+      },
+      {
+        "question": "I am blocked, what should I do?",
+        "answer": "There is a reason for your block, please contact to us!"
+      },
+      {
+        "question": "How can I cancel order?",
+        "answer": "You can cancel your order any time easily, just go to your orders page!"
+      },
+      {
+        "question": "Who developed this platform?",
+        "answer": "ITC Global developers developed this platform!"
+      }
+    ],
+    "contact": {
+      "title": "Contact us!",
+      "subtitle": "Fill out below form to send a message!",
+      "name": "Your name",
+      "namePlaceholder": "Type your name here",
+      "email": "Your email",
+      "emailPlaceholder": "Type your email here",
+      "message": "Message",
+      "messagePlaceholder": "Your message",
+      "send": "Send"
+    }
+  },
+  "roulette": {
+    "pageTitle": "Jersey Roulette | Jersey Republic",
+    "titleLine1": "Jersey",
+    "titleLine2": "Roulette",
+    "subtitle": "Spin and we'll pick a shirt for you.",
+    "spin": "SPIN",
+    "yourSpins": "Your spins",
+    "noSpins": "No spins yet.",
+    "removeFromHistory": "Remove {{name}} from history",
+    "dismiss": "Dismiss",
+    "result": "YOUR PICK",
+    "addToCart": "Add to cart",
+    "spinAgain": "Spin again",
+    "viewProduct": "View product"
+  }
+}

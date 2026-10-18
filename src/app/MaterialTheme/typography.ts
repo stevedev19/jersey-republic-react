@@ -1,4 +1,6 @@
 const typography = {
+	// Same UI font as the rest of the site; Hangul falls back to Pretendard / Noto Sans KR
+	fontFamily: '"Archivo", "Pretendard", "Noto Sans KR", sans-serif',
 	h1: {
 		fontWeight: 500,
 		fontSize: 35,

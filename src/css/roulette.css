@@ -15,7 +15,7 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.06) 0%, transparent 70%);
   animation: jr-ambient-breathe 12s ease-in-out infinite;
 }
 
@@ -32,13 +32,13 @@
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: clamp(4rem, 22vw, 180px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.03);
+  color: rgba(30, 42, 90, 0.05);
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
@@ -46,12 +46,12 @@
 }
 
 .jersey-roulette-page {
-  --jr-bg: #0e1322;
-  --jr-card: #161b27;
-  --jr-primary: #667eea;
-  --jr-primary-hover: #4a62d8;
-  --jr-accent: #f7ba85;
-  --jr-muted: #8a94a6;
+  --jr-bg: var(--paper);
+  --jr-card: var(--white);
+  --jr-primary: var(--navy);
+  --jr-primary-hover: var(--navy-light);
+  --jr-accent: var(--gold);
+  --jr-muted: var(--ink-soft);
 }
 
 @keyframes jr-slide-up {
@@ -84,7 +84,7 @@
 }
 
 .jersey-roulette__pointer {
-  filter: drop-shadow(0 2px 4px rgba(247, 186, 133, 0.35));
+  filter: drop-shadow(0 2px 4px rgba(30, 42, 90, 0.35));
 }
 
 @media (prefers-reduced-motion: reduce) {

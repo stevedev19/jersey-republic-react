@@ -1,104 +1,513 @@
-.foot-main-name {
-  margin-top: 22px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 35px;
-  line-height: 34px;
-  color: #e3c08d;
+/* ------------------------------------------------------------------ */
+/* Site footer (src/app/components/footer)                             */
+/* Tailwind preflight is off, so lists, headings and buttons are reset  */
+/* here explicitly.                                                    */
+/* ------------------------------------------------------------------ */
+
+.jr-footer {
+  --ft-bg: var(--paper);
+  --ft-text: var(--ink);
+  --ft-muted: var(--ink-soft); /* 7.3:1 on paper, 6.1:1 on sand */
+  --ft-line: var(--sand);
+  --ft-accent: var(--navy);
+  --ft-accent-hover: var(--navy-light);
+  --ft-ink: var(--ink);
+  --ft-display: "Monument Extended", "Pretendard", "Noto Sans KR", sans-serif;
+  --ft-body: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
+
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--paper), var(--sand));
+  border-top: 1px solid;
+  border-image: linear-gradient(90deg, transparent, var(--gold), transparent) 1;
+  color: var(--ft-text);
+  font-family: var(--ft-body);
 }
 
-.foot-desc-txt {
-  margin-top: 22px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 34px;
-  color: #e3c08d;
+/* :where() keeps these resets at zero specificity so component classes win */
+.jr-footer :where(ul) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.sns-context {
-  margin-top: 17px;
-  width: 137px;
+.jr-footer :where(h2, p) {
+  margin: 0;
+}
+
+.jr-footer :where(button, input, select) {
+  font: inherit;
+  color: inherit;
+}
+
+.jr-footer :focus-visible {
+  outline: 3px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+.jr-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.jr-footer__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 1. Navy newsletter band ---------------------------------------------- */
+/* Text on the band is white (13.7:1 on --navy). */
+
+.jr-footer__band {
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
+}
+
+/* scoped under the band so the container's `padding: 0 48px` (media query below) doesn't reset it */
+.jr-footer__band .jr-footer__band-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+  align-items: center;
+  gap: 32px 64px;
+  padding-top: 56px;
+  padding-bottom: 48px;
+}
+
+.jr-footer__band :focus-visible {
+  outline-color: var(--gold);
+}
+
+/* 2. Link columns --------------------------------------------------------- */
+
+.jr-footer__main {
+  padding: 56px 0 48px;
+}
+
+.jr-footer__headline {
+  color: var(--white); /* bare <h2>: index.css would make it --ink, unreadable on the navy band */
+  font-family: var(--ft-display);
+  font-size: clamp(28px, 3.6vw, 48px);
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.jr-footer__lead {
+  margin-top: 12px;
+  color: var(--white);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.jr-footer__form {
+  width: 100%;
+}
+
+.jr-footer__form-row {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  gap: 8px;
 }
 
-.foot-category-title {
-  width: 106px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 34px;
-  color: #c5c8c9;
+.jr-footer__input {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  padding: 0 20px;
+  border: 1px solid var(--sand);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ft-ink);
+  font-size: 15px;
+  transition: border-color 0.15s ease;
 }
 
-.foot-category-link {
-  margin-top: 20px;
-  height: 170px;
+.jr-footer__input::placeholder {
+  color: var(--ink-soft); /* 8:1 on white */
+  opacity: 1;
+}
+
+.jr-footer__input:hover:not(:disabled) {
+  border-color: var(--gold);
+}
+
+.jr-footer__input[aria-invalid="true"] {
+  border: 2px solid var(--gold);
+}
+
+.jr-footer__input:disabled {
+  opacity: 0.6;
+}
+
+.jr-footer__submit {
+  flex-shrink: 0;
+  height: 52px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: inset 0 0 0 1.5px var(--gold);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.jr-footer__submit:hover:not(:disabled) {
+  background: var(--cream);
+}
+
+.jr-footer__submit:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.jr-footer__form-message {
+  min-height: 1.5em; /* reserve the line so the layout doesn't jump */
+  margin-top: 10px;
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* colour alone can't signal an error on the band, so errors are bold and the input gets a heavier border */
+.jr-footer__form-message--error {
+  font-weight: 700;
+}
+
+.jr-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 220px));
+  gap: 32px 48px;
+}
+
+.jr-footer__col-title {
+  margin-bottom: 16px;
+  color: var(--ft-text); /* bare <h2>: index.css would colour it otherwise */
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.jr-footer__links {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 170px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 34px;
+  gap: 4px;
 }
 
-.foot-category-link a {
-  color: #e3c08d;
-  text-decoration: none;
-  cursor: pointer;
+/* display: flex above would otherwise override the hidden attribute (collapsed accordion) */
+.jr-footer__links[hidden] {
+  display: none;
 }
 
-.find-us {
+.jr-footer__link {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--ft-muted);
+  font-size: 15px;
+  line-height: 1.4;
+  transition: color 0.15s ease;
+}
+
+.jr-footer__link:hover {
+  color: var(--ft-accent);
+}
+
+/* 3. Utility row ------------------------------------------------------- */
+
+.jr-footer__utility {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--ft-line);
 }
 
-.find-us span {
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 34px;
-  color: #c5c8c9;
+.jr-footer__prefs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
-.find-us div {
-  margin-left: 10px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 34px;
-  color: #e3c08d;
+.jr-footer__lang {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--ft-line);
+  border-radius: 999px;
 }
 
-.copyright-txt {
-  margin-top: 17px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 34px;
-  color: #e3c08d;
+.jr-footer__lang-btn {
+  min-width: 56px;
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ft-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.foot-category-title:after {
+.jr-footer__lang-btn:hover {
+  color: var(--ft-text);
+}
+
+.jr-footer__lang-btn[aria-pressed="true"] {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.jr-footer__currency {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.jr-footer__select {
+  height: 42px;
+  padding: 0 40px 0 16px;
+  border: 1px solid var(--ft-line);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.jr-footer__select option {
+  background: var(--white);
+  color: var(--ft-text);
+}
+
+.jr-footer__select-chevron {
+  position: absolute;
+  right: 14px;
+  color: var(--ft-muted);
+  pointer-events: none;
+}
+
+.jr-footer__socials {
+  display: flex;
+  gap: 8px;
+}
+
+.jr-footer__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--ft-line);
+  border-radius: 50%;
+  color: var(--ft-muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.jr-footer__social svg {
+  width: 20px;
+  height: 20px;
+}
+
+.jr-footer__social:hover {
+  color: var(--ft-accent);
+  border-color: var(--ft-accent);
+}
+
+/* 4. Bottom bar --------------------------------------------------------- */
+
+.jr-footer__bottom {
+  padding: 24px 0 8px;
+  border-top: 1px solid var(--ft-line);
+  color: var(--ft-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: normal;
+}
+
+.jr-footer__bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.jr-footer__legal {
+  display: flex;
+  gap: 20px;
+}
+
+.jr-footer__bottom .jr-footer__link {
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+/* set on the paragraphs themselves: the site's global p styles would otherwise win */
+.jr-footer__copyright,
+.jr-footer__credit,
+.jr-footer__disclaimer {
+  color: var(--ft-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: normal;
+}
+
+.jr-footer__credit,
+.jr-footer__disclaimer {
+  margin-top: 6px;
+}
+
+/* 5. Wordmark ------------------------------------------------------------ */
+
+.jr-footer__wordmark {
+  /* sized so the word spans the viewport; the bottom is cropped by the page edge */
+  font-family: var(--ft-display);
+  font-size: clamp(28px, 8.3vw, 200px);
+  font-weight: 800;
+  height: 0.62em;
+  margin-top: 24px;
+  overflow: hidden;
+  color: rgba(30, 42, 90, 0.06);
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+.jr-footer__wordmark span {
   display: block;
-  content: "";
-  border-bottom: solid 2px #d7b686;
-  transform: scaleX(0);
-  transition: transform 250ms ease-in-out;
-  transform-origin: 0% 50%;
+  line-height: 1;
 }
 
-.foot-category-title:hover:after {
-  transform: scaleX(1);
+/* Tablet: link columns drop below the newsletter ------------------------ */
+
+@media (max-width: 1023px) {
+  .jr-footer__band .jr-footer__band-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .jr-footer__inner {
+    padding: 0 48px;
+  }
+}
+
+/* Mobile: single column, accordions, 44px targets ----------------------- */
+
+@media (max-width: 767px) {
+  .jr-footer__band .jr-footer__band-inner {
+    padding-top: 40px;
+    padding-bottom: 32px;
+    gap: 24px;
+  }
+
+  .jr-footer__main {
+    padding: 32px 0;
+  }
+
+  .jr-footer__form-row {
+    flex-direction: column;
+  }
+
+  .jr-footer__input {
+    flex: none; /* in the stacked column, flex: 1 would collapse its height */
+    width: 100%;
+  }
+
+  .jr-footer__submit {
+    width: 100%;
+  }
+
+  .jr-footer__nav {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ft-line);
+  }
+
+  .jr-footer__col {
+    border-bottom: 1px solid var(--ft-line);
+  }
+
+  .jr-footer__col-title {
+    margin-bottom: 0;
+  }
+
+  .jr-footer__col-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 56px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .jr-footer__chevron {
+    color: var(--ft-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .jr-footer__col-toggle[aria-expanded="true"] .jr-footer__chevron {
+    transform: rotate(180deg);
+  }
+
+  .jr-footer__links {
+    padding-bottom: 12px;
+    gap: 0;
+  }
+
+  .jr-footer__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  .jr-footer__utility {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .jr-footer__lang-btn,
+  .jr-footer__select {
+    height: 44px;
+  }
+
+  .jr-footer__bottom .jr-footer__link {
+    display: inline-flex;
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jr-footer *,
+  .jr-footer *::before,
+  .jr-footer *::after {
+    transition: none !important;
+  }
 }

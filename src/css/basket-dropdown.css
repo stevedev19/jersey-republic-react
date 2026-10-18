@@ -5,10 +5,10 @@
   flex-direction: column;
   width: 360px;
   max-width: calc(100vw - 24px);
-  background: #161b27;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: var(--white);
+  border: 1px solid rgba(201, 162, 39, 0.2);
   border-radius: 16px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 24px 60px rgba(20, 27, 43, 0.36);
   overflow: hidden;
 }
 
@@ -17,8 +17,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: #0e1322;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border-bottom: 1px solid var(--sand);
 }
 
 .jr-cart__title-row {
@@ -27,11 +27,11 @@
 }
 
 .jr-cart__title {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 3px;
-  color: #fff;
+  color: var(--ink);
   text-transform: uppercase;
 }
 
@@ -39,11 +39,12 @@
   margin-left: 8px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: #667eea;
-  color: #fff;
-  font-family: "Space Grotesk", sans-serif;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
   font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .jr-cart__close {
@@ -53,7 +54,7 @@
   padding: 4px;
   border: none;
   background: none;
-  color: #8a94a6;
+  color: var(--ink-soft);
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
@@ -61,7 +62,7 @@
 }
 
 .jr-cart__close:hover {
-  color: #fff;
+  color: var(--ink);
 }
 
 .jr-cart__list {
@@ -78,7 +79,7 @@
 }
 
 .jr-cart__list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 42, 90, 0.15);
   border-radius: 4px;
 }
 
@@ -91,8 +92,8 @@
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background: #0e1322;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--paper);
+  border: 1px solid var(--sand);
   border-radius: 12px;
 }
 
@@ -103,7 +104,7 @@
   padding: 4px;
   border-radius: 8px;
   object-fit: contain;
-  background: #1a2342;
+  background: var(--white);
 }
 
 .jr-cart__meta {
@@ -113,17 +114,17 @@
 
 .jr-cart__name {
   margin: 0 0 2px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
   line-height: 1.25;
 }
 
 .jr-cart__size {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 .jr-cart__right {
@@ -136,10 +137,10 @@
 .jr-cart__line-price {
   display: block;
   margin-bottom: 8px;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-weight: 800;
-  color: #667eea;
+  color: var(--navy);
 }
 
 .jr-cart__stepper {
@@ -156,9 +157,9 @@
   justify-content: center;
   padding: 0;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  border: 1px solid var(--sand);
+  background: rgba(30, 42, 90, 0.06);
+  color: var(--ink);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
@@ -166,17 +167,17 @@
 }
 
 .jr-cart__step-btn:hover {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  background: rgba(201, 162, 39, 0.2);
+  border-color: var(--navy);
 }
 
 .jr-cart__qty {
   min-width: 20px;
   text-align: center;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
 }
 
 .jr-cart__remove {
@@ -184,7 +185,7 @@
   padding: 0 4px;
   border: none;
   background: none;
-  color: #8a94a6;
+  color: var(--ink-soft);
   font-size: 16px;
   line-height: 1;
   cursor: pointer;
@@ -197,8 +198,8 @@
 
 .jr-cart__footer {
   padding: 16px 20px;
-  background: #0e1322;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border-top: 1px solid var(--sand);
 }
 
 .jr-cart__row-line {
@@ -213,31 +214,31 @@
 }
 
 .jr-cart__label-sm {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 .jr-cart__value-sm {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
 }
 
 .jr-cart__ship-label {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
-  color: #8a94a6;
+  color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .jr-cart__ship-val {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #4ade80;
@@ -247,7 +248,7 @@
   height: 0;
   margin-bottom: 16px;
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--sand);
 }
 
 .jr-cart__total-row {
@@ -258,19 +259,19 @@
 }
 
 .jr-cart__total-label {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: #fff;
+  color: var(--ink);
   text-transform: uppercase;
 }
 
 .jr-cart__total-amt {
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 22px;
   font-weight: 800;
-  color: #667eea;
+  color: var(--navy);
 }
 
 .jr-cart__checkout {
@@ -278,21 +279,23 @@
   height: 52px;
   border: none;
   border-radius: 12px;
-  background: #667eea;
-  color: #fff;
-  font-family: "Space Grotesk", sans-serif;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  box-shadow: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .jr-cart__checkout:hover {
-  background: #4a62d8;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 .jr-cart__continue {
@@ -303,18 +306,18 @@
   border: none;
   background: none;
   text-align: center;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #8a94a6;
+  color: var(--ink-soft);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .jr-cart__continue:hover {
-  color: #fff;
+  color: var(--ink);
 }
 
 .jr-cart__empty {
@@ -323,26 +326,27 @@
 }
 
 .jr-cart__empty-icon {
+  display: block;
   margin-bottom: 16px;
-  font-size: 48px;
+  font-size: 40px;
   line-height: 1;
-  opacity: 0.2;
+  color: var(--ink-soft);
 }
 
 .jr-cart__empty-title {
   margin: 0 0 8px;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: var(--ink);
   text-transform: uppercase;
 }
 
 .jr-cart__empty-desc {
   margin: 0 0 20px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 13px;
-  color: #8a94a6;
+  color: var(--ink-soft);
 }
 
 .jr-cart__empty-cta {
@@ -350,19 +354,23 @@
   padding: 12px 28px;
   border: none;
   border-radius: 999px;
-  background: #667eea;
-  color: #fff;
-  font-family: "Space Grotesk", sans-serif;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  color: var(--white);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
   transition: background 0.2s ease;
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
 }
 
 .jr-cart__empty-cta:hover {
-  background: #4a62d8;
+  background: linear-gradient(135deg, var(--navy-light), var(--navy) 55%, var(--navy-deep));
+  box-shadow: inset 0 0 0 1.5px var(--gold), 0 10px 24px -12px rgba(30, 42, 90, 0.55);
+  color: var(--white);
+  filter: brightness(1.15);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -60,12 +60,12 @@ const PulseLoader: React.FC = () => {
         width: '60px',
         height: '60px',
         borderRadius: '50%',
-        background: 'linear-gradient(45deg, #667eea, #764ba2)',
+        background: 'linear-gradient(45deg, #ee6a37, #d4572a)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         margin: '20px auto',
-        boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)',
+        boxShadow: '0 0 30px rgba(238, 106, 55, 0.5)',
       }}
     >
       <motion.div
@@ -103,8 +103,8 @@ const BouncingDots: React.FC = () => {
             width: '12px',
             height: '12px',
             borderRadius: '50%',
-            background: 'linear-gradient(45deg, #667eea, #764ba2)',
-            boxShadow: '0 0 10px rgba(102, 126, 234, 0.5)',
+            background: 'linear-gradient(45deg, #ee6a37, #d4572a)',
+            boxShadow: '0 0 10px rgba(238, 106, 55, 0.5)',
           }}
         />
       ))}
@@ -121,7 +121,7 @@ const LoadingSpinner: React.FC = () => {
         width: '50px',
         height: '50px',
         border: '4px solid rgba(255, 255, 255, 0.1)',
-        borderTop: '4px solid #667eea',
+        borderTop: '4px solid #ee6a37',
         borderRadius: '50%',
         margin: '20px auto',
       }}

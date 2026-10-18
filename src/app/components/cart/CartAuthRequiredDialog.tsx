@@ -9,10 +9,15 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 import {
+  AUTH_BACKDROP,
   AUTH_BORDER,
+  AUTH_INK,
+  AUTH_MODAL_SHADOW,
   AUTH_MUTED,
-  AUTH_PRIMARY,
+  AUTH_PRIMARY_BG,
+  AUTH_PRIMARY_SHADOW,
   AUTH_SURFACE,
 } from "../auth/archiveAuthStyles";
 
@@ -25,6 +30,7 @@ export interface CartAuthRequiredDialogProps {
 
 export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProps) {
   const { open, onClose, onSignIn, onCreateAccount } = props;
+  const { t } = useTranslation();
 
   return (
     <Dialog
@@ -38,20 +44,20 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
           backgroundImage: "none",
           border: `1px solid ${AUTH_BORDER}`,
           borderRadius: "20px",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.55), 0 0 60px rgba(102,126,234,0.08)",
+          boxShadow: AUTH_MODAL_SHADOW,
         },
       }}
       slotProps={{
         backdrop: {
-          sx: { backgroundColor: "rgba(14, 19, 34, 0.9)" },
+          sx: { backgroundColor: AUTH_BACKDROP },
         },
       }}
     >
       <DialogTitle
         sx={{
           position: "relative",
-          color: "#fff",
-          fontFamily: '"Monument Extended", "Monument", "Space Grotesk", sans-serif',
+          color: AUTH_INK,
+          fontFamily: '"Monument Extended", "Monument", "Archivo", "Pretendard", "Noto Sans KR", sans-serif',
           fontSize: { xs: "1.1rem", sm: "1.25rem" },
           fontWeight: 700,
           letterSpacing: "0.04em",
@@ -60,17 +66,17 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
           pb: 1,
         }}
       >
-        Sign in to continue
+        {t("cartAuth.title")}
         <IconButton
           type="button"
-          aria-label="Close"
+          aria-label={t("common.close")}
           onClick={onClose}
           sx={{
             position: "absolute",
             right: 12,
             top: 12,
             color: AUTH_MUTED,
-            "&:hover": { color: "#fff", backgroundColor: "rgba(102,126,234,0.12)" },
+            "&:hover": { color: "var(--navy)", backgroundColor: "rgba(30,42,90,0.06)" },
           }}
         >
           <CloseIcon />
@@ -82,12 +88,12 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
           sx={{
             m: 0,
             color: AUTH_MUTED,
-            fontFamily: '"Space Grotesk", sans-serif',
+            fontFamily: '"Archivo", "Pretendard", "Noto Sans KR", sans-serif',
             fontSize: "0.95rem",
             lineHeight: 1.6,
           }}
         >
-          You need an account to add items to your cart.
+          {t("cartAuth.body")}
         </Box>
       </DialogContent>
       <DialogActions
@@ -110,11 +116,14 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
             py: 1.25,
             fontWeight: 700,
             textTransform: "none",
-            backgroundColor: AUTH_PRIMARY,
-            "&:hover": { backgroundColor: "#4A62D8" },
+            background: AUTH_PRIMARY_BG,
+            color: "var(--white)",
+            boxShadow: AUTH_PRIMARY_SHADOW,
+            "&:hover": { background: AUTH_PRIMARY_BG, boxShadow: AUTH_PRIMARY_SHADOW, filter: "brightness(1.15)" },
+            "&.Mui-focusVisible": { outline: "3px solid var(--gold-deep)", outlineOffset: "3px" },
           }}
         >
-          Sign In
+          {t("cartAuth.signIn")}
         </Button>
         <Button
           type="button"
@@ -126,15 +135,15 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
             py: 1.25,
             fontWeight: 700,
             textTransform: "none",
-            borderColor: AUTH_BORDER,
-            color: "#fff",
+            borderColor: "var(--sand)",
+            color: "var(--navy)",
             "&:hover": {
-              borderColor: AUTH_PRIMARY,
-              backgroundColor: "rgba(102,126,234,0.08)",
+              borderColor: "var(--navy)",
+              backgroundColor: "rgba(30,42,90,0.04)",
             },
           }}
         >
-          Create Account
+          {t("cartAuth.createAccount")}
         </Button>
         <Button
           type="button"
@@ -144,10 +153,10 @@ export default function CartAuthRequiredDialog(props: CartAuthRequiredDialogProp
             color: AUTH_MUTED,
             textTransform: "none",
             fontWeight: 600,
-            "&:hover": { backgroundColor: "rgba(255,255,255,0.04)" },
+            "&:hover": { backgroundColor: "rgba(30,42,90,0.05)" },
           }}
         >
-          Maybe Later
+          {t("cartAuth.later")}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,10 +1,12 @@
-/* Homepage Active Users — spec-aligned block above footer */
+/* Homepage Active Users — light block above footer (--ink 16:1, --ink-soft 7:1 on paper) */
 
 .active-users-section {
   width: 100%;
-  background: #0e1322;
+  background:
+    radial-gradient(ellipse 60% 70% at 90% 0%, var(--cream), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--white));
   padding: 80px 24px 120px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--sand);
   box-sizing: border-box;
 }
 
@@ -45,25 +47,25 @@
 
 .active-users-section__title-line {
   display: block;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: clamp(2.5rem, 8vw, 80px);
   line-height: 0.85;
   font-weight: 800;
 }
 
 .active-users-section__title-line--white {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .active-users-section__title-line--accent {
-  color: #f7ba85;
+  color: var(--navy);
 }
 
 .active-users-section__subtitle {
   margin: 16px 0 0;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
-  color: #8a94a6;
+  color: var(--ink-soft);
   letter-spacing: 2px;
   text-transform: uppercase;
   font-weight: 400;
@@ -94,15 +96,14 @@
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: #161b27;
+  border: 1px solid var(--sand);
+  background: radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand));
+  box-shadow: 0 20px 50px -25px rgba(20, 27, 43, 0.35);
   transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .active-user-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(102, 126, 234, 0.3);
-  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+  border-color: var(--gold);
 }
 
 .active-user-card__media {
@@ -132,8 +133,8 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(14, 19, 34, 0.95) 0%,
-    rgba(14, 19, 34, 0.4) 40%,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(247, 246, 242, 0.7) 35%,
     transparent 70%
   );
   pointer-events: none;
@@ -149,18 +150,18 @@
 
 .active-user-card__name {
   margin: 0 0 4px;
-  font-family: "Monument Extended", "Monument", sans-serif;
+  font-family: "Monument Extended", "Monument", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 20px;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--ink);
   line-height: 1;
 }
 
 .active-user-card__since {
   margin: 0;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 10px;
-  color: #8a94a6;
+  color: var(--ink-soft);
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -186,25 +187,25 @@
 }
 
 .active-user-card__stat-num {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink);
   line-height: 1.2;
 }
 
 .active-user-card__stat-label {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 11px;
-  color: #8a94a6;
+  color: var(--ink-soft);
   text-transform: lowercase;
 }
 
 .active-users-section__empty {
   margin: 0;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 15px;
-  color: #8a94a6;
+  color: var(--ink-soft);
   text-align: center;
   padding: 48px 16px;
 }

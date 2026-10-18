@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import BrandsMegaMenu from "../../components/BrandsMegaMenu";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Basket from "../../components/headers/Basket";
 import NavAccountMenu from "../../components/headers/NavAccountMenu";
+import LanguageToggle from "../../components/headers/LanguageToggle";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
 
@@ -32,6 +34,7 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
     handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,33 +79,33 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
     if (!mobileOpen) closeBrandsMega();
   }, [mobileOpen, closeBrandsMega]);
 
+  // Glass bar: ink on rgba(255,255,255,.88) ≈ 15:1, navy hover/active ≈ 12:1, gold underline is decorative.
   const linkMain =
-    "font-grotesk text-[14px] font-normal uppercase tracking-[0.1em] text-[rgba(255,255,255,0.7)] border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-white hover:text-white";
+    "whitespace-nowrap font-grotesk text-[14px] font-normal uppercase tracking-[0.1em] text-[color:var(--ink)] border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-[color:var(--navy)] hover:text-[color:var(--navy)]";
   const linkMainActive =
-    "border-b-2 !border-[#b9c3ff] !text-[#b9c3ff] pb-[4px] hover:!border-[#b9c3ff] hover:!text-[#b9c3ff]";
+    "border-b-2 !border-[color:var(--gold)] !text-[color:var(--navy)] pb-[4px] hover:!border-[color:var(--gold)] hover:!text-[color:var(--navy)]";
 
   const linkAbout =
-    "font-grotesk text-[12px] font-normal uppercase tracking-[0.1em] text-[rgba(255,255,255,0.5)] border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-[rgba(255,255,255,0.8)] hover:text-[rgba(255,255,255,0.8)]";
-  const linkAboutActive =
-    "border-b-2 !border-[#b9c3ff] !text-[#b9c3ff] pb-[4px] hover:!border-[#b9c3ff] hover:!text-[#b9c3ff]";
+    "whitespace-nowrap font-grotesk text-[12px] font-normal uppercase tracking-[0.1em] text-[color:var(--ink)] border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-[color:var(--navy)] hover:text-[color:var(--navy)]";
+  const linkAboutActive = linkMainActive;
 
   return (
     <nav
       className="stitch-navbar fixed left-0 right-0 top-0 z-50 flex w-full items-center glass-nav"
-      aria-label="Main navigation"
+      aria-label={t("nav.mainLabel")}
     >
-      <div className="flex h-full w-full max-w-[100vw] items-center justify-between gap-6">
+      <div className="site-container flex h-full items-center justify-between gap-6">
         <div className="flex min-w-0 flex-1 items-center gap-6 md:gap-8">
           <NavLink
             to="/"
-            className="stitch-navbar-logo shrink-0 cursor-pointer border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-white/90"
+            className="stitch-navbar-logo shrink-0 cursor-pointer border-b-2 border-transparent pb-[4px] transition-colors duration-300 hover:border-[color:var(--gold)]"
           >
             JERSEY REPUBLIC
           </NavLink>
           <div
             className={`${
               mobileOpen ? "flex" : "hidden"
-            } absolute left-0 top-full z-[60] w-full flex-col gap-5 border-b border-[rgba(68,70,83,0.2)] bg-[rgba(22,24,39,0.98)] px-6 py-4 backdrop-blur-md md:relative md:top-auto md:z-auto md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:border-0 md:bg-transparent md:px-0 md:py-0`}
+            } absolute left-0 top-full z-[60] w-full flex-col gap-5 border-b border-[color:var(--sand)] bg-[color:var(--white)] px-6 py-4 lg:relative lg:top-auto lg:z-auto lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0`}
           >
             <NavLink
               to="/#drops"
@@ -118,7 +121,7 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
                 }
               }}
             >
-              Drops
+              {t("nav.drops")}
             </NavLink>
             <NavLink
               to="/products"
@@ -126,7 +129,7 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
               activeClassName={linkMainActive}
               onClick={() => setMobileOpen(false)}
             >
-              Shop All
+              {t("nav.shopAll")}
             </NavLink>
             <NavLink
               to="/roulette"
@@ -134,10 +137,10 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
               activeClassName={linkMainActive}
               onClick={() => setMobileOpen(false)}
             >
-              ROULETTE
+              {t("nav.roulette")}
             </NavLink>
             <div
-              className="brands-mega__trigger-wrap hidden md:inline-flex"
+              className="brands-mega__trigger-wrap hidden lg:inline-flex"
               onMouseEnter={openBrandsMega}
               onMouseLeave={scheduleCloseBrandsMega}
             >
@@ -148,65 +151,65 @@ export default function ArchiveTopNav(props: ArchiveTopNavProps) {
                 aria-controls="teams-mega-menu"
                 aria-haspopup="true"
               >
-                Teams
+                {t("nav.teams")}
               </button>
             </div>
             <button
               type="button"
-              className={`${linkMain} w-full text-left md:hidden ${brandsMegaOpen ? linkMainActive : ""}`}
+              className={`${linkMain} w-full cursor-pointer border-x-0 border-t-0 bg-transparent px-0 text-left lg:hidden ${brandsMegaOpen ? linkMainActive : ""}`}
               aria-expanded={brandsMegaOpen}
               aria-controls="teams-mega-menu"
               onClick={() => setBrandsMegaOpen((o) => !o)}
             >
-              Teams
+              {t("nav.teams")}
             </button>
+            <LanguageToggle className="self-start lg:hidden" align="left" />
           </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-4 md:gap-6">
           <NavLink
             to="/help"
-            className={`${linkAbout} hidden md:inline-flex`}
+            className={`${linkAbout} hidden lg:inline-flex`}
             activeClassName={linkAboutActive}
           >
-            About
+            {t("nav.about")}
           </NavLink>
-          <div className="hidden h-10 w-[192px] shrink-0 items-center rounded-full border border-[rgba(68,70,83,0.15)] bg-[rgba(37,41,58,0.4)] px-4 py-2 lg:flex">
-            <span className="material-symbols-outlined shrink-0 text-sm text-[#8f909e]">search</span>
+          <div className="hidden h-10 w-[192px] shrink-0 items-center rounded-full border border-[color:var(--sand)] bg-[color:var(--white)] px-4 py-2 xl:flex">
+            <span className="material-symbols-outlined shrink-0 text-sm text-[color:var(--ink-soft)]">search</span>
             <input
-              className="font-grotesk ml-2 min-w-0 flex-1 border-none bg-transparent text-xs uppercase leading-none tracking-widest text-[#dee1f7] outline-none placeholder:text-[#8f909e]/50 placeholder:uppercase focus:ring-0"
-              placeholder="SEARCH ARCHIVE..."
+              className="font-grotesk ml-2 min-w-0 flex-1 border-none bg-transparent text-xs uppercase leading-none tracking-widest text-[color:var(--ink)] outline-none placeholder:text-[color:var(--ink-soft)] placeholder:uppercase focus:ring-0"
+              placeholder={t("nav.searchPlaceholder")}
               type="search"
-              aria-label="Search archive"
+              aria-label={t("nav.searchLabel")}
             />
           </div>
+          <LanguageToggle className="hidden lg:inline-flex" />
           <div className="flex items-center gap-3 md:gap-4">
             <NavLink
               to="/help"
-              className={`${linkAbout} md:hidden`}
+              className={`${linkAbout} lg:hidden`}
               activeClassName={linkAboutActive}
               onClick={() => setMobileOpen(false)}
             >
-              About
+              {t("nav.about")}
             </NavLink>
             <NavAccountMenu
               authMember={authMember}
               onLoginClick={() => setLoginOpen(true)}
               onSignOut={handleLogoutRequest}
             />
-            <div className="text-[#b9c3ff] transition-transform hover:scale-105 active:scale-95 [&_.MuiIconButton-root]:text-[#b9c3ff] [&_.MuiSvgIcon-root]:text-[#b9c3ff]">
-              <Basket
-                cartItems={cartItems}
-                onAdd={onAdd}
-                onRemove={onRemove}
-                onDelete={onDelete}
-                onDeleteAll={onDeleteAll}
-              />
-            </div>
+            <Basket
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+            />
             <button
               type="button"
-              className="text-[#b9c3ff] md:hidden"
-              aria-label="Menu"
+              className="cursor-pointer border-0 bg-transparent p-0 text-[color:var(--ink)] lg:hidden"
+              aria-label={t("nav.menu")}
               onClick={() => setMobileOpen((o) => !o)}
             >
               <span className="material-symbols-outlined">{mobileOpen ? "close" : "menu"}</span>

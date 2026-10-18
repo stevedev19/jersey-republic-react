@@ -1,0 +1,254 @@
+/* Featured shirt card(s) in the home hero (src/app/components/HeroFeatured.tsx).
+   Sits on the light hero: name --ink ≈ 16:1, price/category --ink-soft ≈ 7:1. */
+
+.hero-featured {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  background: transparent; /* index.css gives every <section> the page background */
+}
+
+@media (min-width: 720px) {
+  .hero-featured {
+    margin-right: 0;
+  }
+}
+
+.hero-featured__placeholder {
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  background: radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand));
+}
+
+.hero-featured__slide {
+  animation: hero-featured-in 0.35s ease-out;
+}
+
+@keyframes hero-featured-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-featured__card {
+  display: block;
+  border-radius: 20px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.hero-featured__card:hover {
+  transform: translateY(-4px);
+}
+
+.hero-featured__card:focus {
+  outline: none;
+}
+
+.hero-featured__card:focus-visible {
+  outline: 3px solid var(--gold-deep);
+  outline-offset: 6px;
+}
+
+.hero-featured__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  /* ~4% padding so the shirt fills about 80% of the card once the photo's own margin is counted */
+  padding: 4%;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: radial-gradient(circle at 50% 38%, var(--white), var(--paper) 55%, var(--sand));
+  box-shadow: 0 20px 50px -25px rgba(20, 27, 43, 0.35);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.hero-featured__card:hover .hero-featured__media,
+.hero-featured__card:focus-visible .hero-featured__media {
+  box-shadow: 0 28px 56px -24px rgba(20, 27, 43, 0.45);
+}
+
+.hero-featured__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* white photo backgrounds take on the card colour instead of showing as a box */
+  mix-blend-mode: multiply;
+}
+
+.hero-featured__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white); /* 13.7:1 */
+  box-shadow: inset 0 0 0 1px var(--gold);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.hero-featured__cta {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: "Archivo", "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-featured__card:hover .hero-featured__cta,
+.hero-featured__card:focus-visible .hero-featured__cta {
+  opacity: 1;
+  transform: none;
+}
+
+/* touch screens have no hover, so keep the label visible there */
+@media (hover: none) {
+  .hero-featured__cta {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-featured__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.hero-featured__name,
+.hero-featured__price,
+.hero-featured__category {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.hero-featured__name {
+  color: var(--ink);
+  font-family: "Monument Extended", "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 18px;
+}
+
+.hero-featured__price {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.hero-featured__category {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.hero-featured__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.hero-featured__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--sand);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.hero-featured__btn:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+.hero-featured__btn--pause {
+  margin-left: auto;
+}
+
+.hero-featured__dots {
+  display: flex;
+}
+
+/* 44px hit area around an 8px dot */
+.hero-featured__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hero-featured__dot span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sand);
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.hero-featured__dot[aria-current="true"] span {
+  width: 22px;
+  background: var(--navy);
+}
+
+.hero-featured__btn:focus-visible,
+.hero-featured__dot:focus-visible {
+  outline: 3px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-featured__slide {
+    animation: none;
+  }
+
+  .hero-featured__card,
+  .hero-featured__card:hover {
+    transform: none;
+  }
+
+  .hero-featured__card,
+  .hero-featured__media,
+  .hero-featured__cta,
+  .hero-featured__dot span,
+  .hero-featured__btn {
+    transition: none;
+  }
+}

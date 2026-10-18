@@ -3,7 +3,7 @@
     width: 100%;
     height: auto;
     background: var(--bg-base);
-    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-secondary);
 }
 
@@ -55,7 +55,7 @@
 
 .static-num {
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 64px;
     font-style: normal;
     font-weight: 700;
@@ -71,7 +71,7 @@
 
 .static-text {
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
@@ -101,7 +101,7 @@
 }
 
 .homepage .new-products-frame .category-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 48px;
@@ -147,7 +147,7 @@
     background: #FCA311; /* Bright Orange */
     box-shadow: 0 4px 16px rgba(252, 163, 17, 0.3);
     border-radius: 18px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -210,7 +210,7 @@
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 36px;
@@ -275,7 +275,7 @@
 }
 
 .promotion-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 4rem;
     font-weight: 800;
     margin-bottom: 25px;
@@ -287,7 +287,7 @@
 }
 
 .promotion-subtitle {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 25px;
@@ -299,7 +299,7 @@
 }
 
 .promotion-description {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 1.4rem;
     line-height: 1.8;
     margin-bottom: 35px;
@@ -312,7 +312,7 @@
 .promotion-button {
     background: #FCA311; /* Bright Orange */
     color: #FFFFFF;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
     padding: 20px 50px;
@@ -414,7 +414,7 @@
 }
 
 .ronaldo-main-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 3rem;
     font-weight: 800;
     color: #E0E1DD; /* Light Cream */
@@ -425,7 +425,7 @@
 }
 
 .ronaldo-sub-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 2.2rem;
     font-weight: 600;
     color: #E0E1DD; /* Light Cream */
@@ -444,7 +444,7 @@
 }
 
 .jersey-number {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-size: 3.5rem;
     font-weight: 900;
     color: #FCA311; /* Bright Orange */
@@ -664,7 +664,7 @@
 }
 
 .homepage .events-frame .category-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 48px;
@@ -783,7 +783,7 @@
 }
 
 .homepage .events-frame .event-organizator .spec-text-author {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     line-height: 38px;
     color: #0D1B2A; /* Deep Navy */
@@ -793,7 +793,7 @@
 
 .homepage .events-frame .bott-left .text-desc {
     margin-top: 12px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 19px;
@@ -817,7 +817,7 @@
     flex-direction: row;
     width: auto;
     height: 100%;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', "Pretendard", "Noto Sans KR", sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;

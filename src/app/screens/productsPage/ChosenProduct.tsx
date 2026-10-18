@@ -1,11 +1,8 @@
 import { Container, Stack, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SecurityIcon from "@mui/icons-material/Security";
-import StarIcon from "@mui/icons-material/Star";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 import Button from "@mui/material/Button";
-import Rating from "@mui/material/Rating";
 import { sweetTopSuccessAlert } from "../../../lib/sweetAlert";
 
 import { Dispatch } from "@reduxjs/toolkit";
@@ -39,6 +36,7 @@ import { getImageUrl } from "../../../lib/config";
 import { normalizeProductImages } from "../../../lib/normalizeProductImages";
 import { CartItem } from "../../../lib/types/search";
 import { ProductCollection } from "../../../lib/enums/product.enum";
+import { collectionLabel } from "../../components/product/archiveCardUtils";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -60,36 +58,26 @@ const restaurantRetriever = createSelector(
   })
 );
 
-function getCollectionDisplayName(collection: string): string {
-  const collectionNames: { [key: string]: string } = {
-    PREMIER_LEAGUE: "Premier League",
-    LA_LIGA: "La Liga",
-    SERIE_A: "Serie A",
-    BUNDESLIGA: "Bundesliga",
-    LIGUE_1: "Ligue 1",
-    CHAMPIONS_LEAGUE: "Champions League",
-    NATIONAL_TEAMS: "National Teams",
-    UZBEKISTAN_LEAGUE: "Uzbekistan",
-    RETRO: "Retro Collection",
-    OTHER: "Other",
-    DISH: "Dish",
-    DRINK: "Drink",
-  };
-  return collectionNames[collection] || collection;
+/** Breadcrumb wording differs slightly from card labels (e.g. "Retro Collection"). */
+function getCollectionDisplayName(collection: string, t: TFunction): string {
+  return t(`product.collections.${collection}`, {
+    defaultValue: t(`collections.${collection}`, { defaultValue: collection }),
+  });
 }
 
-function buildBreadcrumbCrumbs(product: Product): string[] {
+function buildBreadcrumbCrumbs(product: Product, t: TFunction): string[] {
   const c = product.productCollection;
-  const crumbs = ["Home"];
+  const nationalTeams = t("collections.NATIONAL_TEAMS");
+  const crumbs = [t("product.home")];
   if (c === ProductCollection.UZBEKISTAN_LEAGUE) {
-    crumbs.push("National Teams", "Uzbekistan");
+    crumbs.push(nationalTeams, getCollectionDisplayName(c, t));
     return crumbs;
   }
   if (c === ProductCollection.NATIONAL_TEAMS) {
-    crumbs.push("National Teams", product.productName);
+    crumbs.push(nationalTeams, product.productName);
     return crumbs;
   }
-  crumbs.push(getCollectionDisplayName(c));
+  crumbs.push(getCollectionDisplayName(c, t));
   crumbs.push(product.productName);
   return crumbs;
 }
@@ -130,6 +118,7 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
   productName: string;
   imageUrls: readonly string[];
 }) {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const [driftDesktop, setDriftDesktop] = useState(
     () =>
@@ -220,7 +209,7 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
                 <button
                   type="button"
                   className="pdp-gallery__nav pdp-gallery__nav--prev"
-                  aria-label="Previous image"
+                  aria-label={t("product.gallery.previous")}
                   onClick={() => go(-1)}
                 >
                   ‹
@@ -228,7 +217,7 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
                 <button
                   type="button"
                   className="pdp-gallery__nav pdp-gallery__nav--next"
-                  aria-label="Next image"
+                  aria-label={t("product.gallery.next")}
                   onClick={() => go(1)}
                 >
                   ›
@@ -241,8 +230,8 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
               key={productId}
               src={safeUrls[active]}
               data-zoom={safeUrls[active]}
-              alt={`${productName} — view ${active + 1} of ${len}`}
-              title="View fullscreen"
+              alt={t("product.gallery.imageAlt", { name: productName, current: active + 1, total: len })}
+              title={t("product.gallery.fullscreen")}
               loading="eager"
               decoding="async"
               draggable={false}
@@ -257,7 +246,7 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
         </div>
       </div>
       {len > 1 ? (
-        <div className="pdp-gallery__thumbs" aria-label="Product images">
+        <div className="pdp-gallery__thumbs" aria-label={t("product.gallery.images")}>
           <Swiper
             className="pdp-gallery__thumb-swiper"
             modules={[FreeMode]}
@@ -302,6 +291,7 @@ const ProductMediaGallery = memo(function ProductMediaGallery({
 
 export default function ChosenProduct(props: ChosenProductProps) {
   const { productId } = useParams<{ productId: string }>();
+  const { t } = useTranslation();
   const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
   const { restaurant } = useSelector(restaurantRetriever);
@@ -348,19 +338,19 @@ export default function ChosenProduct(props: ChosenProductProps) {
 
   const productImages = normalizeProductImages(chosenProduct.productImages);
 
-  const crumbs = buildBreadcrumbCrumbs(chosenProduct);
-  const collectionBadge = String(
-    chosenProduct.productCollection || ""
-  ).replace(/_/g, " ");
+  const crumbs = buildBreadcrumbCrumbs(chosenProduct, t);
+  const collectionBadge = chosenProduct.productCollection
+    ? collectionLabel(chosenProduct.productCollection)
+    : "";
 
-  const supplierLine = restaurant?.memberNick
-    ? `${restaurant.memberNick} · Official replica supplier`
-    : "JAKO · Official replica supplier";
+  const supplierLine = t("product.supplier", {
+    name: restaurant?.memberNick || "JAKO",
+  });
 
   return (
     <div className="chosen-product pdp">
       <Container maxWidth="lg" className="pdp-container">
-        <nav className="pdp-breadcrumb" aria-label="Breadcrumb">
+        <nav className="pdp-breadcrumb" aria-label={t("product.breadcrumb")}>
           {crumbs.map((part, i) => (
             <span key={`${part}-${i}`} className="pdp-breadcrumb__segment">
               {i === 0 ? (
@@ -399,33 +389,13 @@ export default function ChosenProduct(props: ChosenProductProps) {
 
               <Typography className="pdp-supplier">{supplierLine}</Typography>
 
-              <Box className="pdp-rating-row">
-                <Rating
-                  name="product-rating"
-                  value={4.5}
-                  precision={0.5}
-                  readOnly
-                  sx={{
-                    color: "#F8BB86",
-                    "& .MuiRating-iconFilled": { color: "#F8BB86" },
-                    "& .MuiRating-iconEmpty": {
-                      color: "rgba(248, 187, 134, 0.35)",
-                    },
-                  }}
-                />
-                <Typography component="span" className="pdp-rating-meta">
-                  (4.5) · 127 reviews
-                </Typography>
-              </Box>
-
               <Typography className="product-desc pdp-desc">
-                {chosenProduct.productDesc ||
-                  "Premium quality football jersey with authentic team colors and official design."}
+                {chosenProduct.productDesc || t("product.defaultDesc")}
               </Typography>
 
               <hr className="pdp-divider" />
 
-              <Typography className="pdp-section-label">Select size</Typography>
+              <Typography className="pdp-section-label">{t("product.selectSize")}</Typography>
               <Box className="pdp-size-grid">
                 {availableSizes.map((size) => (
                   <button
@@ -443,14 +413,14 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 ))}
               </Box>
 
-              <Typography className="pdp-section-label">Quantity</Typography>
+              <Typography className="pdp-section-label">{t("product.quantity")}</Typography>
               <Box className="pdp-qty-row">
                 <button
                   type="button"
                   className="pdp-qty-btn"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1}
-                  aria-label="Decrease quantity"
+                  aria-label={t("common.decreaseQuantity")}
                 >
                   −
                 </button>
@@ -469,7 +439,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                   disabled={
                     quantity >= (chosenProduct.productLeftCount || 10)
                   }
-                  aria-label="Increase quantity"
+                  aria-label={t("common.increaseQuantity")}
                 >
                   +
                 </button>
@@ -479,29 +449,14 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 <Typography className="pdp-price" component="span">
                   ${chosenProduct.productPrice}
                 </Typography>
-                <Typography className="pdp-installments">
-                  or 3 installments
-                </Typography>
               </Box>
 
-              <Box className="pdp-trust">
-                <Box className="pdp-trust__item">
-                  <LocalShippingIcon className="pdp-trust__icon" />
-                  <span>Free shipping over $50</span>
-                </Box>
-                <Box className="pdp-trust__item">
-                  <SecurityIcon className="pdp-trust__icon" />
-                  <span>Authentic quality</span>
-                </Box>
-                <Box className="pdp-trust__item">
-                  <StarIcon className="pdp-trust__icon" />
-                  <span>Official design</span>
-                </Box>
-                <Box className="pdp-trust__item">
-                  <SportsSoccerIcon className="pdp-trust__icon" />
-                  <span>Team licensed</span>
-                </Box>
-              </Box>
+              <ul className="pdp-trust">
+                <li>{t("product.freeShipping")}</li>
+                <li>{t("product.authenticQuality")}</li>
+                <li>{t("product.officialDesign")}</li>
+                <li>{t("product.teamLicensed")}</li>
+              </ul>
 
               <Stack className="pdp-actions" spacing={1.5}>
                 <Button
@@ -524,12 +479,15 @@ export default function ChosenProduct(props: ChosenProductProps) {
                       const added = props.onAdd(cartItem);
                       if (added) {
                         sweetTopSuccessAlert(
-                          `${chosenProduct.productName} (${selectedSize}) added to cart!`,
+                          t("product.addedToCart", {
+                            name: chosenProduct.productName,
+                            size: selectedSize,
+                          }),
                           2000
                         );
                       }
                     } else {
-                      sweetTopSuccessAlert("Please select a size first!", 2000);
+                      sweetTopSuccessAlert(t("product.selectSizeFirst"), 2000);
                     }
                   }}
                   disabled={
@@ -537,8 +495,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
                   }
                 >
                   {chosenProduct.productLeftCount === 0
-                    ? "OUT OF STOCK"
-                    : "ADD TO CART"}
+                    ? t("product.outOfStock")
+                    : t("product.addToCart")}
                 </Button>
               </Stack>
             </Box>

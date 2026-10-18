@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
+import { useTranslation } from "react-i18next";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -31,6 +32,7 @@ interface PausedOrderProps {
 export default function PausedOrders(props: PausedOrderProps) {
   const {setValue} = props
   const {authMember, setOrderBuilder} = useGlobals();
+  const { t } = useTranslation();
   const { pausedOrders } = useSelector(pausedOrdersRetriever);
   const safePausedOrders = Array.isArray(pausedOrders) ? pausedOrders : [];
    
@@ -46,7 +48,7 @@ export default function PausedOrders(props: PausedOrderProps) {
         orderStatus: OrderStatus.DELETE,
       }
 
-      const confirmation = window.confirm("Do you want to delete the order?")
+      const confirmation = window.confirm(t("orders.confirmDelete"))
       if(confirmation){
         const order = new OrderService()
         await order.updateOrder(input);
@@ -71,7 +73,7 @@ export default function PausedOrders(props: PausedOrderProps) {
         orderStatus: OrderStatus.PROCESS,
       }
 
-      const confirmation = window.confirm("Do you want to proceed this payment?")
+      const confirmation = window.confirm(t("orders.confirmPayment"))
       if(confirmation){
         const order = new OrderService()
         await order.updateOrder(input);
@@ -116,7 +118,7 @@ export default function PausedOrders(props: PausedOrderProps) {
                         className={"order-dish-img"}
                         alt={product.productName || ""}
                       />
-                      <p className="title-dish">{product.productName || 'Unknown Product'}</p>
+                      <p className="title-dish">{product.productName || t("common.unknownProduct")}</p>
                       <Box className="price-box">
                         <p>${item.itemPrice}</p>
                         <img src="/icons/close.svg" alt="" />
@@ -133,13 +135,13 @@ export default function PausedOrders(props: PausedOrderProps) {
 
               <Box className="total-price-box">
                 <Box className="box-total">
-                  <p>Product price</p>
+                  <p>{t("orders.productPrice")}</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
                   <img src="/icons/plus.svg" style={{ marginLeft: "20px" }} alt="" />
-                  <p>Delivery cost</p>
+                  <p>{t("orders.deliveryCost")}</p>
                   <p>${order.orderDelivery}</p>
                   <img src="/icons/pause.svg" style={{ marginLeft: "20px" }} alt="" />
-                  <p>Total</p>
+                  <p>{t("orders.total")}</p>
                   <p>${order.orderTotal}</p>
                 </Box>
                 <Box className="order-card-actions">
@@ -150,7 +152,7 @@ export default function PausedOrders(props: PausedOrderProps) {
                     className="cancel-button"
                     onClick={deleteOrderHandler}
                   >
-                    Cancel
+                    {t("orders.cancel")}
                   </Button>
                   <Button
                     value={order._id}
@@ -158,7 +160,7 @@ export default function PausedOrders(props: PausedOrderProps) {
                     className="pay-button"
                     onClick={processOrderHandler}
                   >
-                    Payment
+                    {t("orders.payment")}
                   </Button>
                 </Box>
               </Box>

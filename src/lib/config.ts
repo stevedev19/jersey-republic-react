@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 const resolveBaseUrl = (): string => {
   /** Prefer `REACT_APP_API_URL` in `.env` (see `.env.example`). Never use the CRA dev port as the API. */
   const envUrl = process.env.REACT_APP_API_URL?.trim();
@@ -49,10 +51,21 @@ export const getImageUrl = (
   return `${serverApiBase}${path}`;
 };
 
+/** Read at call time so messages follow the current language. */
 export const Messages = {
-    error1: "Something went wrong!",
-    error2: "Please login first!",
-    error3: "Please fulfill all inputs!",
-    error4: "Message is empty!",
-    error5: "Only images with jpeg, jpg, png format allowed",
-}; 
+  get error1() {
+    return i18n.t("messages.error1");
+  },
+  get error2() {
+    return i18n.t("messages.error2");
+  },
+  get error3() {
+    return i18n.t("messages.error3");
+  },
+  get error4() {
+    return i18n.t("messages.error4");
+  },
+  get error5() {
+    return i18n.t("messages.error5");
+  },
+};

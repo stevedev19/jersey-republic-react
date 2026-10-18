@@ -1,0 +1,428 @@
+{
+  "meta": {
+    "title": "JERSEY REPUBLIC | 축구 유니폼 아카이브",
+    "description": "클럽, 국가대표, 레트로 축구 유니폼. 발송 전에 검수하고 전 세계로 배송합니다."
+  },
+  "language": {
+    "groupLabel": "언어 선택",
+    "en": "영어",
+    "ko": "한국어"
+  },
+  "common": {
+    "addedToCart": "장바구니에 담았습니다",
+    "addToCartNamed": "{{name}} 장바구니에 담기",
+    "viewNamed": "{{name}} 보기",
+    "close": "닫기",
+    "views_other": "조회 {{count}}회",
+    "new": "NEW",
+    "unknownProduct": "알 수 없는 상품",
+    "noAddress": "등록된 주소 없음",
+    "decreaseQuantity": "수량 줄이기",
+    "increaseQuantity": "수량 늘리기"
+  },
+  "messages": {
+    "error1": "문제가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+    "error2": "먼저 로그인해 주세요.",
+    "error3": "모든 항목을 입력해 주세요.",
+    "error4": "메시지를 입력해 주세요.",
+    "error5": "JPEG, JPG, PNG 형식의 이미지만 올릴 수 있습니다.",
+    "ok": "확인",
+    "signedOut": "로그아웃되었습니다"
+  },
+  "collections": {
+    "PREMIER_LEAGUE": "프리미어리그",
+    "LA_LIGA": "라리가",
+    "SERIE_A": "세리에 A",
+    "BUNDESLIGA": "분데스리가",
+    "LIGUE_1": "리그 1",
+    "CHAMPIONS_LEAGUE": "챔피언스리그",
+    "NATIONAL_TEAMS": "국가대표팀",
+    "UZBEKISTAN_LEAGUE": "우즈베키스탄 리그",
+    "RETRO": "레트로",
+    "OTHER": "기타"
+  },
+  "nav": {
+    "mainLabel": "메인 메뉴",
+    "drops": "드롭",
+    "shopAll": "전체 상품",
+    "roulette": "룰렛",
+    "teams": "팀",
+    "about": "소개",
+    "searchPlaceholder": "유니폼 검색",
+    "searchLabel": "유니폼 검색",
+    "menu": "메뉴"
+  },
+  "account": {
+    "signIn": "로그인",
+    "menuLabel": "계정 메뉴",
+    "member": "회원",
+    "user": "사용자",
+    "profile": "내 프로필",
+    "orders": "주문 내역",
+    "signOut": "로그아웃"
+  },
+  "cart": {
+    "label": "장바구니",
+    "title": "장바구니",
+    "close": "장바구니 닫기",
+    "emptyTitle": "장바구니가 비어 있습니다",
+    "emptyDesc": "담은 유니폼이 여기에 표시됩니다.",
+    "shopNow": "쇼핑하러 가기 →",
+    "size": "사이즈: {{size}}",
+    "remove": "상품 삭제",
+    "subtotal": "상품 금액",
+    "shipping": "배송비",
+    "free": "무료",
+    "total": "합계",
+    "checkout": "주문하기 →",
+    "continue": "쇼핑 계속하기"
+  },
+  "cartAuth": {
+    "title": "로그인이 필요합니다",
+    "body": "장바구니에 상품을 담으려면 계정이 필요합니다.",
+    "signIn": "로그인",
+    "createAccount": "회원가입",
+    "later": "다음에 할게요"
+  },
+  "auth": {
+    "createTitle": "회원가입",
+    "username": "아이디",
+    "phone": "휴대폰 번호",
+    "password": "비밀번호",
+    "signUp": "회원가입",
+    "membersOnly": "회원 전용",
+    "spinWinWear": "돌리고, 받고, 입고.",
+    "loginTitle": "로그인",
+    "rouletteLine1": "로그인하고 룰렛을 돌려",
+    "rouletteLine2": "다음 유니폼을 받아 가세요."
+  },
+  "megaMenu": {
+    "label": "리그·국가별 쇼핑",
+    "byLeague": "리그별",
+    "byNation": "국가별",
+    "featuredDrop": "추천 드롭",
+    "newDrop": "신규 드롭",
+    "loading": "불러오는 중…",
+    "latestKits": "가장 최근 입고된 유니폼",
+    "view": "보기 →",
+    "allJerseys": "전체 저지 →",
+    "newArrivals": "신상품 →",
+    "onSale": "세일 →",
+    "escHint": "ESC 키를 누르면 닫힙니다",
+    "worldCup": "2026 월드컵",
+    "nations": {
+      "brazil": "브라질",
+      "france": "프랑스",
+      "germany": "독일",
+      "argentina": "아르헨티나",
+      "england": "잉글랜드",
+      "portugal": "포르투갈",
+      "spain": "스페인",
+      "uzbekistan": "우즈베키스탄"
+    }
+  },
+  "home": {
+    "hero": {
+      "imageAlt": "투광등이 켜진 밤의 축구 경기장",
+      "titleLine1": "축구를",
+      "titleAccent": "입다.",
+      "description": "클럽, 국가대표, 레트로 축구 유니폼을 판매합니다. 모든 유니폼은 발송 전에 직접 검수하며, 전 세계로 배송합니다.",
+      "cta": "전체 유니폼 보기",
+      "featured": {
+        "label": "추천 유니폼",
+        "newDrop": "신규 드롭",
+        "viewShirt": "유니폼 보기 →",
+        "slide": "{{total}}개 중 {{current}}번째",
+        "prev": "이전 유니폼",
+        "next": "다음 유니폼",
+        "goTo": "{{number}}번째 유니폼 보기",
+        "pause": "자동 넘김 멈추기",
+        "play": "자동 넘김 다시 시작"
+      }
+    },
+    "featured": {
+      "imageAlt": "자수 엠블럼이 들어간 빈티지 축구 저지 원단",
+      "titleLine1": "아스널 05/06",
+      "titleAccent": "하이버리 파이널",
+      "description": "아스널이 하이버리에서 보낸 마지막 시즌의 버건디 유니폼. 골드 트림에 앙리 #14 마킹이 들어갔습니다. 50벌 한정, 한 벌씩 직접 검수했습니다.",
+      "timeRemaining": "공개까지",
+      "hours": "시간",
+      "minutes": "분",
+      "seconds": "초",
+      "notify": "드롭 알림 받기"
+    },
+    "archive": {
+      "title": "신상품",
+      "subtitle": "샵에 가장 최근 들어온 유니폼 4벌입니다.",
+      "empty": "아직 새 유니폼이 없습니다.",
+      "browseAll": "전체 유니폼 보기 →"
+    },
+    "trending": {
+      "title": "지금 뜨는 저지",
+      "scrollLeft": "인기 상품 이전으로 넘기기",
+      "scrollRight": "인기 상품 다음으로 넘기기",
+      "empty": "인기 유니폼을 불러오면 여기에 표시됩니다.",
+      "campaign": "다른 각도",
+      "campaignImage": "{{name}} 보기, 두 번째 사진"
+    },
+    "roulette": {
+      "titleLine1": "못 고르겠다면",
+      "titleLine2": "룰렛을",
+      "titleAccent": "돌려 보세요.",
+      "description": "룰렛을 돌리면 샵에 있는 유니폼 중 하나를 골라 드립니다. 선물을 고를 때 특히 유용합니다.",
+      "cta": "룰렛 돌리기",
+      "imageAlt": "빈티지 저지 에디토리얼 스타일링"
+    },
+    "newDrops": {
+      "title": "뉴 드롭.",
+      "subtitle": "이번 시즌 새로 들어온 유니폼입니다.",
+      "window": "드롭 기간: {{start}}–{{end}}",
+      "viewAll": "전체 보기 →",
+      "emptyTitle": "아직 드롭이 없습니다",
+      "emptyDesc": "아직 새 유니폼이 없습니다. 다음 주에 다시 확인해 주세요."
+    },
+    "activeUsers": {
+      "titleLine1": "활동 중인",
+      "titleAccent": "회원.",
+      "subtitle": "포인트가 가장 많은 회원입니다.",
+      "empty": "아직 표시할 회원이 없습니다.",
+      "memberSince": "{{year}}년 가입",
+      "memberSinceUnknown": "회원"
+    }
+  },
+  "carousel": {
+    "dropWindow": "드롭 기간",
+    "daysLeft_other": "{{count}}일 남음",
+    "latestDrop": "최신 드롭",
+    "previous": "이전",
+    "next": "다음",
+    "slides": "슬라이드",
+    "goToSlide": "{{number}}번 슬라이드로 이동"
+  },
+  "trust": {
+    "label": "저지 리퍼블릭을 믿고 구매하는 이유",
+    "authenticity": "정품 검수",
+    "shipping": "해외 배송",
+    "returns": "간편한 교환·반품",
+    "payment": "안전한 결제"
+  },
+  "footer": {
+    "newsletter": {
+      "title": "리퍼블릭에 합류하세요.",
+      "text": "신상품과 재입고 소식을 일주일에 한 번 정도 보내 드립니다.",
+      "label": "이메일 주소",
+      "placeholder": "이메일 주소",
+      "submit": "구독하기",
+      "submitting": "구독 중…",
+      "success": "구독이 완료되었습니다. 다음 드롭에서 만나요.",
+      "errorEmpty": "이메일 주소를 입력해 주세요.",
+      "errorInvalid": "이메일 주소 형식을 다시 확인해 주세요.",
+      "errorFailed": "문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
+    },
+    "links": {
+      "label": "푸터 메뉴",
+      "shop": {
+        "title": "쇼핑",
+        "all": "전체 유니폼",
+        "newArrivals": "신상품",
+        "retro": "레트로",
+        "teams": "팀별 보기",
+        "sizeGuide": "사이즈 가이드"
+      },
+      "support": {
+        "title": "고객 지원",
+        "shipping": "배송 안내",
+        "returns": "교환·반품",
+        "contact": "문의하기"
+      },
+      "about": {
+        "title": "브랜드",
+        "story": "브랜드 이야기",
+        "verify": "정품 검수 과정"
+      }
+    },
+    "utility": {
+      "language": "언어",
+      "currency": "통화",
+      "usd": "USD ($)",
+      "krw": "KRW (₩)",
+      "social": "소셜 미디어",
+      "socialLink": "{{name}} (새 탭에서 열림)"
+    },
+    "bottom": {
+      "copyright": "© {{year}} Jersey Republic",
+      "privacy": "개인정보처리방침",
+      "terms": "이용약관",
+      "credit": "디자인·개발 {{name}}",
+      "portfolio": "포트폴리오",
+      "disclaimer": "포트폴리오용 데모 프로젝트로, 실제 판매하는 쇼핑몰이 아닙니다. 구단 이름과 엠블럼의 권리는 각 소유자에게 있습니다."
+    }
+  },
+  "products": {
+    "title": "전체 유니폼",
+    "loadingNewDrops": "신규 드롭을 불러오는 중…",
+    "newDropsCount_other": "신규 드롭 {{count}}개",
+    "noNewDropsInWindow": "이번 기간에는 신규 드롭이 없습니다",
+    "noMatches": "조건에 맞는 저지가 없습니다",
+    "available_other": "저지 {{count}}개",
+    "searchPlaceholder": "유니폼 검색",
+    "searchLabel": "유니폼 검색",
+    "search": "검색",
+    "filterBy": "필터",
+    "newDrops": "뉴 드롭",
+    "sortBy": "정렬",
+    "newDropsEmpty": "아직 신규 드롭이 없습니다. 곧 다시 확인해 주세요!",
+    "noResults": "검색 결과가 없습니다.",
+    "filters": {
+      "all": "전체 상품",
+      "uzbekistan": "우즈베키스탄"
+    },
+    "sort": {
+      "createdAt": "최신순",
+      "productPrice": "가격순",
+      "productViews": "조회순"
+    }
+  },
+  "product": {
+    "breadcrumb": "이동 경로",
+    "home": "홈",
+    "collections": {
+      "UZBEKISTAN_LEAGUE": "우즈베키스탄",
+      "RETRO": "레트로 컬렉션",
+      "DISH": "요리",
+      "DRINK": "음료"
+    },
+    "supplier": "{{name}} · 공식 레플리카 공급사",
+    "defaultDesc": "팀 고유의 컬러와 공식 디자인을 그대로 살린 프리미엄 축구 저지입니다.",
+    "selectSize": "사이즈 선택",
+    "quantity": "수량",
+    "freeShipping": "$50 이상 무료 배송",
+    "authenticQuality": "정품 퀄리티",
+    "officialDesign": "공식 디자인",
+    "teamLicensed": "구단 공식 라이선스",
+    "outOfStock": "품절",
+    "addToCart": "장바구니 담기",
+    "addedToCart": "{{name}} ({{size}}) 상품을 장바구니에 담았습니다!",
+    "selectSizeFirst": "사이즈를 먼저 선택해 주세요!",
+    "gallery": {
+      "previous": "이전 이미지",
+      "next": "다음 이미지",
+      "imageAlt": "{{name}}, {{total}}장 중 {{current}}번째 사진",
+      "fullscreen": "전체 화면으로 보기",
+      "images": "상품 이미지"
+    }
+  },
+  "orders": {
+    "categories": "주문 상태",
+    "tabs": {
+      "paused": "결제 대기",
+      "process": "배송 중",
+      "finished": "배송 완료"
+    },
+    "cardNumber": "카드 번호",
+    "expiry": "MM / YY",
+    "cvv": "CVV",
+    "cardholder": "카드 소유자 이름",
+    "saveCard": "카드 저장",
+    "productPrice": "상품 금액",
+    "deliveryCost": "배송비",
+    "total": "합계",
+    "cancel": "주문 취소",
+    "payment": "결제하기",
+    "verify": "수령 확인",
+    "confirmDelete": "주문을 취소하시겠습니까?",
+    "confirmPayment": "결제를 진행하시겠습니까?",
+    "confirmReceived": "주문하신 상품을 받으셨나요?",
+    "empty": {
+      "title": "아직 주문이 없습니다",
+      "line1": "주문하신 내역이 여기에 표시됩니다.",
+      "cta": "유니폼 둘러보기 →"
+    }
+  },
+  "profile": {
+    "title": "내 프로필",
+    "subtitle": "이름, 사진, 연락처를 관리합니다.",
+    "livePreview": "미리보기",
+    "yourName": "이름",
+    "noLocation": "위치 정보 없음",
+    "noBio": "아직 소개가 없습니다.",
+    "memberSince": "{{date}} 가입",
+    "memberSinceUnknown": "가입일",
+    "changePhoto": "사진 변경",
+    "formatHint": "JPG, JPEG, PNG 형식만 올릴 수 있습니다!",
+    "displayName": "닉네임",
+    "phone": "전화번호",
+    "noPhone": "등록된 전화번호 없음",
+    "location": "주소",
+    "bio": "소개",
+    "noDescription": "소개 없음",
+    "save": "변경사항 저장",
+    "saved": "저장되었습니다!"
+  },
+  "help": {
+    "tabsLabel": "도움말 메뉴",
+    "tabs": {
+      "terms": "이용약관",
+      "faq": "자주 묻는 질문",
+      "contact": "문의하기"
+    },
+    "terms": [
+      "사이트에서 주문하려면 먼저 회원가입을 완료해야 합니다.",
+      "결제가 완료된 주문은 취소할 수 없으니, 결제 전에 주문 내용을 꼭 확인해 주세요.",
+      "관리자의 허가 없이 개인 광고를 작성하거나 배포할 수 없습니다.",
+      "모든 활동은 운영진의 관리 아래 이루어지므로 기본 규칙을 지켜 주세요."
+    ],
+    "faq": [
+      {
+        "question": "주문은 어떻게 하나요?",
+        "answer": "원하는 상품을 장바구니에 담은 뒤 주문해 주세요!"
+      },
+      {
+        "question": "배송은 얼마나 걸리나요?",
+        "answer": "지역에 따라 다르며, 최대 1시간 이내에 배송됩니다!"
+      },
+      {
+        "question": "제 정보는 안전하게 보호되나요?",
+        "answer": "물론입니다. 회원님이 제공하신 정보는 저희가 책임지고 보호합니다!"
+      },
+      {
+        "question": "계정이 차단되었어요. 어떻게 해야 하나요?",
+        "answer": "차단에는 사유가 있습니다. 저희에게 문의해 주세요!"
+      },
+      {
+        "question": "주문은 어떻게 취소하나요?",
+        "answer": "주문 내역 페이지에서 언제든지 간편하게 취소할 수 있습니다!"
+      },
+      {
+        "question": "이 플랫폼은 누가 개발했나요?",
+        "answer": "ITC Global 개발팀이 개발했습니다!"
+      }
+    ],
+    "contact": {
+      "title": "문의하기",
+      "subtitle": "아래 양식을 작성해 메시지를 보내 주세요.",
+      "name": "이름",
+      "namePlaceholder": "이름을 입력해 주세요",
+      "email": "이메일",
+      "emailPlaceholder": "이메일을 입력해 주세요",
+      "message": "메시지",
+      "messagePlaceholder": "문의 내용을 입력해 주세요",
+      "send": "보내기"
+    }
+  },
+  "roulette": {
+    "pageTitle": "저지 룰렛 | JERSEY REPUBLIC",
+    "titleLine1": "저지",
+    "titleLine2": "룰렛",
+    "subtitle": "룰렛을 돌리면 유니폼 하나를 골라 드립니다.",
+    "spin": "돌리기",
+    "yourSpins": "내 스핀 기록",
+    "noSpins": "아직 기록이 없습니다.",
+    "removeFromHistory": "기록에서 {{name}} 삭제",
+    "dismiss": "닫기",
+    "result": "당첨된 유니폼",
+    "addToCart": "장바구니 담기",
+    "spinAgain": "다시 돌리기",
+    "viewProduct": "상품 보기"
+  }
+}

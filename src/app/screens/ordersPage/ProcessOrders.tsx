@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
+import { useTranslation } from "react-i18next";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -30,6 +31,7 @@ interface ProcessOrdersProps {
 export default function ProcessOrders(props:ProcessOrdersProps) {
   const {setValue} = props;
   const {authMember, setOrderBuilder} = useGlobals();
+  const { t } = useTranslation();
 
   const { processOrders } = useSelector(pausedProcessRetriever);
   const safeProcessOrders = Array.isArray(processOrders) ? processOrders : [];
@@ -47,7 +49,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
         orderStatus: OrderStatus.FINISH,
       }
 
-      const confirmation = window.confirm("Have you received your order?")
+      const confirmation = window.confirm(t("orders.confirmReceived"))
       if(confirmation){
         const order = new OrderService()
         await order.updateOrder(input);
@@ -92,7 +94,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
                         className={"order-dish-img"}
                         alt={product.productName || ""}
                       />
-                      <p className="title-dish">{product.productName || 'Unknown Product'}</p>
+                      <p className="title-dish">{product.productName || t("common.unknownProduct")}</p>
                       <Box className="price-box">
                         <p>${item.itemPrice}</p>
                         <img src="/icons/close.svg" alt="" />
@@ -109,13 +111,13 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
 
               <Box className="total-price-box">
                 <Box className="box-total">
-                  <p>Product price</p>
+                  <p>{t("orders.productPrice")}</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
                   <img src="/icons/plus.svg" style={{ marginLeft: "20px" }} alt="" />
-                  <p>Delivery cost</p>
+                  <p>{t("orders.deliveryCost")}</p>
                   <p>${order.orderDelivery}</p>
                   <img src="/icons/pause.svg" style={{ marginLeft: "20px" }} alt="" />
-                  <p>Total</p>
+                  <p>{t("orders.total")}</p>
                   <p>${order.orderTotal}</p>
                 </Box>
                 <Box className="order-card-actions">
@@ -126,7 +128,7 @@ export default function ProcessOrders(props:ProcessOrdersProps) {
                     className="verify-button"
                     onClick={finishOrderHandler}
                   >
-                    VERIFY TO FULFILL
+                    {t("orders.verify")}
                   </Button>
                 </Box>
               </Box>

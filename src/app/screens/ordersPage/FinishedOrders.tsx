@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
+import { useTranslation } from "react-i18next";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -18,6 +19,7 @@ const pausedFinishedRetriever = createSelector(
 );
 
 export default function FinishedOrders() {
+ const { t } = useTranslation();
  const { finishedOrders } = useSelector(pausedFinishedRetriever);
  const safeFinishedOrders = Array.isArray(finishedOrders) ? finishedOrders : [];
 
@@ -53,7 +55,7 @@ export default function FinishedOrders() {
                         className="order-dish-img"
                         alt={product.productName || ""}
                       />
-                      <p className="title-dish">{product.productName || 'Unknown Product'}</p>
+                      <p className="title-dish">{product.productName || t("common.unknownProduct")}</p>
                       <Box className="price-box">
                         <p>${item.itemPrice}</p>
                         <img src="/icons/close.svg" alt="" />
@@ -70,21 +72,21 @@ export default function FinishedOrders() {
 
               <Box className="total-price-box">
                 <Box className="box-total">
-                  <p>Product price</p>
+                  <p>{t("orders.productPrice")}</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
                   <img
                     src="/icons/plus.svg"
                     style={{ marginLeft: "20px" }}
                     alt=""
                   />
-                  <p>Delivery Cost</p>
+                  <p>{t("orders.deliveryCost")}</p>
                   <p>${order.orderDelivery}</p>
                   <img
                     src="/icons/pause.svg"
                     style={{ marginLeft: "20px" }}
                     alt=""
                   />
-                  <p>Total</p>
+                  <p>{t("orders.total")}</p>
                   <p>${order.orderTotal}</p>
                 </Box>
               </Box>

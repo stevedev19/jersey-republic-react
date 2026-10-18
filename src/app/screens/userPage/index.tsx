@@ -2,22 +2,24 @@ import { useEffect, useState } from "react";
 import { Settings } from "./Settings";
 import "../../../css/userPage.css";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useGlobals } from "../../hooks/useGlobals";
 import { getImageUrl } from "../../../lib/config";
 import { MemberUpdateInput } from "../../../lib/types/member";
 
-function formatMemberSince(createdAt: Date | string | undefined): string {
+function formatMemberSince(createdAt: Date | string | undefined, language: string): string {
   if (!createdAt) return "";
   const d = new Date(createdAt);
   if (Number.isNaN(d.getTime())) return "";
   return d
-    .toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    .toLocaleDateString(language === "ko" ? "ko-KR" : "en-US", { month: "short", year: "numeric" })
     .toUpperCase();
 }
 
 export default function UserPage() {
   const history = useHistory();
   const { authMember } = useGlobals();
+  const { t, i18n } = useTranslation();
 
   const [memberUpdateInput, setMemberUpdateInput] =
     useState<MemberUpdateInput>({});
@@ -49,23 +51,23 @@ export default function UserPage() {
   const previewName =
     memberUpdateInput.memberNick?.trim() ||
     authMember.memberNick ||
-    "Your name";
+    t("profile.yourName");
   const previewLocation =
     memberUpdateInput.memberAddress?.trim() ||
     authMember.memberAddress ||
-    "No location";
+    t("profile.noLocation");
   const previewBio =
     memberUpdateInput.memberDesc?.trim() || authMember.memberDesc || "";
-  const sinceLine = formatMemberSince(authMember.createdAt);
+  const sinceLine = formatMemberSince(authMember.createdAt, i18n.language);
 
   return (
     <div className="member-page stitch-navbar-offset">
       <div className="member-page__inner">
         <div className="member-page__form-col">
           <header className="member-page__header">
-            <h1 className="member-page__title">MY PROFILE</h1>
+            <h1 className="member-page__title">{t("profile.title")}</h1>
             <p className="member-page__subtitle">
-              Manage your Republic identity
+              {t("profile.subtitle")}
             </p>
           </header>
           <Settings
@@ -77,7 +79,7 @@ export default function UserPage() {
         </div>
 
         <div className="member-page__preview-col">
-          <p className="member-page__preview-label">LIVE PREVIEW</p>
+          <p className="member-page__preview-label">{t("profile.livePreview")}</p>
           <div className="member-page__preview-card">
             <img
               src={memberImage}
@@ -96,12 +98,12 @@ export default function UserPage() {
               <li className="member-page__social-dot" />
             </ul>
             <p className="member-page__preview-bio">
-              {previewBio || "No bio yet."}
+              {previewBio || t("profile.noBio")}
             </p>
             {sinceLine ? (
-              <p className="member-page__since">MEMBER SINCE {sinceLine}</p>
+              <p className="member-page__since">{t("profile.memberSince", { date: sinceLine })}</p>
             ) : (
-              <p className="member-page__since">MEMBER SINCE</p>
+              <p className="member-page__since">{t("profile.memberSinceUnknown")}</p>
             )}
           </div>
         </div>
